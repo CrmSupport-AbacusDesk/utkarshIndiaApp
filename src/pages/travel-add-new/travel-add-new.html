@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Travel Plan</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="planListBox">
+    <div class="top-list"  *ngIf="planList !== [] && planList !== undefined">
+      <div class="top pb0">
+            <table>
+              <tr>
+                <td>
+                  <span>Date</span>                
+                </td>
+                <td>
+                  <span>Visit Plan</span>                
+                </td>
+                <td>
+                  <span>Status</span>                
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="background-color: white;">
+                    <span>
+                      {{tarvel_date | date:'EEEE'}}<br/>
+                      {{tarvel_date | date:'d, MMMM, y'}}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div >{{planList != [] && planList != undefined ? planList.length : '0' }}</div>
+                </td>
+                <td>
+                  <div class="status {{status}}">{{status||null}}</div>
+                </td>
+              </tr>
+            </table>
+        
+        <!-- <div class="content">
+          <span>Date</span>
+          <span>{{tarvel_date | date:'EEEE'}}</span><br/>
+          <span>{{tarvel_date | date:'d, MMMM, y'}}</span>
+        </div>
+        <div class="content">
+          <span>Visit Plan</span>
+          <p >{{planList != [] && planList != 'undefined' ? planList.length : '0' }}</p>
+        </div>
+        <div class="content" *ngIf="status">
+          <span>Status</span>
+          <p class="status {{status}}">{{status||null}}</p>
+        </div> -->
+      </div>
+      
+    </div>
+   
+      <div class="list-content" *ngFor="let row of planList" >
+        <div class="upper-content" *ngIf="row.travel_type!= 'Other'">
+          <!-- <div class="left-info" >
+            <div class="circle">{{row.beat_code[0]}}</div>
+          </div> -->
+          <div class="right-info">
+            <h2>Retailer</h2>
+            <span>{{row.company_name}} - {{row.name}}</span>
+          </div>
+        </div>
+        <div class="address" *ngIf="row.travel_type== 'Other'">
+          <h2>{{row.travel_type}}</h2>
+          <p> <span>City</span>{{row.city}}</p>
+        </div>
+        <div class="address">
+          <p><span>Remark</span>{{row.status_remark}}</p>
+        </div>
+        <div class="lower-content pr0">
+          <!-- <div class="visit">
+            Last Visit :
+            <p> 20 <span> Days Ago</span></p>
+          </div> -->
+          <div class="button-right">
+            <!-- <button class="add-btn"><i class="material-icons ">add</i>ADD TO LIST</button> -->
+            <button class="add-btn" (click)="removePlanList(row.id)"><i class="material-icons ">delete</i>REMOVE FROM LIST</button>
+          </div>
+        </div>
+       
+      </div>
+  </div>
+
+    <div class="nothing-here" *ngIf="planList == undefined">
+      <div class="outer">
+        <div class="innear">
+          <img src="assets/imgs/no_found.svg" alt="">
+          <p>No Visit List</p>
+        </div>
+      </div>
+    </div>
+    
+  </ion-content>
+  

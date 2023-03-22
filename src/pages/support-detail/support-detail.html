@@ -1,0 +1,71 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Support Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="attendance-list flat-list">
+    <div class="slab slab-bg">
+      <div class="slab-day">
+        <p>{{support_detail.date_created != '0000-00-00 00:00:00' ? (support_detail.date_created | date:'d MMM yyy') : '---'  }}</p>
+        <span>Date Created</span>
+      </div>
+      <div class="slab-day">
+        <p>{{support_detail.status}}</p>
+        <span>Status</span>
+      </div>
+    </div>
+    <div class="other-block pb0">
+      <p><strong>Remark :</strong> {{support_detail.message}}</p>
+    </div>
+
+    <div class="other-block pt0 pb0" *ngIf="support_detail.closing_remark">
+      <p style="margin: 10px 0px !important;"><strong>Closing Date :</strong> {{support_detail.closing_date | date:'d MMM yyy'}}</p>
+      <p><strong>Closing Remark :</strong> {{support_detail.closing_remark}}</p>
+    </div>
+    
+  </div>
+  
+  
+  
+  <div class="upload-doc pl16 pr16">
+    <ng-container *ngIf="docImg.length > 0">
+      <div class="">
+        Counter Image
+      </div>
+      <ul class="no-padding" >
+        <li class="image-upload" *ngFor="let image of docImg; index as i" (click)="imageModal(url+image.document_name)">
+          <img src="{{url+image.document_name}}">
+        </li>
+      </ul>
+    </ng-container>
+    
+    
+    <ng-container *ngIf="support_detail.status == 'Close' && support_detail.feedback_star >= '0'">
+      <div class="mt10">Rating</div>
+      <div class="rating">
+        <i class="material-icons" [ngClass]="{'active':star>=1}" (click)="support_detail.feedback_star == '0' ? rating('1') : ''">{{star>=1 ? 'star' : 'star_outline' }}</i>
+        <i class="material-icons" [ngClass]="{'active':star>=2}" (click)="support_detail.feedback_star == '0' ? rating('2') : ''">{{star>=2 ? 'star' : 'star_outline' }}</i>
+        <i class="material-icons" [ngClass]="{'active':star>=3}" (click)="support_detail.feedback_star == '0' ? rating('3') : ''">{{star>=3 ? 'star' : 'star_outline' }}</i>
+        <i class="material-icons" [ngClass]="{'active':star>=4}" (click)="support_detail.feedback_star == '0' ? rating('4') : ''">{{star>=4 ? 'star' : 'star_outline' }}</i>
+        <i class="material-icons" [ngClass]="{'active':star>=5}" (click)="support_detail.feedback_star == '0' ? rating('5') : ''">{{star>=5 ? 'star' : 'star_outline' }}</i>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="support_detail.status  == 'Close'  &&  support_detail.feedback_star == '0'">
+      <div class="form padding0">
+        <ion-list no-lines>
+          <ion-item>
+            <ion-label floating>Remark</ion-label>
+            <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks"></ion-textarea>
+          </ion-item>
+        </ion-list>
+        <button ion-button class="cs-btn mb0" [disabled]="star < 1" (click)="submitRating();">Save</button>
+      </div>
+    </ng-container>
+    
+  </div>
+  
+  
+</ion-content>

@@ -1,0 +1,53 @@
+<!--
+  Generated template for the DistributorDealerWalletPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Point History</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="my-wallet">
+    <div class="pts-icon">
+      <i class="material-icons">account_balance_wallet </i>
+      Total Points
+    </div>
+    <div class="pts">
+      30000
+    </div>
+  </div>
+  
+  <div class="transation-tabel">
+    <table>
+      <tr *ngFor="let row of ledger_list; let i = index;">
+        <td>
+          <div class="point-date">
+            <div class="led-date">{{row.transaction_remark ? row.transaction_remark : '--'}}</div>
+            <div class="led-amount" [ngClass]="{'credit' : row.credit > 0, 'debit' : row.debit > 0 } ">
+              <span *ngIf="row.credit > 0">{{row.credit}} Pt</span>
+              <span *ngIf="row.debit > 0">{{row.debit}} Pt</span>
+              <i class="material-icons" *ngIf="row.credit > 0">add</i>
+              <i class="material-icons" *ngIf="row.debit > 0">remove</i>
+            </div>
+          </div>
+
+          <div class="point-remark mb0">
+            <div class="date">
+              {{row.date_created | date:'d MMM yy, h:mm a'}}
+            </div>
+            <div class="avl-bal">
+              Balance: {{row.balance}} Pt
+            </div>
+          </div>
+        </td>
+      </tr>
+      </table>
+    </div>
+    
+    
+  </ion-content>
+  

@@ -1,0 +1,77 @@
+page-expense-list {
+.tab{
+background-color: red;
+border-radius:"6px 0px 0px 6px";
+}
+
+
+.cs-list-item{
+    padding-top: 0;
+}
+
+.updateStatusBox{
+    height: 32px;
+    overflow: hidden;
+    ion-label{
+        margin: 0;
+        font-weight: bold;
+        max-width: 70%;
+    }
+    ion-item{
+        font-size: 10px;
+        padding-left: 3px;
+        .input-wrapper{
+            height: 20px;
+            justify-content: space-around;
+        }
+        ion-select{
+            max-width: 100%;
+            .select-icon{
+                margin-top: -4px;
+            }
+            .select-text{
+                min-width: 70px;
+            }
+            padding: 0;
+            padding-right: 2px;
+            .select-placeholder{
+                display: none;
+            }
+        }
+    }
+}
+
+.cs-top.pendingBg{
+    padding-top: 8px !important;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-color: #f9f9f9;
+    .inr-rupy{
+        background-color: #fff;
+        color: black;
+        border: 1px dashed black;
+        padding: 3px;
+        border-radius: 3px;
+    }
+}
+.cs-top.approvedBg{
+    padding-top: 8px !important;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-color: #f9f9f9;
+}
+.cs-top.rejectedBg{
+    padding-top: 8px !important;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.col-box{
+    background-color: #f9f9f9;
+    padding: 3px !important;
+    border-radius: 5px;
+    text-align: center;
+}
+
+}

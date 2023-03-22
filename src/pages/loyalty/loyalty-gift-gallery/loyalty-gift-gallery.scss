@@ -1,0 +1,125 @@
+page-loyalty-gift-gallery {
+    .listing {
+        margin: 32px 0px;
+        padding: 0px 16px;
+        button {
+            margin-bottom: 16px;
+            border-radius: 6px;
+            background: #fff;
+            box-shadow: 0px 3px 6px 0px #ccc;
+            display: flex;
+            padding-right: 16px !important;
+            padding-left: 0px;
+            
+            
+            .item-inner {
+                padding-right: 0px !important;
+                border-bottom: 0px !important;
+                .input-wrapper {
+                    ion-label {
+                        margin: 0px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-direction: row-reverse;
+                    }
+                }
+            }
+            .head-detail {
+                display: flex;
+                align-items: center;
+                width: calc(100% - 50px);
+                .head {
+                    padding: 10px 5px;
+                    text-align: center;
+                    position: relative;
+                    min-width: 80px;
+                    background: #fff;
+                    h1 {
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #ccc;
+                    }
+                    p {
+                        font-size: 12px;
+                        color: #747474;
+                    }
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 0;
+                        height: 50px;
+                        border: 1px solid #DEDEDE;
+                    }
+                }
+                .detail {
+                    margin-left: 10px;
+                    width: 100%;
+                    overflow: hidden;
+                    h1 {
+                        font-size: 13px;
+                        margin-top: 0px !important;
+                        font-weight: 600;
+                        color: #ccc;
+                        margin-bottom: 2px !important;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-align: left;
+                    }
+                    p {
+                        font-size: 11px;
+                        color: #747474;
+                        margin-bottom: 0px !important;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        margin-top: 1px !important;
+                        span {
+                            font-size: 11px;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+            &.verified {
+                .head-detail {
+                    .head {
+                        background: green;
+                        h1 {
+                            color: #fff;
+                        }
+                        p {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+            .product-img {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    width: 100%;
+                }
+            }
+            &:nth-child(1n+1) {
+                border-left: 5px solid #F5E100 !important;
+            }
+            &:nth-child(2n+2) {
+                border-left: 5px solid #FA3606 !important;
+            }
+            &:nth-child(3n+3) {
+                border-left: 5px solid #F564FF !important;
+            }
+            &:nth-child(4n+4) {
+                border-left: 5px solid #625DD4 !important;
+            }
+        }
+    }
+
+}

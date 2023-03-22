@@ -1,0 +1,53 @@
+<ion-content class="transprant-bg">
+    <div class="work-modal">
+        <div class="work-modal-bg">
+            <div *ngIf="type == 'start'">
+
+                <div class="head">
+                    <h2>ATTENDENCE DETAIL</h2>
+                    <a class="close" (click)="close()"><i class="material-icons">close</i></a>
+                </div>
+
+                <div class="upload-doc" style="display:flex;align-items:center;justify-content:center">
+                    <ul class="no-padding">
+
+                        <li class="image-upload" *ngFor="let pic of image_data;let i = index;">
+                            <img src="{{pic}}">
+                            <button class="del"><i class="material-icons"
+                                    (click)="remove_image(i)">delete_sweep</i></button>
+                        </li>
+
+                        <li class="add-image-css" (click)="takePhoto()" *ngIf="image_data.length==0">
+                            <i class="material-icons">cloud_upload</i>
+                            <p class="">Upload Selfie Image</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="radio-section">
+                    <ion-list class="choose" radio-group name="working_type" [(ngModel)]="data.working_type"
+                        #working_type="ngModel" required>
+                        <ion-item>
+                            <ion-label>Working</ion-label>
+                            <ion-radio checked="true" value="Working"></ion-radio>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label>Travelling</ion-label>
+                            <ion-radio value="Travelling"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </div>
+
+                <div class="text-right">
+                    <button ion-button color="success" block round (click)="startAttend()"
+                        [disabled]="spinner == true||image_data.length==0">
+                        <ion-spinner *ngIf="spinner == true" color="success"></ion-spinner>&nbsp;Start Attendance
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</ion-content>

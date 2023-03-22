@@ -1,0 +1,164 @@
+<!--
+    Generated template for the DealerNetworkPage page.
+    
+    See http://ionicframework.com/docs/components/#navigation for more info on
+    Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>Primary Order</ion-title>
+        <ion-buttons end  *ngIf="LoginType =='Employee'">
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        
+        <div class="search add-search">
+          <div class="filter">
+            <ion-searchbar type='text' name="master" [(ngModel)]="filter.master" (keyup.enter)="Order_list()">
+            </ion-searchbar>
+            <a class="date-pick">
+              <label class="chedate">
+                <input type="date" name="date" [max]="date" [(ngModel)]="filter.date" (keyup.enter)="Order_list()" />
+                <i class="material-icons">date_range</i>
+              </label>
+            </a>
+          </div>
+        </div>
+      </ion-toolbar>
+</ion-header>
+<div class="text-line" *ngIf="filter.date">
+    <div class="lf-text">
+      <p>Date</p>
+      <p>{{filter.date | date:'d MMM y'}}</p>
+    </div>
+    <div class="rf-text">
+      <i class="material-icons" (click)="filter.date='';Order_list()">cancel</i>
+    </div>
+  </div>
+<ng-container>
+    <ion-content>
+         
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+        <ng-container  *ngIf="LoginType =='Employee'">
+            <div class="fix-container">
+                <div class="attendance-list flat-list">
+                    <div class="center-block">
+                        <div class="circle">{{Order_detail.company_name | slice:0:1}}</div>
+                        <h1>{{Order_detail.company_name?.toUpperCase()}}</h1>
+                        <p>{{Order_detail.name | titlecase}} ({{Order_detail.mobile}})</p>
+                        <a class="cell-phone" href="tel:{{Order_detail.mobile}}"><i class="material-icons">phone</i></a>
+                    </div>
+                    
+                    <div class="OutOver three-column">
+                        <div class="primary-column light-red">
+                            <p>{{Order_detail.total_orders}}</p>
+                            <span>Total Order</span>
+                        </div>
+                        <div class="primary-column light-pink">
+                            <p>{{Order_detail.total_amount ? '₹ '+''+Order_detail.total_amount+' '+'/-' : '---'}}</p>
+                            <span>Order Value</span>
+                        </div>
+                        <div class="primary-column light-purpel">
+                            <p>{{Order_detail.years}}</p>
+                            <span>Order Year</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        
+        <div class="summary-heading f13 pl16" *ngIf="LoginType =='Employee'">Order History</div>
+
+
+        <ng-container *ngIf="showRelatedTab!=false">
+            <div class="capsule-tabs" style="border-bottom: 0px;">
+                <ul>
+                    <li [ngClass]="{'active':Order_status_type == 'Draft'}" (click)="Order_status_type = 'Draft';Order_list()">
+                        <p>Draft<span>{{count.Draft}}</span></p>
+                    </li>
+                    <li [ngClass]="{'active':Order_status_type == 'Pending'}" (click)="Order_status_type = 'Pending';Order_list()">
+                        <p>Pending<span>{{count.Pending}}</span></p>
+                    </li>
+                    <li [ngClass]="{'active':Order_status_type == 'Approved'}" (click)="Order_status_type = 'Approved';Order_list()">
+                        <p>Approved<span>{{count.Approved}}</span></p>
+                    </li>
+                    <li [ngClass]="{'active':Order_status_type == 'Reject'}" (click)="Order_status_type = 'Reject';Order_list()">
+                        <p>Rejected<span>{{count.Reject}}</span></p>
+                    </li>
+                    
+                    <li [ngClass]="{'active':Order_status_type == 'Partially_Dispatch'}" (click)="Order_status_type = 'Partially_Dispatch';Order_list()">
+                        <p>Partially Dispatch<span>{{count.Partially_Dispatch}}</span></p>
+                    </li>
+                    <li [ngClass]="{'active':Order_status_type == 'Dispatch'}" (click)="Order_status_type = 'Dispatch';Order_list()">
+                        <p>Dispatch<span>{{count.Dispatch}}</span></p>
+                    </li>
+                </ul>
+            </div>
+                
+                <div class="pl16 pr16 mt15 mb50" *ngIf="total_order?.length">
+
+                    <div class="attendance-list" *ngFor="let row of total_order" (click)="goOnOrderDetail(row.id)">
+                        <div class="slab slab-bg">
+                            <div class="slab-day">
+                                <p>{{row.date_created| date:'d MMM y hh:mm a'}}</p>
+                                <span>Date</span>
+                            </div>
+                            <div class="slab-day">
+                                <p>{{row.order_no}}</p>
+                                <span>Order Id</span>
+                            </div>
+                        </div>
+
+                        <div class="center-block">
+                            <div class="circle">{{row.created_by_name?.substring(0,1).toUpperCase()}}</div>
+                            <h1>{{row.created_by_name?.toUpperCase()}}</h1>
+                            <p>Created by</p>
+                        </div>
+                     
+                        <div class="slab mt5">
+                            <div class="slab-day">
+                                <p>{{row.order_item ? row.order_item : '0'}}</p>
+                                <span>Total Item</span>
+                            </div>
+                            <div class="slab-day">
+                                <p class="bold">{{row.total_qty ? row.total_qty : '0'}}</p>
+                                <span>Total Item Qty</span>
+                            </div>
+                            <div class="slab-day">
+                                <p class="bold">{{row.order_grand_total ? '₹'+''+row.order_grand_total+' '+'/-' : '---'}}</p>
+                                <span>Amount</span>
+                            </div>
+                        </div>
+                        
+                        <div class="next-forword">
+                            <i class="material-icons">chevron_right</i>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+                    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+                    </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+                <div class="nothing-here" style="height: 60%;" *ngIf="!total_order.length">
+                    <div class="outer">
+                        <div class="innear">
+                            <img src="assets/imgs/no_found.svg" alt="">
+                            <p>No Data Available</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            
+            
+            
+        </ion-content>
+    </ng-container>

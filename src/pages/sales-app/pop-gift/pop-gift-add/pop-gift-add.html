@@ -1,0 +1,132 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Add Pop & Gift</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div  *ngIf="view_section == 'submit'">
+        <div  class="form">
+            <ion-list no-lines class="padding10 pt0">
+                <ion-item  *ngIf="user_data.type != '1'">
+                    <ion-label floating>Select Type</ion-label>
+                    <ion-select name="networkType" [(ngModel)]="pop_data.networkType"
+                    (ngModelChange)="get_network_list(pop_data.networkType)" required>
+                    <ion-option value="1">Channel Partner</ion-option>
+                    <ion-option value="7">Direct Dealer</ion-option>
+                    <ion-option value="3">Dealer</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item  *ngIf="pop_data.networkType">
+                <ion-label floating>
+                    <ng-container *ngIf="pop_data.networkType == '1'">Channel Partner</ng-container>
+                    <ng-container *ngIf="pop_data.networkType == '7'">Direct Dealer</ng-container>
+                    <ng-container *ngIf="pop_data.networkType == '3'">Dealer</ng-container>
+                </ion-label>
+                <ionic-selectable item-content name="dr_id" [(ngModel)]="pop_data.dr_id" [canSearch]="true"
+                #selectComponent [items]="network_list" itemValueField="id" itemTextField="display_name"
+                (ngModelChange)="getPopList()" required>
+            </ionic-selectable>
+        </ion-item>
+        
+        <ion-item >
+            <ion-label floating>Select Item</ion-label>
+            <ionic-selectable item-content name="pop_gift_id" [(ngModel)]="pop_data.pop_id" [canSearch]="true"
+            #selectComponent [items]="pop_list" itemValueField="pop_id" itemTextField="item_name"
+            (ngModelChange)="stockValue(pop_data.pop_id)" required>
+        </ionic-selectable>
+    </ion-item>
+    
+    <div class="dflex1">
+        
+        <ion-item class="wp50">
+            <ion-label floating>Stock Available</ion-label>
+            <ion-input type="number" name="qty" #qty="ngModel" inputmode="numeric"
+            [(ngModel)]="local_data.qty" readonly></ion-input>
+        </ion-item>
+        
+        <ion-item class="wp50 ml8">
+            <ion-label floating>Qty<strong>*</strong></ion-label>
+            <ion-input type="number" name="qty" #qty="ngModel" inputmode="numeric"
+            [(ngModel)]="pop_data.qty" min="1" max="{{local_data.qty}}"></ion-input>
+        </ion-item>
+        
+    </div>
+    <p *ngIf="pop_data.pop_gift_id && (pop_data.qty > local_data.qty )">QTY Should not be greater than Stock
+        Qty = {{local_data.qty}}</p>
+        <p *ngIf="pop_data.pop_gift_id && ( pop_data.qty < 1)">QTY Should not be less than 1</p>
+        
+        <div class="mt16" *ngIf="pop_data.qty">
+            <button ion-button class="cs-btn border-btn"
+            [disabled]="!pop_data.qty || pop_data.qty <= 0 || pop_data.qty > local_data.qty"
+            (click)="addToList()">Add To List</button>
+        </div>
+        
+        <div class="cs-heading1 pl0" *ngIf="items.length">
+            <p>ASSIGN POP INFORMATION</p>
+        </div>
+        
+        <div class="list-box padding10 mt10" *ngFor="let pop of items;let i=index">
+            <div class="mid mt0">
+                <div class="content-info">
+                    <div class="right-info">
+                        <p>Pop Gift Name - {{pop.item_name}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <button><i class="material-icons red-clr"
+                        (click)="delete_from_list(i)">delete_sweep</i></button>
+                    </div>
+                </div>
+                
+                <div class="three_boxes">
+                    <div class="lower">
+                        <p>Assign Qty</p>
+                        <p>{{pop.qty}}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <ion-item>
+                <ion-label floating>Remark</ion-label>
+                <ion-textarea name="Delivery Note" [(ngModel)]="pop_data.delivery_note"></ion-textarea>
+            </ion-item>
+        </ion-list>
+        
+        
+        
+        <div class="pl10 pr10">
+            <button ion-button block color="primary" class="h40 mt20" style="letter-spacing: 1px;"
+            [disabled]="items.length < 0 || !pop_data.dr_id" (click)="sendOtp()">
+                <ion-spinner *ngIf="spinLoader"></ion-spinner>&nbsp;Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="view_section == 'otp'">
+    <div class="form">
+        <ion-list no-lines class="padding10 pt0">
+            <ion-item>
+                <ion-label floating>Enter Otp sent to {{local_data.mobile}}<strong>*</strong>
+                </ion-label>
+                <ion-input type="number" #otp="ngModel" name="otp" [(ngModel)]="pop_data.otp" [maxlength]="6"
+                [minlength]="6"></ion-input>
+            </ion-item>
+            <p class="normal-line text-red" *ngIf="pop_data.otp && (pop_data.otp.length > 6 )">Otp Should not be greater than
+                6 digit</p>
+                <p class="normal-line text-red" *ngIf="pop_data.otp && ( pop_data.otp.length < 6)">Otp Should not be less than 6
+                    digit</p>
+                    
+                    <div class="resend">
+                        <a (click)="sendOtp()">Resend OTP</a>
+                    </div>
+                </ion-list>
+                
+                <button ion-button block color="primary" class="h40 mt20" [disabled]="!pop_data.otp ||pop_data.otp.length != 6 " (click)="checkOtp()">
+                    <ion-spinner *ngIf="spinLoader"></ion-spinner>
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </ion-content>

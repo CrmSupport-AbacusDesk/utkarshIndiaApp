@@ -1,0 +1,193 @@
+<ion-content  class="transprant-bg" *ngIf="from_page == 'travel'||from_page == 'expense'||from_page == 'leave'">
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      <div>
+        
+        <div class="head">
+          <h2>Change Status</h2>
+          <a class="close" (click)="dismiss()"><i class="material-icons">close</i></a>
+        </div>
+        <ion-list>
+          <div>
+            
+            <ion-item class="cs-normal-select mt16">
+              <ion-label>Status</ion-label>
+              <ion-select name="status" [(ngModel)]="data.status">
+                <ion-option value="Approved">Approved</ion-option>
+                <ion-option value="Reject">Reject</ion-option>
+              </ion-select>
+            </ion-item>
+            
+            <ion-item class="cs-textarea1" *ngIf="data.status == 'Reject'">
+              <ion-label floating><span>Reason For Reject</span></ion-label>
+              <ion-textarea name="reason" [(ngModel)]="data.reason"></ion-textarea>
+            </ion-item>
+          </div>          
+        </ion-list>
+        
+        <div class="text-right mt32">
+          <button ion-button color="secondary" [disabled]="!data.status || (data.status == 'Reject' && !data.reason)" (click)="update_status()">Update</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>
+
+
+<ion-content  class="transprant-bg" *ngIf="this.data.type=='teamreport'">
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      <div>
+        
+        <div class="head">
+          <h2>Search </h2>
+          <a class="close" (click)="dismiss()"><i class="material-icons">close</i></a>
+        </div>
+        <div class="edit mt10 ml0 mr0">
+          <ion-list>
+            <div>
+              
+              <ion-item class="cs-normal-select" >
+                <ion-label> Select Users <strong>*</strong></ion-label>
+                <ion-select name="users" [(ngModel)]="filter.team_id" >
+                  <ion-option *ngFor="let list of team" [value]="list.id">{{list.name}}</ion-option>
+                  <!-- <ion-option value="two">Palwal</ion-option> -->
+                </ion-select>
+              </ion-item>
+              
+              <ion-item class="cs-normal-select mt16">
+                <ion-label floating>Date From</ion-label>
+                <ion-input type="date"class="calander" type="date" name="date_to" #date_from="ngModel" [(ngModel)]="filter.date_to" class="calander"  >  <i class="material-icons">date_range</i> </ion-input>
+                
+                
+                
+              </ion-item>
+              <ion-item class="cs-normal-select mt16">
+                <ion-label floating>Date to</ion-label>
+                <ion-input type="date"class="calander" type="date" name="date_from" #date_from="ngModel" [(ngModel)]="filter.date_from" class="calander"  >  <i class="material-icons">date_range</i> </ion-input>
+                
+                
+                
+              </ion-item>
+            </div>          
+          </ion-list>
+          
+        </div>
+        
+        <div class="text-right mt32">
+          <button ion-button color="secondary" (click)="ondismiss()">SEARCH</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>
+
+<ion-content  class="transprant-bg" *ngIf="from_page == 'enquiry_status'">
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      <div>
+        
+        <div class="head mb0">
+          <h2>Change Status</h2>
+          <a class="close" (click)="dismiss()"><i class="material-icons">close</i></a>
+        </div>
+        <div class="form padding0">
+          <ion-list no-lines>
+              <ion-item>
+                <ion-label floating>Status</ion-label>
+                <ion-select name="lead_status" [(ngModel)]="data.lead_status">
+                  <ion-option value="Win">Win</ion-option>
+                  <ion-option value="Lost">Lost</ion-option>
+                </ion-select>
+              </ion-item>
+              
+              <ion-item *ngIf="data.lead_status == 'Lost'">
+                <ion-label floating>Reason For Lost</ion-label>
+                <ion-textarea name="requirement" [(ngModel)]="data.requirement"></ion-textarea>
+              </ion-item>
+          </ion-list>
+          
+        </div>
+        
+        <div class="text-right mt32">
+          <button ion-button color="secondary" [disabled]="!data.lead_status || (data.lead_status == 'lost' && !data.requirement)" (click)="update_status()">Update</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>
+
+
+<ion-content  class="transprant-bg" *ngIf="from_page == 'influencer_followup'">
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      <div class="head mb0">
+        <h2>Add Follow Up</h2>
+        <a class="close" (click)="dismiss()"><i class="material-icons">close</i></a>
+      </div>
+      <div class="form padding0">
+        <ion-list no-lines>
+          <ion-item>
+            <ion-label floating>Follow up Date</ion-label>
+            <ion-datetime display-format="MMM DD, YYYY" min={{today_date}}
+            max={{max_date}} type="text" name="followup_date" #followup_date="ngModel"
+            [(ngModel)]="data.followup_date"  class="calander" required>
+          </ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Time</ion-label>
+          <ion-datetime displayFormat="hh:mm A" minuteValues="0,30"
+          name="followup_time" #followup_time="ngModel" [(ngModel)]="data.followup_time"
+          required></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Remark</ion-label>
+          <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks"></ion-textarea>
+        </ion-item>
+      </ion-list>
+      
+      <button ion-button block class="h35 green-color mt20" [disabled]=" !data.followup_date || !data.followup_time ||  !data.remarks || savingFlag == true" (click)="addFollowup()">
+        {{savingFlag == true ? 'Please Wait' : 'Save'}}
+      </button>
+    </div>
+  </div>
+  
+</div>
+</ion-content>
+<ion-content  class="transprant-bg" *ngIf="from_page == 'followup'">
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      <div>
+        
+        <div class="head mb0">
+          <h2>Change Status</h2>
+          <a class="close" (click)="dismiss()"><i class="material-icons">close</i></a>
+        </div>
+        <div class="form padding0">
+          <ion-list no-lines>
+            <ion-item >
+              <ion-label floating>Satus</ion-label>
+              <ion-select name="discount_type" [(ngModel)]="followup_detail.status">
+                <ion-option value="Pending">Pending</ion-option>
+                <ion-option value="Complete">Complete</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>Remark</ion-label>
+              <ion-textarea name="followup_remark" #followup_remark="ngModel" [(ngModel)]="followup_detail.followup_remark"></ion-textarea>
+            </ion-item>
+          </ion-list>
+          
+        </div>
+        
+        <div class="text-right mt32">
+          <button ion-button color="secondary" (click)="change_followup_status()">Update</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>

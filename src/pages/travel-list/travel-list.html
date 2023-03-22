@@ -1,0 +1,156 @@
+<ion-header>    
+    <ion-navbar>
+        <ion-title>{{travelType}} Travel List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="teamCount > 0" (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+                <!-- <ion-icon name="ellipsis-vertical"></ion-icon> -->
+            </button>
+        </ion-buttons>      
+    </ion-navbar>
+</ion-header>
+
+<ion-content  style="background: #f8f8f8;">
+    
+    <div class="capsule-tabs">
+        <ul>
+            <li [ngClass]="{'active':travelData == 'today' && travelstatus=='today'}" (click)="travelData = 'today' && travelstatus='today';getTravelPlantoday()">
+                <p>Today</p>
+            </li>
+            <li [ngClass]="{'active':travelstatus == 'Pending'}" (click)="travelstatus = 'Pending';getTravelPlan()">
+                <p>Pending</p>
+            </li>
+            <li [ngClass]="{'active':travelstatus == 'Approved'}" (click)="travelstatus = 'Approved';getTravelPlan()">
+                <p>Approved</p>
+            </li>
+            <li [ngClass]="{'active':travelstatus == 'Reject'}" (click)="travelstatus = 'Reject';getTravelPlan()"> 
+                <p>Reject</p>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div padding class="pb80">
+        <div *ngIf="travelType=='My'" >
+            <div  class="cs-list-item"  *ngFor="let list of travel_list;let i=index;">
+                <div class="cs-top">
+                    <div class="list-content" (click)="goOnTravelDetail(list.id)">
+                        <p>{{list.date_created | date:'d MMM y'}}</p>
+                        <span>Date Created</span>
+                    </div>
+                    
+                    <div class="list-content af-none" (click)="goOnTravelDetail(list.id)">
+                        <p>{{list.date_from | date:'d MMM y'}}/{{list.date_to | date:'d MMM y'}}</p>
+                        <span>Travel Date</span>
+                    </div>
+                    
+                    <div class="left-auto">
+                        <ion-buttons end (click)="deleteTravelPlan(list.id,i)" *ngIf="list.status =='Pending'">
+                            <button ion-button icon-only small color="warn">
+                                <ion-icon name="trash"></ion-icon>
+                            </button>
+                        </ion-buttons>
+                    </div>
+                </div>
+                <div class="mid"  (click)="goOnTravelDetail(list.id)">
+                    <div class="content-info" >
+                        <div class="left-info" >
+                            <div class="circle" >{{list.assign_to_name.substring(0,1).toUpperCase()}}</div>
+                        </div>
+                        <div class="right-info" >
+                            <p>{{list.assign_to_name}}</p>
+                            <p>{{list.assign_to_contact}}</p>
+                        </div>
+                    </div>
+                    <div class="tag-info">
+                        <a href="tel:{{list.assign_to_contact}}"><i class="material-icons">phone</i></a>
+                    </div>
+                </div>
+                
+                <div class="middle-content" (click)="goOnTravelDetail(list.id)">
+                    <div class="col-box">
+                        <span>{{list.created_by_name}}</span> 
+                        <p >Created By</p>
+                    </div>
+                    
+                    <div class="col-box status-clr">
+                        <span class="green-clr" *ngIf="list.status =='Approved'">{{list.status}}</span>
+                        <span class="yellow-clr" *ngIf="list.status =='Pending'">{{list.status}}</span>
+                        <span class="red-clr" *ngIf="list.status =='Reject'">{{list.status}}</span>
+                        <p >Status</p>
+                    </div>
+                    
+                    <div class="col-box">
+                        <span>{{list.travel_type}}</span> 
+                        <p >Travel Type</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sticky bg-white">
+            
+            <div *ngIf="travelType=='Team'">
+                
+                <!-- <div  class="cs-list-item" (click)="goOnTravelDetail()" *ngFor="let list of travel_list"> -->
+                    <div  class="cs-list-item" *ngFor="let list of travel_list">
+                        
+                        <div class="cs-top" (click)="goOnTravelDetail(list.id)">
+                            <div class="list-content">
+                                <p>{{list.date_created | date:'d MMM y'}}</p>
+                                <span>Date Created</span>
+                            </div>
+                            <div class="list-content af-none">
+                                <p>{{list.date_from | date:'d MMM y'}}/{{list.date_to| date:'d MMM y'}}</p>
+                                <span>Travel date</span>
+                            </div>
+                        </div>
+                        <div class="mid">
+                            <div class="content-info" >
+                                <div class="left-info" >
+                                    <div class="circle" >A</div>
+                                </div>
+                                <div class="right-info">
+                                    <p>Abacusdesk</p>
+                                    <p>8010025731</p>
+                                </div>
+                            </div>
+                            <div class="tag-info">
+                                <a href="8010025731"><i class="material-icons">phone</i></a>
+                            </div>
+                        </div>
+                        <div class="middle-content">
+                            <div class="col-box">
+                                <span>{{list.created_by_name}} </span>
+                                <p>Created by </p>
+                            </div>
+                            <div class="col-box status-clr">
+                                <span class="green-clr" *ngIf="list.status =='Approved'">{{list.status}}</span>
+                                <span class="yellow-clr" *ngIf="list.status =='Pending'">{{list.status}}</span>
+                                <span class="red-clr" *ngIf="list.status =='Reject'">{{list.status}}</span>
+                                <p >Status</p>
+                                <ion-icon name="create" class="cs-action" *ngIf="list.status =='Pending' && list.created_by != userId" (click)="statusModal(list.id)"></ion-icon>
+                            </div>
+                            <div class="col-box">
+                                <span>{{list.travel_type}}</span>
+                                <p >travel type</p>
+                            </div>
+                        </div>               
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nothing-here" style="height: 50%;" *ngIf="!travel_list?.length && requestSend">
+                <div class="outer">
+                    <div class="innear">
+                        <img src="assets/imgs/no_found.svg" alt="">
+                        <p>Data Not Available</p>
+                    </div>
+                </div>
+            </div>
+            <ion-fab right bottom *ngIf="!userId">
+                <button ion-fab color="danger" (click)="goOnAddTravel()" ><ion-icon name="add"></ion-icon></button>
+            </ion-fab>
+        </div>
+    </ion-content>

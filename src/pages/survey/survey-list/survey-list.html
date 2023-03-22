@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Survey</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+    pullingIcon="arrow-dropdown"
+    pullingText="Pull to refresh"
+    refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+
+<div *ngIf="surveyList.length != 0">
+  <ion-card  *ngFor="let list of surveyList">
+    <ion-card-header (click)=" goToDetails(list.id,list.title)">
+      {{list.title}}
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-card-header>
+  </ion-card>
+</div>
+<div *ngIf="!surveyList.length" class="data-not">
+  <img src="assets/imgs/data-not-found.png">
+  <p>Data Not Available</p>
+</div>
+</ion-content>

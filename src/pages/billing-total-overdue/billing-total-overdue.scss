@@ -1,0 +1,61 @@
+page-billing-total-overdue {
+    
+    
+    
+    .pie-chart {
+        // background: #f7f7f7;
+        padding: 5px;
+        margin-bottom: 15px;
+        // border: 1px solid #cccccc;
+        
+        img
+        {
+            width: 80%;
+        }
+        
+        .chart-header 
+        {
+            background: #adadad;
+            box-shadow: inset 0 0 10px #1b1b1b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 10px;
+            margin: -5px -5px 0px -5px;
+            height: 50px;
+            
+            p
+            {
+                font-size: 13px;
+                color: #060000;
+            }
+            
+            
+        }
+        
+        
+        
+        .fix-select
+        {
+            select
+            {
+                width: 100%;
+                background: #fff;
+                margin-top: 10px;
+                border: 1px solid #ccc;
+                font-size: 12px;
+                
+                &:focus-within
+                {
+                    box-shadow: inset 0px 3px 6px 0px rgba(0, 0, 0, 0.1);
+                }
+            }
+        }
+    }
+
+    .go-btn .g-left{
+        background-color: #d2d2d2 !important;
+    }
+    
+    
+}

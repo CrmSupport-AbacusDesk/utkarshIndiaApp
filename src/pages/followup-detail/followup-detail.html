@@ -1,0 +1,194 @@
+<!-- 
+<ion-header>
+  <ion-navbar>
+    <ion-title>Followup Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  <div class="padding16 sticky-box">
+    <div class="list-box mb0"  (click)="goOnDetail()">
+      <div class="mid mt0">
+        <div class="content-info" >
+          <div class="left-info" >
+            <div class="circle">A</div>
+          </div>
+          
+          <div class="right-info">
+            <p>Abacusdes</p>
+            <p >Channel Partner</p>
+          </div>
+        </div>
+        <div class="tag-info">
+          <a href="8010025731"><i class="material-icons">phone</i></a>
+        </div>
+      </div>
+      <div class="lower">
+        <p>Description</p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt repellendus id, eaque enim voluptate ab
+        </p>
+        
+      </div>
+    </div>  
+  </div>
+  
+  <div class="pl16 pr16">
+    <div class="list-box mb0">
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Followup Date</p>
+          <p>26 May 2020</p>   
+        </div>
+        <div class="lower">
+          <p>Date Created</p>
+          <p>26 May 2020</p>
+        </div>
+      </div>
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Followup Type</p>
+          <p>Call</p>
+        </div>
+        <div class="lower">
+          <p>Status</p>
+          <p class="pending-clr">Pending</p>
+        </div>
+      </div>
+      
+      <div class="lower" >
+        <p>Description</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos natus ab placeat</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="edit" >
+    <ion-list>
+      <ion-item class="mb10" >
+        <ion-label floating><span>Next Follow Up Date *</span></ion-label>
+        <ion-datetime display-format="MMM DD, YYYY" placeholder ="Select Date" ></ion-datetime>
+      </ion-item>
+      
+      
+      <ion-item class="cs-normal-select mb0">
+        <ion-label><span>Satus</span></ion-label>
+        <ion-select name="discount_type" >
+          <ion-option value="Pending">Pending</ion-option>
+          <ion-option value="In Progress">In Process</ion-option>
+          <ion-option value="Done">Complete</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <div >
+    </div>
+    <button ion-button block class="h40 green-color mt15" style="letter-spacing: 1px;">Update</button>
+  </div>
+  
+</ion-content> -->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Followup Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  <div class="padding16 sticky-box">
+    <div class="list-box mb0">
+      <div class="mid mt0">
+        <div class="content-info" >
+          <div class="left-info" >
+            <div class="circle">{{followup_detail.company_name?followup_detail.company_name.substring(0,1).toUpperCase():''}}</div>
+          </div>
+          
+          <div class="right-info">
+            <p > {{followup_detail.company_name}}</p>
+            <p *ngIf="followup_detail.type=='1'">Channel Partner</p>
+            <p *ngIf="followup_detail.type=='7'">Direct Dealer</p>
+            <p *ngIf="followup_detail.type=='3'">Dealer</p>
+            <p *ngIf="followup_detail.type=='9'">Project</p>
+            <p *ngIf="followup_detail.type=='5'">End User</p>
+            <p *ngIf="followup_detail.type=='6'">Others</p>
+            <!-- <p *ngIf="followup_detail.type=='15'">Customer</p>
+            <p *ngIf="followup_detail.type=='13'">Builder</p>
+            <p *ngIf="followup_detail.type=='14'">Cement Dealer</p> -->
+          </div>
+        </div>
+        <div class="tag-info">
+          <a href="tel:{{followup_detail.mobile}}"><i class="material-icons">phone</i></a>
+        </div>
+      </div>
+      <div class="lower">
+        <p>Address</p>
+        <p>{{followup_detail.address && followup_detail.address!=''?(followup_detail.address | titlecase) +', ' :''}} {{followup_detail.district && followup_detail.district!=''?(followup_detail.district | titlecase) +', ':''}} {{followup_detail.state && followup_detail.state!=''?(followup_detail.state | titlecase) +', ':''}} {{followup_detail.pincode && followup_detail.pincode!=''?followup_detail.pincode:''}}</p>
+        
+        
+      </div>
+    </div>  
+  </div>
+  
+  <div class="pl16 pr16">
+    <div class="list-box mb0">
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Followup Date</p>
+          <p>{{followup_detail.next_follow_date | date : 'd MMM y'}}</p>
+        </div>
+        <div class="lower">
+          <p>Date Created</p>
+          <p>{{followup_detail.date_created | date : 'd MMM y'}}</p>
+        </div>
+      </div>
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Followup Type</p>
+          <p style="color:black">{{followup_detail.lead_type}}</p>
+        </div>
+        <div class="lower" >
+          <p>Status</p>
+           <p *ngIf="followup_detail.status=='Pending'" class="yellow-clr">{{followup_detail.status}}</p>
+           <p *ngIf="followup_detail.status=='Complete'" class="green-clr">{{followup_detail.status}}</p>
+        </div>
+      </div>
+      
+      <div class="lower" >
+        <p>Description</p>
+        <p>{{followup_detail.description}}</p>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="edit" *ngIf="status == 'Pending' && current_followup_date <= today_date">
+    <ion-list>
+      <ion-item class="mb10" *ngIf="followup_detail.status == 'In Progress'">
+        <ion-label floating><span>Next Follow Up Date *</span></ion-label>
+        <ion-datetime display-format="MMM DD, YYYY" placeholder ="Select Date" min={{today_date}} max={{max_date}} name="followup_date" #followup_date="ngModel" [(ngModel)]="followup_detail.follow_up_date" (ngModelChange)="disable_update = false"></ion-datetime>
+     
+      </ion-item>
+
+      <ion-item class="mb10 cs-textarea1" *ngIf="followup_detail.status == 'In Progress'" >
+        <ion-label floating><span>Follow Up Remark</span></ion-label>
+        <ion-textarea name="followup_remark" #followup_remark="ngModel" [(ngModel)]="followup_detail.followup_remark"  placeholder="Enter Remark" ></ion-textarea>
+      </ion-item>
+      
+      
+      <ion-item class="cs-normal-select mb0">
+        <ion-label><span>Satus</span></ion-label>
+        <ion-select name="discount_type" [(ngModel)]="followup_detail.status">
+          <ion-option value="Pending">Pending</ion-option>
+          <ion-option value="Complete">Complete</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <div >
+    </div>
+    <button ion-button block class="h40 green-color mt15" style="letter-spacing: 1px;" [disabled]="followup_detail.status == 'Pending' || (followup_detail.status == 'In Progress' &&  disable_update)  " (click)="followup_detail.status == 'Complete' || followup_detail.status == 'Pending'? change_followup_status():''">Update</button>
+
+  </div>
+  
+</ion-content>
+

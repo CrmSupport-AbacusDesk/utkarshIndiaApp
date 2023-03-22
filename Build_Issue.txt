@@ -1,0 +1,7 @@
+1. receiver , provider , services == false and activity= true in android manifest.
+1.1 also do in plugins (same as abaove) file name= 'plugin.xml'.
+2. go to plugin.xml and see and do changes in plugin.xml.
+3. always do activity true.
+4.remove platform and add again and try to build.
+5. before build do main activity true.
+ 

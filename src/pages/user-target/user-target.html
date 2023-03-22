@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Userwise Target Achievement</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="workimg_summary flat">
+    <ion-list no-lines>
+        <ion-item *ngFor="let row of salesUserTarget; let i = index;" (click)="row.flag=='1' && getSalesUserTarget(row.user_id)">
+            <ion-avatar item-start>
+                <span class="count">{{row.total_achivement_pecentage+'%'}}</span>
+            </ion-avatar>
+            <h6>{{row.user_name}} 
+               <ion-icon *ngIf="row.flag=='1'" name="arrow-forward"></ion-icon>
+              </h6>
+            <div class="round-box">
+              <div class="square">
+                <span>{{'₹ '+row.total_achivement+' L'}}</span>
+                <p>Achievement</p>
+              </div>
+              <div class="square">
+                <span>{{'₹ '+row.target+' L'}}</span>
+                <p>Target</p>
+              </div>
+             </div>
+            <div class="progress">
+              <div class="in-progress {{'wp' + (row.total_achivement_pecentage)}}"></div>
+            </div>
+        </ion-item>
+    </ion-list>
+</div>
+<div class="nothing-here" style="height: 50%;" *ngIf="!salesUserTarget?.length ">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+
+</ion-content>

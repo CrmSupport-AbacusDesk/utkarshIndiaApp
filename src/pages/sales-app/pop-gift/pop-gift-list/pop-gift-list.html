@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar>
+      <ion-title>Pop & Gift</ion-title>
+      <ion-buttons end *ngIf="Navtype == 'POP'">
+        <button style="color: black;" ion-button icon-only (click)="presentPopover($event)">
+            <ion-icon name="more"></ion-icon>
+        </button>
+    </ion-buttons> 
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+
+  <div class="pd-left-right16">
+      <div class="list-box mt16" *ngFor="let list of pop_list; let i=index">
+          <div class="upper">
+              <div class="left-date">
+                  <div class="date-section">
+                      <p>{{list.date_created | date:'d MMM y'}}</p>
+                      <p>Date Created</p>
+                  </div>
+              </div>
+              <div *ngIf="(Navtype != 'POP')&&(user_data.type != '3' && user_data.type != '7')" class="right-date" (click)="popOutgoing(list.pop_id,list.item_name)">
+                  <button class="Pending"><p>Outgoing History 
+                    <i class="openBtn material-icons">north_east</i>
+                </p></button>
+              </div>
+          </div>
+          <div class="mid">
+              <div class="content-info">
+                  <div class="left-info">
+                      <div class="circle">{{list.item_name.substring(0,1).toUpperCase()}}</div>
+                  </div>
+
+                  <div class="right-info">
+                      <p>{{list.item_name|titlecase}}</p>
+                      <p>Qty - {{list.qty}}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="lower p4" *ngIf="list.description !=''">
+              <p>Description</p>
+              <p>{{list.description}}</p>
+          </div>
+      </div>
+  </div>
+  <div class="nothing-here" *ngIf="!pop_list.length && load_data == '1'">
+    <div class="outer">
+        <div class="innear">
+            <img src="assets/imgs/no_found.svg" alt="">
+            <p>Data Not Available</p>
+        </div>
+    </div>
+</div>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+
+
+
+
+<ion-fab right bottom  *ngIf="(pop_list.length || Navtype != 'POP') && (user_data.type != '3' && user_data.type != '7')">
+	<button ion-fab color="primary" (click)="popGift()" ><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+

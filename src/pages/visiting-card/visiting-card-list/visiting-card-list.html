@@ -1,0 +1,337 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Visiting Card</ion-title>
+    </ion-navbar>
+    <ion-navbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar type='text' name="master" [(ngModel)]="form1.masterSearch" (ngModelChange)="getVisitingCardDetail()"></ion-searchbar>
+            </div>
+        </div>
+        
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="Pull to refresh"  refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    
+    <div class="capsule-tabs">
+        <ul>
+            <li (click)="tabActive('pending')" *ngFor="let count of data.all_cont;" [ngClass]="{'active' : tabActiveType['pending'] == true}">
+                <p *ngIf="count.pend_cnt!=null">Pending<span>{{count.pend_cnt}}</span></p>
+                <p *ngIf="count.pend_cnt==null">Pending<span>0</span></p>
+            </li>
+            
+            <li (click)="tabActive('running')"  *ngFor="let count of data.all_cont;" [ngClass]="{'active' : tabActiveType['running'] == true}">
+                <p *ngIf="count.pend_cnt!=null">In Process<span>{{count.running_cnt}}</span></p>
+                <p *ngIf="count.pend_cnt==null">In Process<span>0</span></p>
+            </li>
+            
+            <li (click)="tabActive('delivered')"  *ngFor="let count of data.all_cont;" [ngClass]="{'active' : tabActiveType['delivered'] == true}">
+                <p *ngIf="count.pend_cnt!=null">Delivered<span>{{count.delivered_cnt}}</span></p>
+                <p *ngIf="count.pend_cnt==null">Delivered<span>0</span></p>
+                
+            </li>
+            
+            <li (click)="tabActive('received')" *ngFor="let count of data.all_cont;" [ngClass]="{'active' : tabActiveType['received'] == true}">
+                <p *ngIf="count.pend_cnt!=null">Received<span>{{count.received_cnt}}</span></p>
+                <p *ngIf="count.pend_cnt==null">Received<span>0</span></p>
+            </li>   
+            
+            <li (click)="tabActive('reject')" *ngFor="let count of data.all_cont;" [ngClass]="{'active' : tabActiveType['reject'] == true}">
+                <p *ngIf="count.pend_cnt!=null">Reject<span>{{count.reject_cnt}}</span></p>
+                <p *ngIf="count.pend_cnt==null">Reject<span>0</span></p>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="pd-left-right16" *ngIf="tabActiveType['pending']" >
+        <div class="list-box mt16" *ngFor="let row of data.result;">
+            <div class="upper" >
+                <div class="left-date">
+                    <div class="date-section">
+                        <!-- <p> {{ row.created_at | date :'short'}}</p> -->
+                        <p>{{row.created_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                    <div class="date-section">
+                        <p>{{row.total_cards}}</p>
+                        <p>Total Card</p>
+                    </div>
+                    <!-- <div class="date-section">
+                        <p>{{row.day_diff}}</p>
+                        <p>Days</p>
+                    </div> -->
+                </div>
+                <div class="right-date">
+                    <div class="tag-info pr10">
+                        <button><i class="material-icons red-clr" (click)="listdelete(row.id)">delete_sweep</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{row.name | slice:0:1}}</div>
+                    </div>
+                    <div class="right-info">
+                        <p>{{row.company_name | titlecase}} </p>
+                        <p *ngIf="row.type=='1' ">Distributor/Dealer :- {{row.name | titlecase}}</p>
+                        <p *ngIf="row.type=='7' ">Direct Dealer :- {{row.name | titlecase}}</p>
+                        <p *ngIf="row.type=='3' ">Retailer :- {{row.name | titlecase}}</p>
+                        <p>{{row.mobile}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{row.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            
+            
+            <div class="lower">
+                <p>Description</p>
+                <p>{{row.description| titlecase}}</p>
+            </div>
+        </div>  
+    </div>
+    <div class="pd-left-right16" *ngIf="tabActiveType['running']">
+        <div class="list-box mt16" *ngFor="let run of data.result;">
+            <div class="upper">
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{run.created_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                    <div class="date-section">
+                        <p>{{run.updated_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Updated Date </p>
+                    </div>
+                    <!-- <div class="date-section">
+                        <p>{{run.day_diff}}</p>
+                        <p>Days</p>
+                    </div> -->
+                </div>
+                <div class="right-date">
+                    <div class="date-info">
+                        <p>{{run.total_cards}}</p>
+                        <p>Total Card</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{run.name | slice:0:1}}</div>
+                    </div>
+                    
+                    <div class="right-info">
+                        <p>{{run.company_name| titlecase}} </p>
+                        
+                        
+                        <p *ngIf="run.type=='1' ">Distributor/Dealer:- {{run.name | titlecase}}</p>
+                        <p *ngIf="run.type=='7' ">Direct Dealer:- {{run.name | titlecase}}</p>
+                        <p *ngIf="run.type=='3' ">Retailer:- {{run.name | titlecase}}</p>
+                        
+                        <p>{{run.mobile}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{run.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            
+            
+            <div class="lower">
+                <p>Description</p>
+                <p>{{run.description| titlecase}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pd-left-right16" *ngIf="tabActiveType['delivered']">
+        <div class="list-box mt16" *ngFor="let receive of data.result;">
+            <div class="upper">
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{receive.created_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                </div>
+                
+                <div class="right-date">
+                    <button class="green-btn" (click)="changeStatus(receive)"><p>Change Status</p></button>
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{receive.name | slice:0:1}}</div>
+                    </div>
+                    <div class="right-info">
+                        <p>{{receive.company_name| titlecase}}</p>
+                        
+                        
+                        <p *ngIf="receive.type=='1' ">Distributor/Dealer:- {{receive.name | titlecase}}</p>
+                        <p *ngIf="receive.type=='7' ">Direct Dealer:- {{receive.name | titlecase}}</p>
+                        <p *ngIf="receive.type=='3' ">Retailer:- {{receive.name | titlecase}}</p>
+                        
+                        <p>{{receive.mobile}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{receive.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            
+            <div class="three_boxes">
+                <div class="lower">
+                    <p>Updated Date </p>
+                    <p>{{receive.updated_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                </div>
+                
+                <div class="lower">
+                    <p>Total Card</p>
+                    <p>{{receive.total_cards}}</p>
+                </div>
+            </div>
+            
+            <div class="lower">
+                <p>Description</p>
+                <p>{{receive.description| titlecase}}</p> 
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="pd-left-right16" *ngIf="tabActiveType['reject']">
+        <div class="list-box mt16" *ngFor="let reject of data.result;">
+            <div class="upper">
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{reject.created_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                    <div class="date-section">
+                        <p>{{reject.updated_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Updated Date </p>
+                    </div>
+                    <div class="date-section">
+                        <p>{{reject.total_cards}}</p>
+                        <p>Total Card</p>
+                    </div>
+                    <!-- <div class="date-section">
+                        <p>{{reject.day_diff}}</p>
+                        <p>Days</p>
+                    </div> -->
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{reject.name | slice:0:1}}</div>
+                    </div>
+                    <div class="right-info">
+                        <p>{{reject.company_name| titlecase}}</p>
+                        
+                        <p *ngIf="reject.type=='1' ">Distributor/Dealer:- {{reject.name | titlecase}}</p>
+                        <p *ngIf="reject.type=='7' ">Direct Dealer:- {{reject.name | titlecase}}</p>
+                        <p *ngIf="reject.type=='3' ">Retailer:- {{reject.name | titlecase}}</p>
+                        
+                        
+                        <!-- <p> {{reject.name| titlecase}}</p> -->
+                        
+                        <!-- <p>{{receive.name}}</p> -->
+                        <p>{{reject.mobile}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{reject.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            <div class="lower">
+                <p>Description</p>
+                <p>{{reject.description| titlecase}}</p>
+            </div>
+            <div class="lower">
+                <p>Remarks</p>
+                <p>{{reject.remarks| titlecase}}</p> 
+            </div>
+        </div>
+    </div>
+    
+    <div class="pd-left-right16" *ngIf="tabActiveType['received']">
+        <div class="list-box mt16" *ngFor="let deliver of data.result;">
+            <div class="upper" >
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{deliver.created_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                    
+                    <div class="date-section">
+                        <p>{{deliver.updated_at | date:'dd-MMM-yyyy hh:mm aa'}}</p>
+                        <p>Updated Date </p>
+                    </div>
+                </div>
+                <div class="right-date">
+                    <div class="date-info">
+                        <p>{{deliver.total_cards}}</p>
+                        <p>Total Card</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{deliver.name | slice:0:1}}</div>
+                    </div>
+                    
+                    <div class="right-info">
+                        <p>{{deliver.company_name| titlecase}} </p>
+                        <p *ngIf="deliver.type=='1' ">Distributor/Dealer:- {{deliver.name | titlecase}}</p>
+                        <p *ngIf="deliver.type=='7' ">Direct Dealer:- {{deliver.name | titlecase}}</p>
+                        <p *ngIf="deliver.type=='3' ">Retailer:- {{deliver.name | titlecase}}</p>
+                        <p>{{deliver.mobile}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{deliver.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            <div class="lower">
+                <p>Description</p>
+                <p>{{deliver.description| titlecase}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nothing-here" *ngIf="data && data.result && data.result.length==0">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="h50 "></div>
+
+    <ion-fab right bottom>
+        <button ion-fab color="danger" (click)="visitingCardadd()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+
+</ion-content>
+
+<!-- 
+
+<ion-footer class="af-none">
+    <div class="cus-fab">
+        <button (click)="visitingCardadd()">
+            <i class="material-icons">add</i>
+        </button>
+    </div>
+    
+</ion-footer> -->

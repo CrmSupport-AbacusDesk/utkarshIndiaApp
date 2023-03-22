@@ -1,0 +1,29 @@
+page-loyalty-about {
+
+    .policy-text{
+        h1,h2, h3, h4, h6, h6, p ,span{
+            font-size: 14px;
+            line-height: 20px;
+            text-align: left;
+            margin-bottom: 10px;
+
+            &:last-child{
+                margin: 0px;
+            }
+        }
+    }
+
+
+    .about-logo {
+        width: 100px;
+        height: 100px;
+        margin: 10px auto;
+        border: 2px solid #f8f8f8;
+        border-radius: 100%;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.3);
+    }
+}

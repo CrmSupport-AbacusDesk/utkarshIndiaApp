@@ -1,0 +1,140 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title *ngIf="followType == 'My'" >Followup List</ion-title>
+        <ion-title *ngIf="followType != 'My'">Team Followup List</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="team_count > 0" (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+
+    <ion-toolbar *ngIf="filter.status =='Upcoming'" >
+        <div class="filter-search"  >
+            <div class="month-calander ml8 mr8">
+                <div  *ngIf="selected_date == today" style="padding-left: 4px; "></div>
+                <button *ngIf="selected_date != today" (click)="ChangeDate('previous')"
+                    style="box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1); border-radius:8px 0px 0px 8px;padding-left: 4px; "><i
+                        class="material-icons">keyboard_arrow_left</i></button>
+                <p>{{selected_date | date:'d MMM, y' }}</p>
+                <button (click)="ChangeDate('nextdate')"
+                    style="box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1); border-radius:  0px 8px 8px 0px;padding-right: 4px;"><i
+                        class="material-icons">keyboard_arrow_right</i></button>
+            </div>
+            <a class="date-pick" style="position:relative;">
+                <label class="chedate">
+                    <input [min]="selected_date" type="date" name="date" [(ngModel)]="filter.date"
+                        (ngModelChange)="getFollowup(filter.date)" />
+                    <i class="material-icons">date_range</i>
+                </label>
+            </a>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <div class="capsule-tabs" [ngClass]="{'mt58': filter.status == 'Upcoming'}" >
+        <ul>
+            <li [ngClass]="{'active' : filter.status=='Pending'}"
+                (click)="filter.date='';start=0;filter.status='Pending' ;getFollowup();">
+                <p>Pending</p>
+            </li>
+            <li [ngClass]="{'active' : filter.status=='Upcoming'}"
+                (click)="filter.date='';start=0;filter.status='Upcoming' ;getFollowup();">
+                <p>Upcoming</p>
+            </li>
+            <li [ngClass]="{'active' : filter.status=='Complete'}"
+                (click)="filter.date='';start=0;filter.status='Complete' ;getFollowup();">
+                <p>Complete</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nothing-here" *ngIf="!followupList.length && requestSend">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>No Follow Up</p>
+            </div>
+        </div>
+    </div>
+    <div class="travel">
+        <ul>
+            <li *ngIf="followupList.length">
+                <span class="vistit-count">
+                    <i class="material-icons md-18">assignment</i>
+                </span>
+            </li>
+            <li *ngFor="let data of followupList ; let i = index">
+                <span class="vistit-count"
+                    [ngClass]="{'pendingFollowUpBg':filter.status=='pending'||'Pending', 'upcomingFollowUpBg':filter.status=='Upcoming', 'completeFollowUpBg':filter.status=='complete'}">
+
+                    {{data.next_follwup_time.split(':')[0]>12?'0'+(data.next_follwup_time.split(':')[0]-12):data.next_follwup_time.split(':')[0]}}
+                    : {{data.next_follwup_time.split(':')[1]}} {{data.next_follwup_time.split(':')[0]>11?'PM':'AM'}}
+                </span>
+                <div class="counter">
+                    <div class="top-items">
+                        <div class="right-info f10">
+                            <div class="mr5">
+                                <div><strong>{{data.company_name}}</strong> ({{data.mobile}})</div>
+                            <div class="mt4">
+                                <strong>Date Created:</strong> {{data.date_created | date:'dd MMM yyyy'}}
+                            </div>
+                            <div class="mt4">
+                                <strong>Followup Date:</strong> {{data.next_follow_date | date:'dd MMM yyyy'}}
+                            </div>
+                        </div>
+                        </div>
+                        <div class="tag-info">
+                            <a href="tel:{{data.mobile}}">
+                                <ion-icon style="color:green;font-size: 14px;" name='call'></ion-icon>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lower" style="display:flex;flex-direction: row;" *ngIf="data.description">
+                        <p>Followup Remark :</p>
+                        <p [ngClass]="see_more_button == data.id?'':'two-line-ellipse'">{{data.description}} </p>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:row;margin:0 4px 4px 4px" *ngIf="selected_date >= today_date">
+                    <div *ngIf="filter.status == 'Pending'" class="lower-counter" style="background-color:#63aa63;"
+                        (click)="statusModal(data.id,data)">
+                        <svg style="width:14px;height:14px; color:white;" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M18.13 12L19.39 10.74C19.83 10.3 20.39 10.06 21 10V9L15 3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H11V19.13L11.13 19H5V5H12V12H18.13M14 4.5L19.5 10H14V4.5M19.13 13.83L21.17 15.87L15.04 22H13V19.96L19.13 13.83M22.85 14.19L21.87 15.17L19.83 13.13L20.81 12.15C21 11.95 21.33 11.95 21.53 12.15L22.85 13.47C23.05 13.67 23.05 14 22.85 14.19Z" />
+                        </svg>
+                        <p class="f10">Edit</p>
+                    </div>
+
+                    <div class="lower-counter" *ngIf="filter.status != 'Complete'" style="background-color:#ff525e;">
+                        <button class="f10 deleteBtn_followupCard" (click)="deleteFollowUp(data.id)"><i
+                                class="material-icons" style=" color:#fff;font-size: 14px;">delete_sweep</i>
+                            <span>&nbsp;Delete</span>
+                        </button>
+
+                    </div>
+
+                </div>
+            </li>
+            <li *ngIf="followupList.length">
+                <span class="vistit-count">
+                    <i class="material-icons md-18">assignment</i>
+                </span>
+
+            </li>
+        </ul>
+    </div>
+    <ion-fab right bottom>
+        <button ion-fab color="primary" (click)="goOnAddFollowup()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+
+</ion-content>

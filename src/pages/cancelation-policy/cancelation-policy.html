@@ -1,0 +1,14 @@
+<ion-content>
+	<div class="no-connection">
+		<div class="conn-content">
+			<img  src="assets/imgs/no-connection.png" alt="">
+			<h2 class="f11 text-center">Check Your Internet Connection</h2>
+		</div>
+
+		<div class="mt16 text-center" style="display:flex;align-items:center;justify-content:center">
+			<button ion-button  class="Buttons" (click)="reload()">
+				<ion-spinner *ngIf="spinner == true"  color="success"></ion-spinner> Try Again
+			</button>
+		</div>
+	</div>
+</ion-content>

@@ -1,0 +1,93 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Followup List</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    
+    <div class="pd-left-right16 pt16">
+        <div class="list-box" *ngFor="let row of followup_list">
+            <div class="upper">
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{row.date_created | date:'d MMM y'}}</p>
+                        <p>Date Created</p> 
+                    </div>
+                    <div class="date-section">
+                        <p>{{row.created_by_name ? row.created_by_name : 'N/A'}}</p>
+                        <p>Created by</p> 
+                    </div>
+                </div>
+                
+                <div class="right-date">
+                    <!-- <button class="{{row.status}}"><p>{{row.status}}</p></button> -->
+                </div>
+            </div>
+            
+            <div class="mid">
+                <div class="content-info">
+                    <div class="left-info" >
+                        <!-- <div class="circle">{{row.dr_name.substring(0,1).toUpperCase()}}</div> -->
+                    </div>
+                    
+                    <div class="right-info">
+                        <!-- {{row.name}} -->
+                        <p>{{row.name ? row.name : 'N/A'}}</p>
+                        <!-- <p>{{row.dr_id | titlecase}}</p> -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="three_boxes"> 
+                <div class="lower">
+                    <p>Followup Date</p>
+                    <p>{{row.next_follow_date}}</p>
+                </div>
+                <!-- <div class="lower">
+                    <p>Followup Type</p> 
+                    <p>{{row.next_follow_type}}</p>
+                </div> -->
+            </div>
+
+            <div class="lower" style="display:flex;flex-direction: row; border-top: 1px dashed #ccc; padding-top: 5px;">
+
+                <p>Follow up Remark :</p>
+
+                <p class="two-line-ellipse" ng-reflect-ng-class="two-line-ellipse">{{row.description  ? row.description : 'N/A'}}</p>
+
+            </div>
+            
+            <!-- <div class="description-box">
+                <p>Followup Remark : {{row.description  ? row.description : 'N/A'}}</p>
+            </div> -->
+        </div>  
+    </div>
+    
+    <!-- <div class="nothing-here" *ngIf="followup_list == 0">
+        
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div> -->
+    
+    <div class="h50"></div>
+    
+</ion-content>
+
+
+
+<ion-footer class="af-none">
+    <div class="cus-fab">
+        <button (click)="lead_followup_add(type,id,company_name)">
+            <i class="material-icons">add</i>
+        </button>
+    </div>
+</ion-footer>

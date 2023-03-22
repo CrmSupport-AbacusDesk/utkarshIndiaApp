@@ -1,0 +1,98 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title *ngIf="LeadType == 'My'">My Enquiry</ion-title>
+        <ion-title *ngIf="LeadType != 'My'">Team's Enquiry</ion-title>
+        <ion-buttons end *ngIf="teamCount > 0">
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+    <ion-toolbar color="white">
+        <div class="ion-tab-btn mb10">
+            <ion-segment [(ngModel)]="activeTab">
+                <ion-segment-button value="Qualified" (click)="get_assign_dr()">
+                    Qualified ({{enquiryList.qualified_count}})
+                </ion-segment-button>
+                <ion-segment-button value="Win" (click)="get_assign_dr()">
+                    Win ({{enquiryList.win_count}})
+                </ion-segment-button>
+                <ion-segment-button value="Lost" (click)="get_assign_dr()">
+                    Lost ({{enquiryList.lost_count}})
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+
+        <div class="search add-search">
+            <div class="filter pb10">
+                <ion-searchbar (keyup.enter)="get_assign_dr(drid)" [(ngModel)]="filter.name" name="name">
+                </ion-searchbar>
+
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+
+
+    <div class="pd-left-right16 mt16 mb100">
+        <ng-container *ngFor="let data of dr_list">
+            <div class="attendance-list" [ngClass]="{'new': data.read_status == '0'}" (click)="lead_detail(data.id)">
+                <div class="slab slab-bg">
+                    <div class="slab-day">
+
+                        <p>{{data.date_created | date:'d MMM y'}}</p>
+                        <span>Date Created</span>
+                    </div>
+                    
+                    <div class="slab-day">
+                        <p>{{data.influencer_type}}</p>
+                        <span>Enq. Type</span>
+                    </div>
+                    <div class="slab-day">
+                        <p>{{data.enquiry_id}}</p>
+                        <span>Enq. Id</span>
+                    </div>
+                </div>
+                <div class="center-block">
+                    <div class="circle">{{data.name.substring(0,1).toUpperCase()}}</div>
+                    <h1 class="f12">{{data.name | titlecase}}</h1>
+                    <p>{{data.mobile}}</p>
+                </div>
+                <div class="other-block pb0" *ngIf="data.state  || data.district  || data.city  || data.area">
+                    <p><strong>Address :</strong>
+                        {{data.address}} {{data.area}} {{data.district}} {{data.state}}
+                    </p>
+                </div>
+                <div class="next-forword">
+                    <i class="material-icons">chevron_right</i>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+
+    <div class="nothing-here" *ngIf="load_data == 1">
+
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+</ion-content>

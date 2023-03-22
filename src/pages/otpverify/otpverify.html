@@ -1,0 +1,43 @@
+<ion-header class="header-border header-back-black">
+    <ion-navbar color="white">
+        <div class="logo center-logo">
+            <img src="assets/imgs/logo.png" alt="">
+        </div>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <form class="form-login" [formGroup]="validations_form" autocomplete="off">
+        <div class="login-form">
+            <div class="form">
+                <h1>Verify OTP</h1>
+                <p >We have sent OTP on <span>{{data_value.phone}}</span></p>
+
+                <div class="input-block">
+                    <div class="rel">
+                        <i class="material-icons login__icon">sms</i>
+                        <ion-input class="login__input" type="tel" formControlName="otp" placeholder="Enter 6 digit OTP"  [(ngModel)]="data.otp" maxlength="6" minlength="6" required></ion-input>
+                    </div>
+                    <div class="eror" *ngIf="!otp_value && otp?.touched">
+                        <p>Entered OTP is incorrect</p>
+                    </div>
+                    <div class="resend opacity" *ngIf="resendActiveClass==true">	
+						<p>Resend in </p><a >{{maxTime}} sec</a>
+					</div>	
+					<div class="resend "  *ngIf="resendActiveClass==false">	
+					<p>Didn't received it ? </p><a (click)="resendOtp()">Resend</a>
+					</div>	
+                </div>
+            </div>
+        </div>
+        
+        <div class="wp100 text-right">
+            <button  ion-button round icon-end color="primary" (click)="verify_otp()" [ngClass]="data.otp ? 'active' : ''" [disabled]="validations_form.get('otp').hasError('required') || validations_form.get('otp').hasError('minlength')">
+                Continue <ion-icon name="arrow-forward"></ion-icon>
+            </button>
+        </div>
+        
+    </form>
+    
+    
+</ion-content>

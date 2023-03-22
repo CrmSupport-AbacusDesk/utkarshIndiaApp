@@ -1,0 +1,49 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Change Order Status</ion-title>
+    
+    <ion-buttons end (click)="dismiss()">
+      <button ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+    <div class="form">
+      <ion-list no-lines class="padding10 pt0">
+        <ion-item [ngClass]="{'error':f.submitted && status?.invalid}">
+          <ion-label floating>Status<span>*</span></ion-label>
+          <ion-select name="status" [(ngModel)]="data.status" #status="ngModel" required>
+            <ion-option value="Pending">Pending</ion-option>
+            <ion-option value="Approved">Approved</ion-option>
+            <ion-option value="Reject">Reject</ion-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && status.invalid" class="eror">
+          <p *ngIf="status.errors.required">{{'Field is Required'}}</p>
+        </div>
+        
+        <ng-container *ngIf="data.status == 'Reject'">
+          <ion-item [ngClass]="{'error':f.submitted && reason?.invalid}">
+            <ion-label floating>{{'Reason'}} <span>*</span></ion-label>
+            <ion-textarea type="text" name="reason" [(ngModel)]="data.reason" #reason="ngModel" required></ion-textarea>
+          </ion-item>
+          <div *ngIf="f.submitted && reason.invalid" class="eror">
+            <p *ngIf="reason.errors.required">{{'Field is Required'}}</p>
+          </div>
+        </ng-container>
+      </ion-list>
+      
+      <div class="pl10 pr10">
+        <button ion-button full color="primary" [disabled]="savingFlag == true">
+          <ion-spinner *ngIf="savingFlag == true"></ion-spinner>
+          Update
+        </button>
+      </div>
+    </div>
+  </form>
+</ion-content>

@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "f2f34a63-a898-49fe-9143-7e23b49baa89",
+		"name": "Research",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17746605"
+	},
+	"item": [
+		{
+			"name": "https://devcrm.abacusdesk.com/sirca/api/index.php/app/Distributor/distributor_lists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "limit",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "list_type",
+							"value": "my",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://devcrm.abacusdesk.com/sirca/api/index.php/app/Distributor/distributor_lists",
+					"protocol": "https",
+					"host": [
+						"app",
+						"abacusdesk",
+						"co",
+						"in"
+					],
+					"path": [
+						"prayagsfa",
+						"api",
+						"index.php",
+						"app",
+						"Distributor",
+						"distributor_lists"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

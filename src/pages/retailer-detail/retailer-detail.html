@@ -1,0 +1,97 @@
+<!--
+  Generated template for the RetailerDetailPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  <div class="attendance-list flat-list">
+    <div class="slab slab-bg">
+      <div class="slab-day">
+        <p>{{retailer_detail.last_checkin != '0000-00-00 00:00:00' ? (retailer_detail.last_checkin | date:'d MMM  yyy') : 'N/A'}}</p>
+        <span>Last visit {{retailer_detail.last_checkin_day ?retailer_detail.last_checkin_day: null}}{{retailer_detail.last_checkin_day > 1 ? '' :''}}</span>
+      </div>
+      <div class="slab-day">
+        <p>{{retailer_detail.last_order != '0000-00-00 00:00:00' ? (retailer_detail.last_order | date:'d MMM yyy'): 'N/A'}}</p>
+        <span>Last order {{retailer_detail.last_order_day ? retailer_detail.last_order_day : null }} {{retailer_detail.last_order_day > 1 ? '' :''}}</span>
+      </div>
+    </div>
+    <div class="center-block">
+      <div class="circle">{{retailer_detail.company_name | slice:0:1}}</div>
+      <h1>{{retailer_detail.company_name?.toUpperCase()}}</h1>
+      <p>{{retailer_detail.name | titlecase}} ({{retailer_detail.mobile}})</p>
+      <a class="cell-phone" href="tel:{{retailer_detail.mobile}}"><i class="material-icons">phone</i></a>
+    </div>
+    <div class="other-block">
+      <p *ngIf=" retailer_detail.address  || retailer_detail.state  || retailer_detail.district  || retailer_detail.city  || retailer_detail.area  || retailer_detail.pincode"><strong>Address :</strong> {{retailer_detail.address}} {{retailer_detail.area_details | titlecase}} {{retailer_detail.district | titlecase}} {{retailer_detail.state | titlecase}}</p>
+      
+      <p *ngIf=" retailer_detail.state  || retailer_detail.district  || retailer_detail.district  || retailer_detail.address"><strong>Shipping Address :</strong>
+        {{!retailer_detail.address ? '' : ', '+retailer_detail.address | titlecase}}  {{!retailer_detail.district ? '' : ', '+retailer_detail.district | titlecase}}   {{!retailer_detail.state ? 'N/A' : retailer_detail.state | titlecase}}
+      </p>
+      
+    </div>
+    <div class="slab">
+      <div class="slab-day">
+        <p>{{retailer_detail.gst ? retailer_detail.gst : 'N/A'}}</p>
+        <span>GST No.</span>
+      </div>
+      <div class="slab-day">
+        <p class="bold">{{retailer_detail.dob != "0000-00-00" ? (retailer_detail.dob | date:'d MMM '):'N/A'}}</p>
+        <span>D.O.B</span>
+      </div>
+      <div class="slab-day">
+        <p class="bold">{{retailer_detail.doa != "0000-00-00" ? (retailer_detail.doa | date:'d MMM '):'N/A'}}</p>
+        <span>D.O.A</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="pl16 pr16 mb50">
+    <div class="workimg_summary"  >
+      <div class="summary-heading">Assigned Channel Partner</div>
+      <ion-list>
+        <ion-item *ngFor="let row of Distributors;let i=index;">
+          <ion-avatar item-start style="background: #dfecff;">
+            <span class="count">{{row.company_name?.substring(0,1).toUpperCase()}}</span>
+          </ion-avatar>
+          <h6>{{row.company_name}}</h6>
+        </ion-item>
+      </ion-list>
+    </div>
+
+
+
+
+    <div class="workimg_summary"  >
+      <ion-list>
+        <ion-item (click)="Go_to('pop')">
+          <ion-avatar item-start>
+            <i class="material-icons ">card_giftcard</i>
+          </ion-avatar>
+          <h6>POP & Gift <ion-icon name="arrow-forward"></ion-icon></h6>
+        </ion-item >
+        <ion-item (click)="Go_to('checkin')">
+          <ion-avatar item-start>
+            <i class="material-icons ">my_location</i>
+          </ion-avatar>
+          <h6>Check In <ion-icon name="arrow-forward"></ion-icon></h6>
+        </ion-item>
+        <ion-item (click)="Go_to('order')">
+          <ion-avatar item-start>
+            <i class="material-icons ">shopping_cart</i>
+          </ion-avatar>
+          <h6>Secondary Order<ion-icon name="arrow-forward"></ion-icon></h6>
+        </ion-item>
+        
+      </ion-list>
+    </div>
+  </div>
+  
+</ion-content>

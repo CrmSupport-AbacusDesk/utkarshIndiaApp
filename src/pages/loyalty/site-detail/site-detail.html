@@ -1,0 +1,48 @@
+<!--
+  Generated template for the SiteDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Site Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div>
+    <div class="fix-container">
+      <div class="attendance-list flat-list">
+        <div class="center-block">
+          <div class="circle">{{siteDetail.name | slice:0:1}}</div>
+          <h1>{{siteDetail.name?.toUpperCase()}}</h1>
+          <p>{{siteDetail.mobile_no}}</p>
+          <a class="cell-phone" href="tel:{{siteDetail.mobile_no}}"><i class="material-icons">phone</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt16">
+    <ng-container class="scanned ">
+      <div class="point-block" *ngFor="let list of siteDetail.coupon_scan_list; let i=index">
+        <div class="point-content">
+          <p><strong>Product Name</strong> :<span>{{list.product_name+'-'+list.product_code}}</span></p>
+          <!-- <p><strong>Coupon Category</strong> : <span>{{list.point_category_name}}</span></p> -->
+          <span><strong>Coupon Code</strong> : {{list.coupon_code}}</span>
+          <span *ngIf="list.scanned_on != '0000-00-00 00:00:00'">({{list.scanned_on | date:'d MMM yy, h:mm a'}})</span>
+        </div>
+        <div class="pts">{{list.points}} PT</div>
+      </div>
+
+    </ng-container>
+  </div>
+  <div class="no-history" *ngIf="siteDetail.coupon_scan_list==0">
+    <i class="material-icons">history_edu</i>
+    <p>{{'No History'}}</p>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, history)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

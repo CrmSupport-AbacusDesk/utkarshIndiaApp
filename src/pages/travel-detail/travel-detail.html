@@ -1,0 +1,165 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Travel Plan Detail</ion-title>
+        
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goOnTravelAdd()" *ngIf="detail.status =='Pending' && detail.created_by == userId" >
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-buttons>
+        
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    
+    <div class="cs-list-item">
+        <div class="cs-top">
+            <div class="list-content">
+                <p>{{detail.date_created|date:'d MMM y'}}</p>
+                <span>Date Created</span>
+            </div>
+            <div class="list-content af-none">
+                <p>{{detail.date_from |date:'d MMM y'}}/{{detail.date_to |date:'d MMM y'}}</p>
+                <span>Travel Date</span>
+            </div>
+        </div>
+        <div class="mid">
+            <div class="content-info" >
+                <div class="left-info" >
+                    <div class="circle" >A</div>
+                </div>
+                <div class="right-info">
+                    <p>{{detail.assign_to_name}}</p>
+                    <p>{{detail.contact_01}}</p>
+                </div>
+            </div>
+            <div class="tag-info">
+                <a href="{{detail.contact_01}}"><i class="material-icons">phone</i></a>
+            </div>
+        </div>
+        <div class="middle-content">
+            <div class="col-box">
+                <span>{{detail.created_by_name}}</span>
+                <p>Created By </p>
+            </div>
+            <div class="col-box">
+                <span>{{detail.assign_to_name}}</span>
+                <p>Sales User </p>
+            </div>
+            <div class="col-box">
+                <span class="green-clr" *ngIf="detail.status =='Approved'">{{detail.status}}</span>
+                <span class="yellow-clr" *ngIf="detail.status =='Pending'">{{detail.status}}</span>
+                <span class="red-clr" *ngIf="detail.status =='Reject'">{{detail.status}}</span>
+                <p>Status</p>
+                <ion-icon name="create" class="cs-action" *ngIf="detail.status =='Pending' && detail.created_by != userId" (click)="statusModal('detail.id')"></ion-icon>
+            </div>
+        </div>
+        <div class="middle-content ">
+            <div class="col-box">
+                <span>{{detail.status_remark}}</span>
+                <p>Remark</p>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <!-- <div class="cs-list-item">
+        <div class="type-head">Party Wise</div>
+        <div class="type-body">
+            <strong>Party Name :</strong> A.k Playwood </div>
+        </div> -->
+        
+        
+        <div class="cs-list-item">
+            <div class="type-head">Travel type - {{detail.travel_type}}</div>
+            
+            <div class="type-body" *ngFor="let list of travel_area_list;let i = index">
+                <p>AREA {{i+1}}</p> 
+                <ul>
+                    <li>
+                        <span>{{list.state}}</span>
+                    </li>
+                    <li>
+                        <span>{{list.district}}</span>
+                    </li>
+                    <li>
+                        <span>{{list.city}}</span>
+                    </li>
+                    <li>
+                        <span>{{list.area}}</span>
+                    </li>
+                </ul>
+            </div>
+
+          
+            
+            <!-- <div class="type-body" *ngIf="detail.travel_type =='Area Visit'">
+                <strong >State : {{detail.travel_list[0].state}} -</strong> 
+                <span class="cs-chips" *ngFor="let row of detail.travel_list">{{row.district}}</span>
+            </div>
+            
+            <div class="type-body" *ngIf="detail.travel_type =='Distributor Visit'">
+                <strong >Party Name : </strong> 
+                <span class="cs-chips" *ngFor="let row of detail.travel_list">{{row.company_name}}</span>
+            </div> -->
+        </div>
+        
+        <div class="cs-heading1 heading-right pl0 pr0">
+            <p class="font12">Travel Information</p>
+            <!-- <p class="font14">{{travel_dr_list.length}}</p> -->
+        </div>
+        
+        <div class="">
+            <div class="list-box mt16" *ngFor="let data of travel_dr_list">
+                <div class="upper upr-verified">
+                    <div class="verify-section" *ngIf="data.checkin_id!=null">
+                        <i class="material-icons">verified</i>
+                    </div>
+                    <div class="left-date">
+                        <div class="date-section">
+                            <p>{{data.date_created |date:'d MMM y'}}</p>
+                            <p>Date Created</p>
+                        </div>
+                    </div>
+                    <div class="right-date">
+                        <button class="date-info">
+                            <p *ngIf="data.type=='1'">Distributor</p>
+                            <p *ngIf="data.type=='3'">Retailer</p>
+                            <p *ngIf="data.type=='9'">Project</p>
+                            <p *ngIf="data.type=='5'">End User</p>
+                            <p *ngIf="data.type=='10'">Contractor</p>
+                            <p *ngIf="data.type=='11'">Architect</p>
+                            <p *ngIf="data.type=='15'">Customer</p>
+                            <p *ngIf="data.type=='13'">Builder</p>
+                            <p *ngIf="data.type=='14'">Cement Dealer</p>
+
+                            <p *ngIf="data.lead_type=='Dr'">Distribution Network</p>
+                            <p *ngIf="data.lead_type=='Lead'">Lead</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="mid">
+                    <div class="content-info">
+                        <div class="left-info">
+                            <div class="circle">T</div>
+                        </div>
+                        
+                        <div class="right-info">
+                            <p>{{data.company_name}}</p>
+                            <p>{{data.name}} ({{data.mobile}})</p>
+                        </div>
+                    </div>
+                    <div class="tag-info">
+                        <a href="tel:{{data.mobile}}"><i class="material-icons">phone</i></a>
+                    </div>
+                </div>
+                <div class="lower">
+                    <p>Address</p>
+                    <p>{{data.address}} {{data.city}} {{data.district}} {{data.state}} {{data.pincode}} </p>
+                </div>
+            </div>  
+            
+        </div>      
+    </ion-content>    

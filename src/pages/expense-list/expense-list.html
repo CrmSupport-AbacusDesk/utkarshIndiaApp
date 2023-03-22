@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="expenseType=='My'">My Expense</ion-title>
+    <ion-title *ngIf="expenseType!='My'">Team Expense</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="teamCount > 0" (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+    
+  </ion-navbar>
+  
+</ion-header>
+
+<ion-content>
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+
+
+
+
+<div class="edit flat" *ngIf="expenseType=='Team'">
+  <ion-list>
+    <ng-container>
+      <ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+        <ion-label>Select Team Member</ion-label>
+        <ionic-selectable item-content name="data" [(ngModel)]="selectData.team" [items]="user_list" itemValueField="id" itemTextField="name" [canSearch]="true" #selectComponent  (ngModelChange)=" getExpenseList()"></ionic-selectable>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</div>
+
+<div class="bg-white">
+  
+<div class="capsule-tabs">
+  <ul>
+    <li [ngClass]="{'active':expenseStatus == 'Pending'}" (click)="expenseStatus = 'Pending';filter.start=0; getExpenseList(UserId)">
+      <p>Pending<span>{{expenseListCount.Pending}}</span></p>
+    </li>
+    <li [ngClass]="{'active':expenseStatus == 'Approved'}" (click)="expenseStatus = 'Approved';filter.start=0;getExpenseList(UserId)">
+      <p>Approved<span>{{expenseListCount.Approved}}</span></p>
+    </li>
+    <li [ngClass]="{'active':expenseStatus == 'Reject'}" (click)="expenseStatus = 'Reject'; filter.start=0;getExpenseList(UserId)">
+      <p>Rejected<span>{{expenseListCount.Reject}}</span></p>
+    </li>
+  </ul>
+</div>
+<!-- <div style="background-color: white;">
+  <ion-searchbar class="distributorSearchbar p10" style="padding: 0 16px 16px 16px;" (keyup.enter)="get_distributor_list()" [(ngModel)]="search" name="search"></ion-searchbar>
+</div> -->
+</div>
+
+<!-- </div> -->
+
+<div class="pb80 pt20">
+  <div class="cs-list-item p5" *ngFor="let row of expenseList; let i=index" (click)="deatilPage($event, row.id)">
+    <div class="cs-top"
+    [ngClass]="{'pendingBg':row.seniorStatus=='Pending', 'ApprovedBg':row.seniorStatus=='Approved', 'rejectedBg':row.seniorStatus=='Rejected'}">
+    <div class="list-content af-none">
+      <p>{{(row.dateCreated | date:'d MMM y')||'N/A'}}</p>
+      <span>Date Created</span>
+    </div>
+    <div class="list-content af-none" *ngIf="expenseType=='Team'">
+      <p>{{row.userName||'N/A'}}</p>
+      <span>Created by</span>
+    </div>
+    <div class="left-auto">
+      <p class="inr-rupy"> &#x20B9; {{row.totalAmt ||'N/A'}}</p>
+    </div>
+   
+  </div>
+  <div class="travel-type">{{row.expenseType||'N/A'}}</div>
+  <div class="middle-content">
+    <div class="col-box ">
+      <div *ngIf="expenseType=='Team' && row.seniorStatus!='Pending'">
+        <p>Senior Status</p>
+        <span>{{row.seniorStatus||'N/A'}}</span>
+      </div>
+      <div *ngIf="expenseType=='My'">
+        <p>Senior Status</p>
+        <span>{{row.seniorStatus||'N/A'}}</span>
+      </div>
+      
+      <div class="updateStatusBox" *ngIf="expenseType=='Team' && row.seniorStatus=='Pending'">
+        <div>
+          <p class="mb3">Update Status </p>
+          <ion-item class="cs-normal-select" (click)="testingfunction($event)" *ngIf="row.seniorStatus=='Pending'">
+            <ion-select [name]="'seniorStatus' + 'i'" #seniorStatus="ngModel"  required [(ngModel)]="row.seniorStatus"
+            (ngModelChange)="updateStatusMode(row.seniorStatus, row.id)">
+            <ion-option value="Pending" selected>Pending</ion-option>
+            <ion-option value="Approved">Approved</ion-option>
+            <ion-option value="Reject">Rejected</ion-option>
+          </ion-select>
+        </ion-item>
+      </div>
+      <div>
+        <i class="material-icons">edit</i>
+      </div>
+    </div>
+  </div>
+  <div class="col-box ">
+    <p>A/C Status</p>
+    <span>{{row.acStatus||'N/A'}}</span>
+  </div>
+  <div class="col-box " *ngIf="row.totalApprovedAmount">
+    <p>Approved Amount</p>
+    <span>&#8377;{{row.totalApprovedAmount}}</span>
+  </div>
+  <div class="col-box ">
+    <p>Expense ID</p>
+    <span>{{row.id||'N/A'}}</span>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div class="nothing-here" style="height: 50%;" *ngIf="!expenseList?.length && sendRequest">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+
+<ion-fab right bottom *ngIf="expenseType=='My'">
+  <button ion-fab color="primary" (click)="addPage()">
+    <ion-icon name="add"></ion-icon>
+  </button>
+</ion-fab>
+
+<!-- infinite scroll -->
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+<!-- infinite scroll end -->
+</ion-content>

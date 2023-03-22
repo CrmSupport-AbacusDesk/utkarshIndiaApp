@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Support</ion-title>
+  </ion-navbar>
+  
+  
+  
+  <ion-toolbar color="white" >
+    <div class="ion-tab-btn mb10">
+      <ion-segment [(ngModel)]="activeTab">
+        <ion-segment-button  value="Pending" (click)="get_support_list(activeTab)">
+          Pending
+        </ion-segment-button>
+        <ion-segment-button  value="Close" (click)="get_support_list(activeTab)">
+          Close
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+<div class="nothing-here" *ngIf="!supportData.length">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+<div class="pd-left-right16 mt16 mb100">
+  <div class="attendance-list"  *ngFor="let data of supportData" (click)="support_detail(data.id)">
+    <div class="slab slab-bg">
+      <div class="slab-day">
+        <p>{{data.date_created != '0000-00-00 00:00:00' ? (data.date_created | date:'d MMM yyy') : '---'  }}</p>
+        <span>Date Created</span>
+      </div>
+      <div class="slab-day">
+        <p>{{data.status}}</p>
+        <span>Status</span>
+      </div>
+    </div>
+    <div class="other-block pb0">
+      <p><strong>Remark :</strong> {{data.message}}</p>
+    </div>
+    <div class="next-forword">
+      <i class="material-icons">chevron_right</i>
+    </div>
+  </div>
+
+
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)"  *ngIf="flag!=1">
+		<ion-infinite-scroll-content
+		loadingSpinner="bubbles"
+		loadingText="Loading more data...">
+	</ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</div>
+
+<ion-fab right bottom (click)="goToSupportAdd()">
+  <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+</ion-content>

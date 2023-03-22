@@ -1,0 +1,99 @@
+<!--
+  Generated template for the DealerNetworkPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header style="margin-top:0px;padding:0px;">
+  <ion-navbar>
+    <ion-title>Payment</ion-title>
+    <ion-buttons end *ngIf="LoginType == 'Employee'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+
+
+<div class="fix-container" >
+  <div class="attendance-list flat-list" >
+    <div class="center-block" *ngIf="LoginType== 'Employee'">
+      <div class="circle">{{distributor_detail.company_name?.substring(0,1).toUpperCase()}}</div>
+      <h1>{{distributor_detail.company_name}}</h1>
+      <p>{{distributor_detail.name}} - {{distributor_detail.mobile}}</p>
+      <a class="cell-phone" href="tel:{{distributor_detail?.mobile}}"><i class="material-icons">phone</i></a>
+    </div>
+    
+    
+    <div class="OutOver two-column">
+      <div class="primary-column light-red">
+        <p>₹ {{distributor_detail.outstanding_balance ? distributor_detail.outstanding_balance :'0'}}</p>
+        <span>Outstanding</span>
+      </div>
+      <div class="primary-column light-pink">
+        <p>{{distributor_detail.last_payment_received_date != "0000-00-00 00:00:00" ? (distributor_detail.last_payment_received_date | date : 'dd MMM yyyy') : 'N/A'}}</p>
+        <span class="f11">Last Payment Recieved</span>
+      </div>
+    </div>
+    
+    <div class="search-container">
+      <ion-searchbar class="distributorSearchbar p10" (keyup.enter)="payment_list()" [(ngModel)]="search" name="search">
+      </ion-searchbar>
+    </div>
+  </div>
+  
+  
+</div>
+
+
+
+<div class="summary-heading pl16">Payment History</div>
+<div class="pl16 pr16 mt16 mb50" *ngIf="PaymentInfo?.length">
+  <div class="attendance-list"  *ngFor="let row of PaymentInfo">
+    <div class="slab slab-two">
+      <div class="slab-day">
+        <p>{{row.payment_date ? (row.payment_date| date:'d MMM y hh:mm a') : 'N/A'}}</p>
+        <span>Date</span>
+      </div>
+      <div class="slab-day">
+        <p>{{row.payment_mode ? row.payment_mode : '0'}}</p>
+        <span>Payment Type</span>
+      </div>
+    </div>
+    <div class="slab slab-three boder-top1 pt10 mt10">
+      <div class="slab-day">
+        <p>{{row.payment_amount ?'₹'+''+ row.payment_amount : '0'}}</p>
+        <span>Amount</span>
+      </div>
+      
+      <div class="slab-day">
+        <p>{{row.payment_id ? row.payment_id : '0'}}</p>
+        <span>Transaction ID</span>
+      </div>
+    </div>
+    <!-- <div class="next-forword">
+      <i class="material-icons">chevron_right</i>
+    </div> -->
+  </div>
+</div>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+<div class="nothing-here" style="height: 60%;" *ngIf="!PaymentInfo.length">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>No Data Available</p>
+    </div>
+  </div>
+</div>
+</ion-content>

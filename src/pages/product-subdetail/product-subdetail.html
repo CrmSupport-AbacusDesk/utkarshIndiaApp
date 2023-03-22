@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Sub Category</ion-title>
+    </ion-navbar>
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar type='text' name='search_key' [(ngModel)]="filter.search_key" (keyup.enter)="getCatalogueData()">
+                </ion-searchbar>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+    </ion-refresher-content>
+</ion-refresher>
+
+
+
+<div class="workimg_summary flat" *ngIf="products.length > 0">
+    <ion-list no-lines>
+        <ion-item *ngFor="let list of products; let i=index" (click)="goOnProductDetailPage(list.id)">
+            <h6>{{list.sub_category_name}} <ion-icon name="arrow-forward"></ion-icon></h6>
+        </ion-item >
+    </ion-list>
+</div>
+
+
+<div class="nothing-here" style="height: 50%;" *ngIf="products.length == 0">
+    <div class="outer">
+        <div class="innear">
+            <img src="assets/imgs/no_found.svg" alt="">
+            <p>Data Not Available</p>
+        </div>
+    </div>
+</div>
+
+<!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll> -->
+</ion-content>

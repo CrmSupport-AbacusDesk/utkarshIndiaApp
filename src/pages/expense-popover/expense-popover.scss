@@ -1,0 +1,39 @@
+page-expense-popover {
+    ion-list
+    {
+        &.popover_list
+        {
+            margin: 0px;
+            
+            button
+            {
+                min-height: inherit;
+                padding-left: 0px;
+                
+                .item-inner
+                {
+                    padding: 0px;
+                    
+                    .input-wrapper
+                    {
+                        ion-label
+                        {
+                            margin: 0px;
+                            padding: 12px 10px;
+                            display: flex;
+                            align-items: center;
+                            font-size: 14px;
+                            
+                            img
+                            {
+                                height: 20px;
+                                width: 20px;
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

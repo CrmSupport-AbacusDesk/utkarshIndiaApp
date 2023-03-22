@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{surveyDetail.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="survey-count" *ngIf="detail.length != 0">
+    <div *ngIf="detail.length == 0">
+      <p>Data not Found</p>  
+    </div>
+    <div class="count-box">
+      <p>Total</p>
+      <p>{{detail.length}}</p>
+    </div>
+    <div class="count-box">
+      <p>Filled</p>
+      <p>{{questionCheckCount}}</p>
+    </div>
+    <div class="count-box">
+      <p>Not Filled</p>
+      <p>{{detail.length-questionCheckCount}}</p>
+    </div>
+  </div>
+  
+  <div class="survey-que">
+    <ul>
+      <li *ngFor="let list of detail;let i=index">
+        <h2>{{i+1}}. {{list.ques_name}}</h2> 
+        <div *ngFor="let ans of list.options;let i=index">
+          <ion-list radio-group [(ngModel)]="list.selected_answer" (ionChange)="checkcount(ans)" class="mb0">
+            <ion-item>
+              <ion-label>{{ans.answers}}</ion-label>
+              <ion-radio  item-left [disabled]="this.answer_status == 'Yes'"  value={{ans.id}}  color="primary" class="mr5"></ion-radio>
+            </ion-item>
+          </ion-list>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="padding16" *ngIf="detail.length != 0">
+    <button ion-button block color="primary" [disabled]="submit_disable" (click)="surveySubmit()">
+      <ion-spinner *ngIf="spinnerLoader == true" ></ion-spinner>&nbsp;Save
+    </button>
+    <p>{{selected_answer}}</p>
+  </div>
+  <div class="h50">&nbsp;</div>
+</ion-content>
+

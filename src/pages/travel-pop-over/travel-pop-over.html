@@ -1,0 +1,52 @@
+<ion-list *ngIf="NavType=='Dashboard'" class="popover_list">
+  <button ion-item (click)="close('primary')">Primary Dashboard</button>
+  <button ion-item (click)="close('secondary')">Secondary Dashboard</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Travel'" class="popover_list">
+  <button ion-item (click)="close('My')">My Travel</button>
+  <button ion-item (click)="close('Team')">Team Travel</button>
+</ion-list>
+<ion-list *ngIf="NavType=='PrimaryOrd'" class="popover_list">
+  <button ion-item (click)="close('My')">My Order</button>
+  <button ion-item (click)="close('Team')">Team Order</button>
+</ion-list>
+<ion-list *ngIf="NavType=='SecondaryOrd'" class="popover_list">
+  <button ion-item (click)="close('My')">My Order</button>
+  <button ion-item (click)="close('Team')">Team Order</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Target' && NavType!='leads-details'" class="popover_list">
+  <button ion-item (click)="close('My')">My Target</button>
+  <button ion-item (click)="close('Team')">Team Target</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Event'" class="popover_list">
+  <button ion-item (click)="close('My')">My Event</button>
+  <button ion-item (click)="close('Team')">Team Event</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Enquiry'" class="popover_list">
+  <button ion-item (click)="close('My')">My Enquiry</button>
+  <button ion-item (click)="close('Team')">Team Enquiry</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Distributor'&& DrType !=7" class="popover_list">
+  <button ion-item (click)="close('My')">My Channel Partner</button>
+  <button ion-item (click)="close('Team')">Team Channel Partner</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Distributor'&& DrType==7" class="popover_list">
+  <button ion-item (click)="close('My')">My Dealers</button>
+  <button ion-item (click)="close('Team')">Team Dealers</button>
+</ion-list>
+<ion-list *ngIf="NavType=='Retailers'" class="popover_list">
+  <button ion-item (click)="close('My')">My Dealers</button>
+  <button ion-item (click)="close('Team')">Team Dealers</button>
+</ion-list>
+<ion-list *ngIf="NavType=='leads-details'" class="popover_list"> 
+  <button ion-item (click)="go_to('Detail')"><img src="assets/employee.png" height="20px" width="20px" />Basic Detail</button>
+  <button   *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'" ion-item (click)="go_to('Primary')"><img src="assets/order.png" height="20px" width="20px" />Primary Order</button>
+  <button  *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'" ion-item (click)="go_to('Invoice')"><img src="assets/invoice.png" height="20px" width="20px" />Invoices</button>
+  <button   *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'" ion-item (click)="go_to('Payment')"><img src="assets/payment-method.png" height="20px" width="20px" />Payment</button>
+  <button   *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'" ion-item (click)="go_to('Ledger')"><img src="assets/ledger.png" height="20px" width="20px" />Ledger</button>
+  <button ion-item *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'" (click)="go_to('DistTarget')"><img src="assets/goal.png" height="20px" width="20px" />Target</button>
+  <!-- <button ion-item (click)="go_to('My')"><img src="assets/buy-online.png" height="20px" width="20px" />  Scheme</button> -->
+  <!-- <button ion-item (click)="go_to('POP')"><img src="assets/giftbox.png" height="20px" width="20px" />  POP & Gift</button> -->
+  <button ion-item *ngIf="DrType != 7" (click)="go_to('Dealer')"><img src="assets/broker.png" height="20px" width="20px" />Retailer</button>
+  <button ion-item *ngIf="DrType != 7" (click)="go_to('Secondary')"><img src="assets/order.png" height="20px" width="20px" />Secondary Order</button>
+</ion-list>

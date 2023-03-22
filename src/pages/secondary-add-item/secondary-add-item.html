@@ -1,0 +1,259 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Add Order
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    
+    <div class="edit">
+        <ion-list>
+            <ion-item class="cs-normal-select retailerSelectionBox mt16">
+                <ion-label>Select Item</ion-label>
+                <ionic-selectable item-content [(ngModel)]="data.product_id " [items]="item_list"
+                itemValueField="id" itemTextField="display_name" [canSearch]="true" [hasInfiniteScroll]="true" (onSearch)="get_item_list($event,itemType,lastGstPercent)" (onInfiniteScroll)="getMoreItems($event)"
+                #distributorSelectable (ngModelChange)="get_product_details($event); get_product_Size(data.type_name.id,data.product_id, 'listInput', '')"
+                >
+            </ionic-selectable>
+        </ion-item>
+        
+        <ion-item class="cs-normal-select retailerSelectionBox mt16" *ngIf="brandList.length > 0">
+            <ion-label>Brand <span>*</span></ion-label>
+            <ion-select name="brand" [(ngModel)]="data.brand" #brand="ngModel">
+                <ion-option *ngFor="let row of brandList" value="{{row}}">{{row}}</ion-option>
+            </ion-select>
+        </ion-item>
+        
+        <ion-item class="cs-normal-select retailerSelectionBox mt16" *ngIf="colorList.length > 0">
+            <ion-label>Color <span>*</span></ion-label>
+            <ion-select name="color" [(ngModel)]="data.color" #color="ngModel">
+                <ion-option *ngFor="let row of colorList" value="{{row}}">{{row}}</ion-option>
+            </ion-select>
+        </ion-item>
+        
+        
+        
+        
+        <div class="product-item-table" *ngIf="product_list.length && (data.color || data.brand)">
+            <table class="scroll-150">
+                <tr>
+                    <th class="w100">Product Detail</th>
+                    <td>{{product_detail.product_name}} ({{product_detail.product_code}})</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>{{product_detail.category}}</td>
+                </tr>
+                <tr *ngIf="data.brand">
+                    <th>Brand</th>
+                    <td>{{data.brand}}</td>
+                </tr>
+                <tr *ngIf="data.color">
+                    <th>Color</th>
+                    <td>{{data.color}}</td>
+                </tr>
+                <tr>
+                    <th>Small Packing</th>
+                    <td>{{product_detail.small_packing_size}}</td>
+                </tr>
+                <tr>
+                    <th>Master Packing</th>
+                    <td>{{product_detail.master_packing_size}}</td>
+                </tr>
+            </table>
+        </div>
+        
+        
+        
+        <div class="edit pl0 pr0 pb0" *ngIf="product_list.length && (data.color || data.brand)">
+            <ion-list no-lines>
+                <div class="gst-type">
+                    <ion-list radio-group name="gst_type" [(ngModel)]="data.gst_type" #gst_type="ngModel" [disabled]="add_list.length > 0" (ionChange)="get_product_Size(data.type_name.id,data.product_id, 'listInput', '')">
+                        <ion-item [ngClass]="{'active': data.gst_type == 'Gst Paid' }">
+                            <ion-radio value="Gst Paid"></ion-radio>
+                            <ion-label>GST Paid</ion-label>
+                        </ion-item>
+                        <ion-item [ngClass]="{'active': data.gst_type == 'Gst Extra'}">
+                            <ion-radio value="Gst Extra"></ion-radio>
+                            <ion-label>GST Extra</ion-label>
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </ion-list>
+        </div>
+        
+        
+        <div class="product-item-table" *ngIf="product_list.length && (data.color || data.brand)">
+            <table class="scroll-150">
+                <tr>
+                    <th class="w60 text-right">Price</th>
+                    <th class="w60 text-center">Dis (%)</th>
+                    <th class="w60 text-center">GST (%)</th>
+                    <th class="w60 text-center">QTY.</th>
+                    <th class="text-right">Amount</th>
+                </tr>
+                <tr *ngFor="let row of product_list;let i = index;">
+                    <td class="text-right">
+                        
+                        <ng-container *ngIf="row.product_price > 0">
+                            &#x20B9; {{row.product_price}}
+                        </ng-container>
+                        
+                        <ng-container *ngIf="row.product_price == 0">
+                            <a class="edit-value edits" (click)="changePrice(data.type_name.id,data.product_id, 'addPrice', row.sec_net_price)">
+                                <i class="material-icons create" style="font-size: 15px;">create</i>
+                            </a>
+                        </ng-container>
+                    </td>
+                    <td class="text-center">
+                        {{row.dr_disc}}
+                        <ng-container *ngIf="row.sec_net_price == 0">
+                            <a class="edit-value edits"  (click)="changeDiscount(data.type_name.id,data.product_id, 'addDiscount', row.dr_disc)">
+                                <i class="material-icons create" style="font-size: 15px;">create</i>
+                            </a>
+                        </ng-container>
+                </td>
+                <td class="text-center">{{row.gst_amount | number:'1.2-2'}}
+                    ({{row.gst_percent?row.gst_percent+' %':'0 %'}})</td>
+                    <td class="text-center">
+                        <input type="tel" [name]="'qty'+'i'" [(ngModel)]="row.qty" #qty="ngModel" placeholder="QTY." 
+                        (input)="(row.qty == '' || row.qty <1 || row.qty == null)?(addToListButton = true):(addToListButton = false);"
+                        onkeypress="return event.charCode>=48 && event.charCode<=57 && event.charCode!=110" [disabled]="row.product_price == 0">
+                    </td>
+                    <td class="text-right">&#x20B9; {{row.net_price | number:'1.2-2'}}</td>
+                </tr>
+                
+                
+            </table>
+        </div>
+        
+        
+    </ion-list>
+    
+    
+    
+    <div class="mt16" *ngIf="product_list.length  && data.brand  && (colorList.length > 0 ? data.color : data.brand)">
+        <button ion-button class="cs-btn" [disabled]="addToListButton" (click)="addToList()">Add To List</button>
+    </div>
+    
+    
+    
+    
+    <div class="cs-heading1 pl0" *ngIf="add_list.length">
+        <p>PRODUCT INFORMATION</p>
+    </div>
+    
+    
+    <div class="list-box mt10" *ngFor="let row of add_list;let i=index">
+        <div class="mid mt0">
+            <div class="content-info">
+                <div class="right-info">
+                    <div>
+                        <p>#{{i+1}}  {{row.product_name}} -({{row.product_code}}) </p>
+                    </div>
+                    <p *ngIf="data.feature_apply == 'Yes'">Feature- {{row.product_size}}</p>
+                </div>
+            </div>
+            <div class="tag-info">
+                <button><i class="material-icons red-clr" (click)="DeleteItem(i)">delete_sweep</i></button>
+            </div>
+        </div>
+        <div class="three_boxes">
+            <div class="lower ml2">
+                <p class="font10">Price</p>
+                <p class="font10">&#x20B9;
+                    {{row.price!=null?row.price:row.product_price?row.product_price:'0'}}</p>
+                </div>
+                <div class="lower ml2">
+                    <p class="font10">Discount</p>
+                    <p class="font10">{{row.discounted_price | number:'1.2-2'}} ({{row.dr_disc}} %) </p>
+                </div>
+                
+                <div class="lower ml2">
+                    <p class="font10">Net Price</p>
+                    <p class="font10">₹ {{row.net_price | number:'1.2-2'}}</p>
+                </div>
+                
+                <div class="lower ml2">
+                    <p class="font10">Qty</p>
+                    <p class="font10">{{row.qty}}</p>
+                </div>
+                
+                
+            </div>
+            <div class="three_boxes">
+                <div class="lower">
+                    <p class="font10">Sub total</p>
+                    <p class="font10">₹ {{row.amount | number:'1.2-2'}}</p>
+                </div>
+                <div class="lower ml2">
+                    <p class="font10">GST Amount ({{data.gst_type}})</p>
+                    <p class="font10">₹ {{row.gst_amount | number:'1.2-2'}} ({{row.gst_percent}} %)</p>
+                </div>
+                <div class="lower ml2">
+                    <p class="font10">Amount </p>
+                    <p class="font10">₹ {{row.total_amount!=null?(row.total_amount | number:'1.2-2'):row.total_amount?(row.total_amount | number:'1.2-2'):'0'}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="add_list.length > 0">
+            
+            <div class="time_show amount-listing">
+                <p>Total Item</p>
+                <p>{{add_list.length}}</p>
+            </div>
+            <div class="time_show amount-listing">
+                <p>Total Item Qty</p>
+                <p>{{total_qty}}</p>
+            </div>
+            
+            <div class="time_show amount-listing">
+                <p>Total Order Amount</p>
+                <p>{{total_Order_amount ? '₹' + ' ' + (total_Order_amount | number:'1.2-2') + ' ' + '/-': '0'}}</p>
+            </div>
+            <div class="time_show amount-listing">
+                <p>Total Discount Amount</p>
+                <p>{{order_discount ? '₹'+' '+(order_discount | number:'1.2-2')+' '+'/-':'0'}}</p>
+            </div>
+            <div class="time_show amount-listing">
+                <p>Sub Total</p>
+                <p>{{order_total ? '₹'+' '+(order_total | number:'1.2-2')+' '+'/-':'0'}}</p>
+            </div>
+            <div class="time_show amount-listing">
+                <p>Total GST Amount-({{data.gst_type}}) </p>
+                <p>₹ {{total_gst_amount | number:'1.2-2'}} /-</p>
+            </div>
+            <div class="time_show amount-listing">
+                <p>Grand Total</p>
+                <p>₹ {{new_grand_total | number:'1.2-2'}} /-</p>
+            </div>
+            
+        </div>
+        
+        
+        <ion-list *ngIf="add_list.length">
+            <ion-item class="cs-textarea1 " >
+                <ion-label floating><span>Remark</span></ion-label>
+                <ion-textarea name="remark" [(ngModel)]="data.remark"></ion-textarea>
+            </ion-item>
+        </ion-list>
+        
+        <div class="flex-btn" *ngIf="add_list.length > 0 && data.type_name">
+            <!-- *ngIf="!this.OrderItem && !this.order_data" -->
+            <button ion-button [disabled]="btndisable" class="Buttons" (click)="user_data.order_status='Pending';save_orderalert('submit');">
+                <ion-spinner *ngIf="btnDisableSave" ></ion-spinner>
+                Save
+            </button>
+            
+            <button  ion-button [disabled]="btndisable" class="Buttons" (click)="user_data.order_status='Draft';save_orderalert('draft');">
+                <ion-spinner *ngIf="btnDisableDraft" ></ion-spinner>
+                Draft
+            </button>
+        </div>
+        
+    </div>
+    
+</ion-content>

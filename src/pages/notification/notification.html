@@ -1,0 +1,160 @@
+<ion-header>
+	<ion-navbar>
+	  <ion-title>Team Report</ion-title>
+	  
+	  <ion-buttons end>
+		<button ion-button icon-only (click)="statusModal('teamreport')">
+		  <ion-icon name="funnel"></ion-icon>
+		  
+		  <!-- <ion-icon name="ellipsis-vertical"></ion-icon> -->
+		</button>
+	  </ion-buttons>
+	</ion-navbar>
+  </ion-header>
+
+<ion-content style="background: #f4fbfb;">
+
+<div padding class="pt10 pb0">
+
+
+
+	<ng-container >
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{attendence_count}}</p>
+				<p>Total</p>
+			</div>
+			<div class="g-right" (click) = "downloadattendenceReport()">
+				<div class="g-content">
+					<p>Attendance Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{travel_count}}</p>
+				<p>Total Travel Plan</p>
+			</div>
+			<div class="g-right" (click) = "downloadtravelReport()">
+				<div class="g-content">
+					<p>Travel Plan Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{checkin_count}}</p>
+				<p>Total Checkins</p>
+			</div>
+			<div class="g-right" (click) = "downloadcheckinReport()">
+				<div class="g-content">
+					<p>Checkin Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{primary_count}}</p>
+				<p>Total Primary Order</p>
+			</div>
+			<div class="g-right" (click) = "downloadprimaryorderReport()">
+				<div class="g-content">
+					<p>Primary Order Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{secondary_count}}</p>
+				<p>Total Secondary Order</p>
+			</div>
+			<div class="g-right" (click) = "downloadsecondaryorderReport()">
+				<div class="g-content">
+					<p>Secondary Order Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{leave_count}}</p>
+				<p>Total Leaves</p>
+			</div>
+			<div class="g-right" (click) = "downloadleaveReport()">
+				<div class="g-content">
+					<p>Leave Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{expense_count}}</p>
+				<p>Total Expense</p>
+			</div>
+			<div class="g-right" (click) = "downloadexpenseReport()">
+				<div class="g-content">
+					<p>Expense Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>1</p>
+				<p>Total Travel Plan</p>
+			</div>
+			<div class="g-right">
+				<div class="g-content">
+					<p>Travel Plan Report</p>
+				</div>
+				<div class="g-count">
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="go-btn new mb16" >
+			<div class="g-left">
+				<p>{{event_count}}</p>
+				<p>Total Events</p>
+			</div>
+			<div class="g-right" (click) = "downloadeventReport()">
+				<div class="g-content">
+					<p>Event Report </p>
+				</div>
+				<div class="g-count">
+
+					<i class="material-icons">keyboard_arrow_right</i>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</div>
+</ion-content>
+
+

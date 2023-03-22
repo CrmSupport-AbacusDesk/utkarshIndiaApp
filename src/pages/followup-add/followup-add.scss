@@ -1,0 +1,125 @@
+page-followup-add {
+
+    .scheduledFollowupListBox{
+        margin-bottom: 15px; background-color:#f6f6f6; padding: 10px 3px 3px 3px; border-radius: 8px;
+        display: none;
+    }
+
+    .scheduledFollowupListBox.active{
+        display: block;
+    }
+
+    .followupListBox
+    {
+        margin-top: 10px; 
+        padding: 10px 0; 
+        background-color: #f6f6f6;
+        margin-left: -16px; 
+        margin-right: -16px;
+        > .followupListBox_header
+        {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+    }
+    .followup_slotList 
+    {
+        > .innerBox
+        {
+            width: 800px;
+            height: 100px;
+            display: table-cell;
+            vertical-align: bottom;
+            overflow-y: hidden;
+            overflow-x: auto;
+            padding: 0 16px;
+            white-space: nowrap;
+            list-style: none;
+            scrollbar-color: transparent;
+            > .slotBox
+            {
+                display: inline-block;
+                width: 15%;
+                margin: 0;
+                margin-right: 3px;
+                text-align: center;
+                background-color: #000;
+                color: #fff;
+                border-radius: 5px;
+                height: 30px;
+                line-height: 30px;
+                vertical-align: middle;
+                position: relative;
+                
+                > .timeStamp
+                {
+                    color: red;
+                    position: absolute;
+                    top: -30px;
+                    transform: translate(-50%);
+                    left: 50%;
+                    padding: 0 4px;
+                    height: 20px;
+                    font-size: 10px;
+                    line-height: 20px;
+                    background-color: transparent;
+                }
+                > .timeStamp.active
+                {
+                    color: white;
+                    border-radius: 4px;
+                    background-color: green;
+                }
+                &:after
+                {
+                    content: '';
+                    background-color: red;
+                    position: absolute;
+                    top: -8px;
+                    transform: translate(-50%);
+                    left: 50%;
+                    height: 8px;
+                    width: 1px;
+                }
+            }
+        }
+    }
+
+    .followup_slotDetail{
+        max-height: 80px;
+        overflow-y: auto;
+    }
+
+
+    .followupDetail_card{
+        border: 1px solid #ccc;
+        margin-bottom: 5px;
+        border-radius: 4px;
+        > .followupDetail_cardContent{
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            border-radius: 4px;
+            
+            > .followup_Time{
+                border-radius: 4px 0 0 4px;
+                display: flex;
+                align-items: center;
+                max-width: 120px;                        
+                background-color: rgb(72, 110, 143);
+                color: #fff;
+                padding: 5px;
+               
+            }
+
+            > .followup_Name{
+                flex: 1;
+                padding: 5px;
+                text-align: right;                
+                background-color: #fff;
+                border-radius: 0px 4px 4px 0px;
+            }
+        }
+    }
+}

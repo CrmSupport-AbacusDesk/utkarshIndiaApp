@@ -1,0 +1,117 @@
+<!--
+  Generated template for the SecondaryOrderPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Secondary Order</ion-title>
+    <ion-buttons end *ngIf="this.NavType != 'retailer' && LoginType == 'Employee'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  
+  <ng-container  *ngIf="LoginType =='Employee'">
+    <div class="fix-container">
+      <div class="attendance-list flat-list">
+        <div class="center-block">
+          <div class="circle">{{Order_detail.company_name | slice:0:1}}</div>
+          <h1>{{Order_detail.company_name?.toUpperCase()}}</h1>
+          <p>{{Order_detail.name | titlecase}} ({{Order_detail.mobile}})</p>
+          <a class="cell-phone" href="tel:{{Order_detail.mobile}}"><i class="material-icons">phone</i></a>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  
+  <div class="summary-heading pl16" *ngIf="LoginType =='Employee'">Order History</div>
+  
+  <ng-container *ngIf="showRelatedTab!=false">
+    <div class="capsule-tabs" style="border-bottom: 0px;">
+      <ul>
+        <li [ngClass]="{'active':Order_status_type == 'Draft'}" (click)="Order_status_type = 'Draft';Secondary_order()">
+          <p>Draft<span>{{count.Draft}}</span></p>
+        </li>
+        <li [ngClass]="{'active':Order_status_type == 'Pending'}" (click)="Order_status_type = 'Pending';Secondary_order()">
+          <p>Pending<span>{{count.Pending}}</span></p>
+        </li>
+        <li [ngClass]="{'active':Order_status_type == 'Approved'}" (click)="Order_status_type = 'Approved';Secondary_order()">
+          <p>Approved<span>{{count.Approved}}</span></p>
+        </li>
+        
+        <li [ngClass]="{'active':Order_status_type == 'Reject'}" (click)="Order_status_type = 'Reject';Secondary_order()">
+          <p>Rejected<span>{{count.Reject}}</span></p>
+        </li>
+      </ul>
+    </div>
+    
+    
+    
+    
+    <div class="pl16 pr16 mt15 mb50" *ngIf="total_order?.length && !search.date">
+      
+      <div class="attendance-list" *ngFor="let row of total_order"  (click)="goOnOrderDetailFromDrLogin(row.id)">
+        <div class="slab slab-bg">
+          <div class="slab-day">
+            <p>{{row.date_created| date:'d MMM y hh:mm a'}}</p>
+            <span>Date</span>
+          </div>
+          <div class="slab-day">
+            <p>{{row.order_no}}</p>
+            <span>Order Id</span>
+          </div>
+        </div>
+        
+        <div class="center-block">
+          <div class="circle">{{row.created_by_user?.substring(0,1).toUpperCase()}}</div>
+          <h1>{{row.created_by_user?.toUpperCase()}}</h1>
+          <p>Created by</p>
+        </div>
+
+
+        <div class="center-block pl0 pr0"  *ngIf="constant.UserLoggedInData.all_data?.type !=3">
+          <h1>{{row.company_name?.toUpperCase()}}</h1>
+          <p>Dealer Name</p>
+        </div>
+        
+        <div class="slab mt5">
+          <div class="slab-day">
+            <p>{{row.order_item ? row.order_item : '0'}}</p>
+            <span>Total Item</span>
+          </div>
+          <div class="slab-day">
+            <p class="bold">{{row.total_qty ? row.total_qty : '0'}}</p>
+            <span>Total Item Qty</span>
+          </div>
+          <div class="slab-day">
+            <p class="bold">{{row.order_grand_total ? '₹'+''+row.order_grand_total+' '+'/-' : '---'}}</p>
+            <span>Amount</span>
+          </div>
+        </div>
+        
+        <div class="next-forword">
+          <i class="material-icons">chevron_right</i>
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <div class="nothing-here" style="height: 60%;" *ngIf="!total_order.length">
+      <div class="outer">
+        <div class="innear">
+          <img src="assets/imgs/no_found.svg" alt="">
+          <p>No Data Available</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>

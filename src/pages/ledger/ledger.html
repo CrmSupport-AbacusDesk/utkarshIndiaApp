@@ -1,0 +1,72 @@
+<!--
+  Generated template for the LedgerPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Ledger</ion-title>
+    <ion-buttons end *ngIf="LoginType == 'Employee'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  
+  <div class="fix-container"  *ngIf="LoginType== 'Employee'" >
+    <div class="attendance-list flat-list" >
+      <div class="center-block">
+        <div class="circle">{{dr_detail.company_name?.substring(0,1).toUpperCase()}}</div>
+        <h1>{{dr_detail.company_name}}</h1>
+        <p>{{dr_detail.name}} - {{dr_detail.mobile}}</p>
+        <a class="cell-phone" href="tel:{{dr_detail?.mobile}}"><i class="material-icons">phone</i></a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="transation-tabel">
+    <table>
+      <tr  *ngFor="let row of account_list; let i=index">
+        <td>
+          <div class="point-date">
+            <div class="led-date">{{row.date_created|date : 'dd MMM yyyy , hh:mm a'}}</div>
+            <div class="led-amount" [ngClass]="{'credit' : row.transaction_type == 'Credit', 'debit' : row.transaction_type == 'Debit'} ">
+
+              <span>&#x20B9; {{row.transaction_amount.toLocaleString('en-IN')}}</span> 
+              <i class="material-icons">{{row.transaction_type == 'Credit' ? 'call_received' : 'call_made'}}</i>
+            </div>
+          </div>
+          
+          <div class="point-remark mb0">
+            <p> {{row.transaction_type == 'Credit' ? row.remark : ' '}}
+              {{row.transaction_type == 'Debit' ? row.remark : ' '}}
+            </p>
+            
+            <div class="avl-bal">
+              Balance: &#x20B9; {{row.balance_amount}}
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  
+  
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!account_list.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+  <!-- </ion-scroll> -->
+</ion-content>

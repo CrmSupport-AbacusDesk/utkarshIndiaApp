@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Redeem Points</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="{{'Pull to refresh'}}" refreshingSpinner="circles"
+      refreshingText="{{'Refreshing...'}}">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="fix">
+    <div class="top-nav">
+      <p>{{'Balance Points'}}</p>
+      <h1>{{influencer_point}}</h1>
+    </div>
+
+  </div>
+  <ng-container *ngFor="let list of gift_list; let i=index">
+    <div class="gift-item" [ngClass]="{'inactive': intVal(list.range_start) > intVal(influencer_point)}"
+      (click)="goOnGiftDetail(list.id, list.gift_type, list.range_start)">
+      <div class="top-items">
+        <div class="gift-img">
+          <img src="{{uploadUrl+list.gift_img}}" *ngIf="list.gift_type == 'Gift'">
+          <img src="assets/imgs/cash.png" alt="" *ngIf="list.gift_type == 'Cash'">
+        </div>
+        <div class="pts">
+          <h1>{{list.title | titlecase}}</h1>
+          <p *ngIf="list.gift_type == 'Gift'">{{list.gift_point}} {{'Points'}}</p>
+          <p *ngIf="list.gift_type == 'Cash'">{{list.range_start}} to {{list.range_end}} {{'Points'}}</p>
+          <span>Gift Type :- {{list.gift_type}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <div class="nothing-here" style="height: 60%;" *ngIf="gift_list.length == 0">
+    <div class="outer">
+      <div class="innear">
+        <img alt="" src="assets/imgs/no_found.svg">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

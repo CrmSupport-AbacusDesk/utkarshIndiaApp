@@ -1,0 +1,218 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Event Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div class="attendance-list flat-list">
+    <div class="slab slab-bg">
+      <div class="slab-day">
+        <p>{{details.date_of_meeting | date:'dd MMM yyyy'}}</p>
+        <span>Meeting Date</span>
+      </div>
+      <div class="slab-day">
+        <p>{{details.total_member}}</p>
+        <span>Total Member</span>
+      </div>
+      <div class="slab-day">
+        <p>{{details.status}}</p>
+        <span>Status</span>
+      </div>
+    </div>
+    <div class="center-block">
+      <div class="circle">{{details.name | slice:0:1}}</div>
+      <h1 class="f12">{{details.company_name| titlecase}}</h1>
+      <p> {{details.name| titlecase}} ({{details.mobile}})</p>
+      <a class="cell-phone" href="tel:{{details.mobile}}"><i class="material-icons">phone</i></a>
+    </div>
+    <div class="other-block pb0">
+      <p>Description</p>
+      <p>{{details.description| titlecase}}</p>
+    </div>
+  </div>
+
+  <div *ngIf="details.status != 'Approved' && details.status != 'Pending' &&(details.participents?.length) ">
+    <ng-container>
+      <div class="upload-doc">
+        <p class="">Event Participents</p>
+        <div class="list-box mt16" *ngFor="let participants of details.participents">
+          <div class="mid mt0">
+            <div class="content-info">
+              <div class="left-info">
+                <div class="circle">{{participants.participent_name.substring(0,1).toUpperCase()}}</div>
+              </div>
+              <div class="right-info">
+                <p>{{participants.participent_name.toUpperCase()}}</p>
+                <p> Mobile No. : {{participants.participent_mobile ? participants.participent_mobile : '--'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+
+  <div *ngIf="details.status != 'Approved' && details.status != 'Pending' ">
+    <div class="upload-doc">
+      <p class="">Event Images</p>
+      <ul class="no-padding">
+        <li class="image-upload" *ngFor="let val of details.uploads">
+          <img src="{{img_url+val.img_path}}">
+        </li>
+      </ul>
+    </div>
+    <div class="nothing-here" style="height: 50%;" *ngIf="!details.uploads?.length">
+      <div class="outer">
+        <div class="innear">
+          <img src="assets/imgs/No data-pana.png" alt="">
+          <p>Image not Available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="prodstatus != 'Pending'">
+    <form #f2="ngForm">
+      <div *ngIf="details.status == 'Approved'">
+        <form #f="ngForm" *ngIf="details.status == 'Approved'">
+
+          <div class="cs-heading1 pt0">
+            <p>ADD Participants</p>
+          </div>
+
+          <div class="edit">
+            <ion-list>
+              <ion-item [ngClass]="{'cs-error': f.submitted && participent_name?.invalid}">
+                <ion-label floating><span>Name</span></ion-label>
+                <ion-input type="text" name="participent_name" #participent_name="ngModel"
+                  [(ngModel)]="data1.participent_name"
+                  [ngClass]="{'is-invalid':f.submitted && participent_name?.invalid}" (keypress)="name($event)"
+                  required></ion-input>
+              </ion-item>
+
+
+              <p *ngIf="f.submitted && participent_name?.invalid && data1.participent_name" class="error-line"> Name Is
+                Invalid!</p>
+              <p *ngIf="f.submitted && participent_name?.invalid && !data1.participent_name" class="error-line"> Name Is
+                Required!</p>
+
+              <ion-item [ngClass]="{'cs-error': f.submitted && participent_mobile?.invalid}">
+                <ion-label floating><span>Mobile No.</span></ion-label>
+                <ion-input type="tel" name="participent_mobile" #participent_mobile="ngModel"
+                  [(ngModel)]="data1.participent_mobile"
+                  [ngClass]="{'is-invalid': f.submitted && participent_mobile?.invalid}" maxlength="10" minlength="10"
+                  onkeypress="return event.charCode >= 48 && event.charCode <= 57" required></ion-input>
+              </ion-item>
+
+              <p *ngIf="f.submitted && participent_mobile?.invalid && data1.participent_mobile" class="error-line">
+                Mobile
+                Number Is Invalid!</p>
+              <p *ngIf="f.submitted && participent_mobile?.invalid && !data1.participent_mobile" class="error-line">
+                Mobile
+                Number Is Required!</p>
+            </ion-list>
+          </div>
+          <div class="pd-left-right16 dflex flex-end mt16">
+            <button type="button" class="cs-button border-btn w100" [disabled]="AddToList_Dsiable"
+              (click)="addParticipants()">ADD TO LIST</button>
+          </div>
+
+        </form>
+
+
+        <div class="dflex" style="margin-top:-36px" *ngIf="details.status == 'Approved'">
+          <div class="upload-plus-icon">
+            <h1 class="img-heading">UPLOAD IMAGE</h1>
+            <ul>
+              <li class="wp100">
+                <div class="label">
+                  <button type="button" (click)="presentActionSheet('event')">
+                    <i class="material-icons">collections</i>
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+        <div class="round-tab mt16">
+          <ul>
+            <li [ngClass]="TabType==1 ?'active': '' " (click)="TabType=1">
+              <a>Participants Member</a>
+            </li>
+            <li [ngClass]="TabType==2 ? 'active': '' " (click)="TabType=2">
+              <a>Gallery</a>
+            </li>
+          </ul>
+        </div>
+
+
+        <!-- Participants tab start -->
+        <div class="product-item-table mt0 padding16" *ngIf="TabType==1 && details.participents">
+          <table>
+            <tr>
+              <th>Name</th>
+              <th class="w90">Mobile No</th>
+              <th class="w50" *ngIf="details.status == 'Approved'">Action</th>
+            </tr>
+            <tr *ngFor="let row of details.participents;let i = index">
+              <td>{{row.participent_name| titlecase }}</td>
+              <td>{{row.participent_mobile}}
+                <div class="right-date">
+                </div>
+              </td>
+              <td *ngIf="prodstatus == 'Approved'">
+                <div class="tag-info pr10">
+                  <button class="transparent"><i class="material-icons red-clr font21"
+                      (click)="deletePerson(row.id,i)">delete_sweep</i></button>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- Participants tab End -->
+
+        <!-- Gallery Tab Start -->
+        <div class="upload-plus-icon" *ngIf="TabType==2 && details.uploads">
+          <ul>
+            <li *ngFor="let photo of details.uploads ,let i =index ">
+              <div class="label">
+                <button type="button">
+                  <img class="up-img" (click)="openDocument(img_url+photo.img_path)" [src]="img_url+photo.img_path">
+                </button>
+                <a class="im-delete">
+                  <i class="material-icons" *ngIf="prodstatus == 'Approved' "
+                    (click)="delete_image(photo.id,i)">delete_sweep</i>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div style=" display:flex;flex-direction:row;justify-content:space-between">
+          <button ion-button class="Buttons" style="background-color:#0c8f00"
+            *ngIf="details.status=='Approved' && data3!=0" [disabled]="!f2.form.valid && !data2.expense "
+            (click)="submitbutton('Completed')">Complete Event</button>
+          <button ion-button class="Buttons" style="background-color:#b50505"
+            *ngIf="details.status=='Approved'" [disabled]="!f2.form.valid && !data2.expense "
+            (click)="submitbutton('Cancel')">Cancel Event</button>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="h80"></div>
+
+  <div class="nothing-here" style="height: 50%;" *ngIf="details.status == 'Pending'">
+    <div class="outer">
+      <div class="innear">
+        <p>WAITING FOR APPROVAL...</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

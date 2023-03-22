@@ -1,0 +1,38 @@
+
+<ion-header class="header-border">
+	<ion-toolbar color="white">
+		<div class="logo">
+			<img src="assets/imgs/logo.png" alt="">
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+	<div class="user-types">
+		<ion-list radio-group [(ngModel)]="data.registerType" >
+			<div class="list-header">
+				Select Login Type
+			</div>
+			<ion-item >
+				<ion-label>Channel Partner/Dealer</ion-label>
+				<ion-radio color="secondary" value="DrLogin"></ion-radio>
+			</ion-item>
+			<ion-item>
+				<ion-label>Employee</ion-label>
+				<ion-radio color="secondary" value="Employee"></ion-radio>
+			</ion-item>
+			<ion-item >
+				<ion-label>Plumber/Customer</ion-label>
+				<ion-radio color="secondary" value="Other"></ion-radio>
+			</ion-item>
+		</ion-list>
+	</div>
+	<div class="text-right mr16">
+	<button ion-button round outline color="secondary" class="Buttons" [disabled]="!data?.registerType" (click)="goToRegisterPage()" >Continue</button>
+	</div>
+
+</ion-content>
+
+

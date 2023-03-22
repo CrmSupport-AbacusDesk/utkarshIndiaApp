@@ -1,0 +1,189 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Add Checkin{{filter}}
+		</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ng-container *ngIf="userType!='OFFICE'&&load != '1'&&AddRetailer == false">
+		<ion-list class="m0 cs-list-change" radio-group [(ngModel)]="data.network" name="network"
+			(ngModelChange)="test(data.network)">
+			<div *ngFor="let row of networkType">
+				<ion-item>
+					<ion-label>{{row.module_name}}</ion-label>
+					<ion-radio value={{row.type}}></ion-radio>
+				</ion-item>
+			</div>
+
+
+		</ion-list>
+	</ng-container>
+
+	<div class="p16">
+		<div class="edit m0" [hidden]="hideList">
+			<ion-list>
+				<ion-item class="cs-normal-select ">
+					<ion-label floating>Channel Partner</ion-label>
+					<ionic-selectable item-content [(ngModel)]="data.type_name" [items]="distributor_network_list"
+						itemValueField="id" itemTextField="display_name"
+						(onChange)="other(data.type_name.company_name,data.type_name)" [canSearch]="true"
+						[canAddItem]="showAdd" addButtonText="Add New Dealer" (onAddItem)="onAddPort($event)"
+						#selectComponent>
+					</ionic-selectable>
+				</ion-item>
+			</ion-list>
+		</div>
+		<div class="info mt16" *ngIf="load == '1'">
+			<div class="attendance-list">
+				<div class="center-block p0">
+					<!-- <div class="circle" *ngIf="type_name.company_name">
+						{{type_name.company_name.substring(0,1).toUpperCase()}}</div> -->
+					<h1 class="f12" *ngIf="type_name.company_name">{{type_name.company_name | titlecase}}
+						({{newData.module_name}})</h1>
+					<div class="circle" *ngIf="!type_name.company_name">
+						{{type_name.name.trim().substring(0,1).toUpperCase()}}
+					</div>
+					<h1 class="f12" *ngIf="!type_name.company_name">{{type_name.name | titlecase}}</h1>
+					<p>{{type_name.name}}</p>
+					<p>{{type_name.mobile}}</p>
+				</div>
+				<div class="other-block"
+					*ngIf="type_name.address || type_name.state  || type_name.district  || type_name.city  || type_name.area || type_name.pincode">
+					<p><strong>Address :</strong>
+						{{type_name.address}} {{type_name.area}} {{type_name.city}} {{type_name.district}}
+						{{type_name.state}}
+					</p>
+				</div>
+			</div>
+
+
+		</div>
+
+		<form #f="ngForm" (ngSubmit)="f.form.valid && save_retailer()" *ngIf="AddRetailer == true">
+			<div class="form">
+				<ion-list no-lines>
+
+					<ion-item [ngClass]="{'error':f.submitted &&company_name?.invalid}">
+						<ion-label floating>Company Name <span>*</span></ion-label>
+						<ion-input type="text" name="company_name" #company_name="ngModel"
+							[(ngModel)]="form.company_name" required>
+						</ion-input>
+					</ion-item>
+					<div *ngIf="f.submitted &&company_name.invalid" class="eror">
+						<!-- <p *ngIf="company_name.errors.required">{{'Field is Required'}}</p> -->
+					</div>
+
+					<ion-item [ngClass]="{'error':f.submitted &&name?.invalid}">
+						<ion-label floating>Name <span>*</span></ion-label>
+						<ion-input type="text" name="name" #name="ngModel" [(ngModel)]="form.name" required>
+						</ion-input>
+					</ion-item>
+					<div *ngIf="f.submitted &&name.invalid" class="eror">
+						<!-- <p *ngIf="name.errors.required">{{'Field is Required'}}</p> -->
+					</div>
+					<ion-item [ngClass]="{'error':f.submitted &&mobile?.invalid}">
+						<ion-label floating>Mobile Number<span>*</span></ion-label>
+						<ion-input type="tel" (keypress)="MobileNumber($event)" name="mobile" #mobile="ngModel"
+							minLength="10" maxLength="10" [(ngModel)]="form.mobile" required>
+							<ion-icon name="cancel"></ion-icon>
+						</ion-input>
+					</ion-item>
+					<div *ngIf="f.submitted &&mobile.invalid" class="eror">
+						<!-- <p *ngIf="mobile.errors.required">{{'Field is Required'}}</p> -->
+					</div>
+					<ion-item>
+						<ion-label floating>Email Id</ion-label>
+						<ion-input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" name="email"
+							#email="ngModel" [(ngModel)]="form.email"></ion-input>
+					</ion-item>
+					<ion-item>
+						<ion-label floating>Date of Birth </ion-label>
+						<ion-datetime display-format="MMM DD, YYYY" type="text" name="dob" #dob="ngModel"
+							[(ngModel)]="form.dob" class="calander"></ion-datetime>
+					</ion-item>
+
+
+					<div *ngIf="!form.id">
+						<ion-item [ngClass]="{'error':f.submitted &&assign_dr_id?.invalid}">
+							<ion-label floating>Select Channel Partner<span>*</span></ion-label>
+							<ionic-selectable item-content name="assign_dr_id" #assign_dr_id="ngModel"
+								[(ngModel)]="form.assign_dr_id" [items]="distributor_list" itemValueField="id"
+								itemTextField="display_name" [canSearch]="true" #selectComponent required>
+							</ionic-selectable>
+							<!-- <ion-select name="assign_dr_id" name="assign_dr_id" #assign_dr_id="ngModel"
+								[(ngModel)]="form.assign_dr_id" required>
+								<ion-option *ngFor="let row of distributor_list;let i=index;" value="{{row.id}}"
+									required>
+									{{row.display_name
+									| titlecase}}</ion-option>
+							</ion-select> -->
+						</ion-item>
+						<div *ngIf="f.submitted &&assign_dr_id.invalid" class="eror">
+							<!-- <p *ngIf="assign_dr_id.errors.required">{{'Field is Required'}}</p> -->
+						</div>
+					</div>
+					<ion-item [ngClass]="{'error':f.submitted &&address?.invalid}">
+						<ion-label floating>Address<strong class="red-text">*</strong></ion-label>
+						<ion-input type="text" name="address" #address="ngModel" [(ngModel)]="form.address" required></ion-input>
+					  </ion-item>
+					  <div *ngIf="f.submitted && address.invalid" class="eror">
+						<p *ngIf="address.errors.required">{{'Field is Required'}}</p>
+					  </div>
+			  
+					  <ion-item no-lines [ngClass]="{'error':f.submitted && pincode?.invalid}">
+						<ion-label floating>Pincode<strong class="red-text">*</strong></ion-label>
+						<ion-input type="tel" minLength="6" maxLength="6" name="pincode" 
+						  #pincode="ngModel" [(ngModel)]="form.pincode" (ngModelChange)="getSateteDistrcit()" required></ion-input>
+					  </ion-item>
+					  <div *ngIf="f.submitted &&pincode.invalid" class="eror">
+						<p *ngIf="pincode.errors.required">{{'Field is Required'}}</p>
+					  </div>
+			  
+					  <ion-item [ngClass]="{'error':f.submitted && state?.invalid}">
+						<ion-label floating>State <strong class="red-text">*</strong></ion-label>
+						<ion-select name="state" name="state" #state="ngModel" [(ngModel)]="form.state" (ionChange)="get_district()" required>
+						  <ion-option *ngFor="let row of state_list;let i=index;" value="{{row.state_name}}" >{{row.state_name | titlecase}}</ion-option>
+						</ion-select>
+					  </ion-item>
+					  <div *ngIf="f.submitted && state.invalid" class="eror">
+						<p *ngIf="state.errors.required">{{'Field is Required'}}</p>
+					  </div>
+					  <ion-item [ngClass]="{'error':f.submitted && district?.invalid}">
+						<ion-label floating>District <strong class="red-text">*</strong></ion-label>
+						<ion-select name="district" #district="ngModel" [(ngModel)]="form.district" (ionChange)="getCityList()" required> 
+						  <ion-option *ngFor="let row of district_list" value="{{row.district_name}}">{{row.district_name}}
+						  </ion-option>
+						</ion-select>
+					  </ion-item>
+					  <div *ngIf="f.submitted && district.invalid" class="eror">
+						<p *ngIf="district.errors.required">{{'Field is Required'}}</p>
+					  </div>
+				   
+					  <ion-item [ngClass]="{'error':f.submitted && city?.invalid}">
+						<ion-label floating>City</ion-label>
+						<ion-input type="text" name="city" #city="ngModel" [(ngModel)]="form.city" ></ion-input>
+					  </ion-item>
+
+				</ion-list>
+			</div>
+
+			<!-- <button ion-button class="cs-btn" *ngIf="!form.id" (click)="save_retailer()"
+		style="margin: 16px 0px !important;">Save</button>
+	  <button ion-button class="cs-btn" *ngIf="form.id" (click)="update()"
+		style="margin: 16px 0px !important;">Update</button> -->
+			<button ion-button block round color="primary" [disabled]="savingFlag == true">
+				<ion-spinner *ngIf="savingFlag"></ion-spinner>&nbsp; {{!form.id ? 'Save' : ''}}
+			</button>
+			<!-- </div> -->
+		</form>
+		<button ion-button block color="primary" [disabled]="!data.network || spinnerLoader" *ngIf="load == '1'"
+			(click)="startVisit('blank')">
+			<ion-spinner *ngIf="spinnerLoader"></ion-spinner>&nbsp;Check In
+		</button>
+	</div>
+</ion-content>

@@ -1,0 +1,56 @@
+<!--
+  Generated template for the LoyaltyGiftTrackerPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Track Request</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="{{'Pull to refresh'}}" refreshingSpinner="circles" refreshingText="{{'Refreshing...'}}">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="gift-item transaction" *ngFor="let row of redeemList;"  (click)="goOnTrackerDetail(row.id)">
+    <div class="top-items">
+      <div class="gift-img" [ngClass]="{'pending-bg': row.status == 'Pending' , 'approved-bg': row.status == 'Approved' , 'reject-bg': row.status == 'Reject'}">
+        <i class="material-icons" *ngIf="row.status == 'Pending'">schedule_send</i>
+        <i class="material-icons" *ngIf="row.status == 'Reject'">cancel_schedule_send</i>
+        <i class="material-icons" *ngIf="row.status == 'Approved'">thumb_up_alt</i>
+
+      </div>
+      <div class="pts">
+        <ul>
+          <li><span>Date</span> {{row.date_created | date:'d MMM y'}}</li>
+          <li><span>Req. Id</span> {{row.req_id}}</li>
+          <li><span>Type</span> {{row.redeem_type}}</li>
+          <li><span>Status</span> <strong class="{{row.status}}">{{row.status}}</strong></li>
+        </ul>
+        <h1>{{row.gift_name | titlecase}}</h1>
+        <p>{{row.point}} Points</p>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="nothing-here" style="height: 60%;" *ngIf="!redeemList.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

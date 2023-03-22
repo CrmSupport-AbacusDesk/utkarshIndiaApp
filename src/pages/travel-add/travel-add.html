@@ -1,0 +1,184 @@
+<ion-header>
+    
+    <ion-navbar>
+        <ion-title>Add Travel Plan</ion-title>
+    </ion-navbar>
+    
+</ion-header>
+
+
+<ion-content>
+    <div class="edit mt10">
+        <ion-list>
+            <div>
+                <ion-item>
+                    <ion-label floating><span>Select From <strong>*</strong></span></ion-label>
+                    <ion-datetime display-format="MMM DD, YYYY"  placeholder="Select Date" [min]="today_date" type="text" name="travel_date" #travel_date="ngModel" [(ngModel)]="travel_data.date_from"  class="calander" required ></ion-datetime>
+                </ion-item>
+
+                <ion-item *ngIf="travel_data.date_from">
+                    <ion-label floating><span>Select To <strong>*</strong></span></ion-label>
+                    <ion-datetime display-format="MMM DD, YYYY"  placeholder="Select Date" [min]="travel_data.date_from" type="text" name="travel_date" #travel_date="ngModel" [(ngModel)]="travel_data.date_to" class="calander" required ></ion-datetime>
+                </ion-item>
+                
+                <ion-item class="cs-normal-select mt16" *ngIf="travel_data.date_to">
+                    <ion-label>Select Type <strong>*</strong></ion-label>
+                    <ion-select [(ngModel)]="travel_data.travel_type" required>
+                        <ion-option value="Area Visit">Area Visit</ion-option>
+                        <ion-option value="Distributor Visit">Partywise Visit</ion-option>
+                    </ion-select>
+                </ion-item>
+                
+                <ion-item class="cs-normal-select" *ngIf="travel_data.travel_type=='Area Visit'" >
+                    <ion-label class="select-label">Select State <strong>*</strong></ion-label>
+                    <ion-select name="state" [(ngModel)]="travel_data.state" (ngModelChange)="getDstrictList()" multiple required>
+                        <ion-option *ngFor="let list of state_list" [value]="list.state_name">{{list.state_name}}</ion-option>
+                        <!-- <ion-option value="two">Punjab</ion-option> -->
+                    </ion-select>
+                </ion-item>
+
+                <ion-item class="cs-selectable mt16 " *ngIf="travel_data.travel_type=='Area Visit' && travel_data.state">
+                    <ion-label><span>Select District</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.district" [isMultiple]="true" [items]="district_list" 
+                    itemValueField="district_name" itemTextField="district_name"  [canSearch]="true"
+                     (onChange)="test1($event,'district_list');getCityList()"></ionic-selectable>
+                </ion-item>
+
+                <ion-item class="cs-selectable mt16 " *ngIf="travel_data.travel_type=='Area Visit' && travel_data.state">
+                    <ion-label><span>Select City</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.city" [isMultiple]="true" [items]="city_list" 
+                    itemValueField="city" itemTextField="city"  [canSearch]="true" (onChange)="test1($event,'city_list');selectarea()"></ionic-selectable>
+                </ion-item>
+                <ng-container *ngIf="travel_data.travel_type=='Distributor Visit'" >
+                <div class="cs-heading1" >
+                    <p>Filter Your Data </p>
+        <label class="chedate"style="display: inline-flex;justify-content: space-between;">
+
+            <i class="material-icons"(click)="refresh()">refresh</i>
+</label>
+                </div>
+                <div class="edit">
+                <ion-item class="cs-normal-select" *ngIf="travel_data.travel_type=='Distributor Visit'" >
+                    <ion-label class="select-label">Select State <strong>*</strong></ion-label>
+                    <ion-select name="state" [(ngModel)]="travel_data.state" (ngModelChange)="getDstrictList()" multiple required>
+                        <ion-option *ngFor="let list of state_list" [value]="list.state_name">{{list.state_name}}</ion-option>
+                        <!-- <ion-option value="two">Punjab</ion-option> -->
+                    </ion-select>
+                </ion-item>
+
+                <ion-item class="cs-selectable mt16 " *ngIf="travel_data.travel_type=='Distributor Visit' ">
+                    <ion-label><span>Select District</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.district" [isMultiple]="true" [items]="district_list" 
+                    itemValueField="district_name" itemTextField="district_name"  [canSearch]="true"
+                     (onChange)="test1($event,'district_list');getCityList()"></ionic-selectable>
+                </ion-item>
+
+                <ion-item class="cs-selectable mt16 " *ngIf="travel_data.travel_type=='Distributor Visit' ">
+                    <ion-label><span>Select City</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.city" [isMultiple]="true" [items]="city_list" 
+                    itemValueField="city" itemTextField="city"  [canSearch]="true" (onChange)="test1($event,'city_list');selectarea()"></ionic-selectable>
+                </ion-item>
+                <div class="padding16">
+                    <!-- <button *ngIf="!form.DealerExist && form.mobile && form.mobile.length==10 && form.state && form.district && form.area.length>0" ion-button class="cs-btn" style="margin: 16px 0px !important;">Save</button> -->
+                    <button  [disabled]="!(travel_data.state )" ion-button class="cs-btn" style="margin: 16px 0px !important;"(click)="getChannelPartner()">Go</button>
+                   
+                
+                </div>
+                </div>
+                </ng-container>
+                <ion-item class="cs-normal-select" *ngIf="travel_data.travel_type=='Distributor Visit'">
+                    <ion-label><span>Select Party</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.distributor" [isMultiple]="true" [items]="channel_partners" 
+                    itemValueField="id" itemTextField="company_name"  [canSearch]="true" ></ionic-selectable>
+                   
+                </ion-item>
+                <!-- <ion-item class="cs-normal-select" *ngIf="travel_data.travel_type=='Area Visit' && travel_data.state">
+                    <ion-label> Select District <strong>*</strong></ion-label>
+                    <ion-select name="district" [(ngModel)]="travel_data.district" (ngModelChange)="selectarea()" required >
+                        <ion-option *ngFor="let list of district_list" [value]="list.district_name">{{list.district_name}}</ion-option>
+                         <ion-option value="two">Palwal</ion-option> -
+                    </ion-select>
+                </ion-item>-->
+
+                <ion-item class="cs-normal-select" *ngIf="travel_data.travel_type=='Area Visit' && travel_data.city">
+                    <ion-label><span>Select Area</span></ion-label>
+                    <ionic-selectable item-content #district_Selectable [(ngModel)]="travel_data.area" [isMultiple]="true" [items]="area_list" 
+                    itemValueField="area" itemTextField="area"  [canSearch]="true" ></ionic-selectable>
+                    
+                </ion-item> 
+                
+                <!-- <ion-item class="cs-normal-select h80" *ngIf="travel_data.travel_type=='Area Visit' && travel_data.district">
+                    <ion-label floating>Remarks<strong>*</strong></ion-label>
+                    <ion-textarea class="h80" name="status_remark" #status_remark="ngModel" [(ngModel)]="travel_data.status_remark"  placeholder="Remark" ></ion-textarea>
+                </ion-item> -->
+
+                <ion-item class="cs-textarea1" *ngIf="travel_data.travel_type=='Area Visit' && travel_data.district">
+                    <!-- <ion-label floating>Remarks<strong>*</strong></ion-label> -->
+                    <ion-textarea name="status_remark" #status_remark="ngModel" [(ngModel)]="travel_data.status_remark"  placeholder="Remark" ></ion-textarea>
+                </ion-item>
+
+                       
+               
+                
+            </div>
+        </ion-list>
+        
+        <button ion-button block class="h35 green-color mt20" style="letter-spacing: 1px;"  [disabled]="!travel_data.date_from || !travel_data.date_to || !travel_data.travel_type || (travel_data.travel_type=='Distributor Visit' && !travel_data.distributor) || (travel_data.travel_type=='Area Visit' && !travel_data.state) || (travel_data.travel_type=='Area Visit' && !travel_data.district) " (click)="!travel_data.id ? addTravelPlan() : update_travel_plan()">Save</button>
+    </div>
+
+    <!-- <div class="pd-left-right16">
+        <ng-container *ngIf="travel_list.length">
+            <div class="cs-heading1 pl0 mb5 pt30" *ngIf="areaVisitExist">
+                <p>Area Wise Visit</p>
+            </div>
+            
+            <div *ngFor="let row of travel_list;let i=index">
+                <div class="list-box expand-box border-remove" *ngIf="row.travel_type=='Area Visit'">
+                    <div class="upper">
+                        <div class="left-date">
+                            <div class="date-section">
+                                <p>{{row.state}}</p>
+                                <p>Visit State</p>
+                            </div>
+                            <div class="date-section">
+                                <p>{{row.district}}</p>
+                                <p>Visit District</p>
+                            </div>
+                        </div>
+                        <div class="right-date" *ngIf="selected_date >= today_date">
+                            <button (click)="deleteTravelPlan(row.id,i,row.flag)"><i class="material-icons red-clr">delete_sweep</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    
+        
+        <ng-container *ngIf="travel_list.length">
+            <div class="cs-heading1 pl0 mb5" *ngIf="cpVisitExist">
+                <p>Distributors</p>
+            </div>
+    
+            <div *ngFor="let row of travel_list;let i=index">
+                <div class="list-box expand-box border-remove" *ngIf="row.travel_type=='Distributor Visit'">
+                    <div class="mid mt0">
+                        <div class="content-info">
+                            <div class="left-info">
+                                <div class="circle">{{row.company_name.substring(0,1).toUpperCase()}}</div>
+                            </div>
+                            <div class="right-info">
+                                <p>{{row.company_name}}</p>
+                            </div>
+                        </div>
+                        <div class="tag-info" *ngIf="selected_date >= today_date">
+                            <button (click)="deleteTravelPlan(row.id,i,row.flag)"><i class="material-icons red-clr">delete_sweep</i></button>
+                        </div>
+                    </div>
+                    <div class="lower one-line" *ngIf="row.address!='     '">
+                        <p>Address : <span>{{row.address | titlecase}}</span></p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div> -->
+</ion-content>

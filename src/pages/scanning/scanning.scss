@@ -1,0 +1,38 @@
+page-scanning {
+    .heading-info{
+        background-color: rgb(234, 234, 234);
+        height:70px;
+        padding: 6px;
+        border-radius: 6px;
+        align-items: center;
+        .head{
+            text-align: center;
+            font-weight: bold;
+    
+        }
+        .info{
+            line-height: 30px;
+            color: grey;
+            text-align: center;
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
+    .select-item{
+        margin:10px 0px;
+        border: 1px solid rgb(233, 233, 233);
+        border-radius: 4px;
+    
+    }
+    .list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child, .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child{
+         border-bottom-color: rgb(233, 233, 233);
+        -webkit-box-shadow: none; 
+         box-shadow: none; 
+    }
+    .border-container {
+        border: 1.5px solid #d8d8d8 !important;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    }
+    

@@ -1,0 +1,242 @@
+<ion-header>    
+    <ion-navbar>
+        <ion-title>
+            <h1>Add Quotation</h1>
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content >
+    <form name="f" #f="ngForm" (ngSubmit)="f.valid && submit()">
+        <div class="edit">
+            <ion-list>
+                <ion-item class="cs-normal-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && lead_type?.invalid}">
+                    <ion-label><span>Lead Type</span></ion-label>
+                    <ion-select name="lead_type" #lead_type="ngModel" [(ngModel)]="form.lead_type" (ngModelChange)="get_assign_dr(form.lead_type)">
+                        <ion-option value="1">Channel Partner</ion-option>
+                        <ion-option value="7">Direct Dealer</ion-option>
+                        <!-- <ion-option value="3">Retailer</ion-option> -->
+                        <ion-option value="5">End User</ion-option>
+                        <ion-option value="9">Project</ion-option>
+                        <ion-option value="6">Others</ion-option>
+                        <ion-option value="11">Electrician</ion-option>
+                    <ion-option value="12">Sub-dealer</ion-option>
+
+                    <ion-option value="13">Private Contractor</ion-option>
+                    <ion-option value="14">Government Contractor</ion-option>
+                    <ion-option value="15">Builder</ion-option>
+                    <ion-option value="16">Architect</ion-option>
+                        
+                    </ion-select>
+                </ion-item>
+                <p  *ngIf="f.submitted && lead_type?.invalid" class="error-line">Select Type Is Required</p>
+                
+                <ion-item class="cs-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && dr_id?.invalid}" *ngIf="form.lead_type == '3' || form.lead_type == '1' || form.lead_type == '5'|| form.lead_type == '7'  || form.lead_type == '9' || form.lead_type == '10' || form.lead_type == '11' || form.lead_type == '6'|| form.lead_type == '11'|| form.lead_type == '12'|| form.lead_type == '13'|| form.lead_type == '14'|| form.lead_type == '15'|| form.lead_type == '16'">
+                    <ion-label *ngIf="form.lead_type == '1'"><span>Select Channel Partner</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '7'"><span>Direct Dealer</span></ion-label>
+                    <!-- <ion-label *ngIf="form.lead_type == '3'"><span>Select Retailer</span></ion-label> -->
+                    <ion-label *ngIf="form.lead_type == '5'"><span>Select End User</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '9'"><span>Select Project</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '6'"><span>Select Others</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '5'"><span>Select Electrician</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '9'"><span>Select Sub-dealer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '6'"><span>Select Private Contractor</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '5'"><span>Select Government Contractor</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '9'"><span>Select Builder</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '16'"><span>Select Architect</span></ion-label>
+                    <!-- <ion-label *ngIf="form.lead_type == '10'"><span>Select Contractor</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '11'"><span>Select Architect</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '15'"><span>Select Customer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '13'"><span>Select Builder</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '14'"><span>Select Cement Dealer</span></ion-label> -->
+                    
+                    <ionic-selectable
+                    item-content 
+                    [(ngModel)]="form.dr_id"
+                    [items]="type_list"
+                    itemValueField="id"
+                    name="company_name"
+                    value="company_name"
+                    itemTextField="company_name"
+                    [canSearch]="true"
+                    (onChange)="getTrimurtiBillingAddress()"
+                    #selectComponent>
+                </ionic-selectable>
+            </ion-item>
+            
+            <p  *ngIf="f.submitted && dr_id?.invalid" class="error-line">Select Type Is Required</p>
+            
+        <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && customer_shipping?.invalid}">
+            <ion-label floating><span>Customer Shipping Address </span></ion-label>
+            <ion-textarea  placeholder="Enter Street"  type="text" name="CSAD" #customer_shipping="ngModel" [(ngModel)]="form.customer_shipping" required ></ion-textarea>
+        </ion-item>
+        
+        
+        <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && customer_billing?.invalid}">
+            <ion-label floating><span>Customer Billing Address</span></ion-label>
+            <ion-textarea  placeholder="Enter Street"  type="text" name="CBAD" #customer_billing="ngModel" [(ngModel)]="form.customer_billing" required ></ion-textarea>
+        </ion-item>
+        
+        <ion-item class="cs-select mt15 mb0" >
+            <ion-label><span>Select Category</span></ion-label>
+            <ionic-selectable
+            item-content 
+            [(ngModel)]="form.category"
+            [items]="category_list"
+            itemValueField="category"
+            name="category"
+            value="category"
+            itemTextField="category"
+            [canSearch]="true"
+            (onChange)="get_item_list()"
+            #selectComponent>
+          </ionic-selectable>
+          </ion-item>
+          
+        
+        <ion-item class="cs-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && form.item?.invalid}">
+            <ion-label><span>Select Item</span></ion-label>
+            <ionic-selectable
+            item-content 
+            [(ngModel)]="form.item"
+            [items]="item_list"
+            itemValueField="id"
+            name="product_name"
+            value="product_name"
+            itemTextField="product_name"
+            [canSearch]="true"
+            #selectComponent>
+        </ionic-selectable>
+    </ion-item>
+    <ion-item class="cs-select mt15 mb0">
+        <ion-label><span>Select Item</span></ion-label>
+        <ion-select required [(ngModel)]="form.product_type" name="product_type" >
+            <ion-option  value="cartoon">CARTOON</ion-option>
+            <ion-option  value="coil">COIL</ion-option>
+            <ion-option  value="mtr">MTR</ion-option>
+            <ion-option  value="drum">DRUM</ion-option>
+            <ion-option  value="drumlength">DRUM LENGTH</ion-option>
+            <ion-option  value="cutlength">CUT LENGTH</ion-option>
+
+
+
+            <!-- <ion-option value="368 * 120 inch">368 * 120 inch</ion-option> -->
+        </ion-select>
+</ion-item>
+    <ion-item  >
+        <ion-label floating><span>Enter Qty<strong>*</strong></span></ion-label>
+        <ion-input type="number"   name="qty" #qty="ngModel" [(ngModel)]="form.qty" ></ion-input>
+    </ion-item>
+
+    <ion-item  >
+        <ion-label floating><span> Basic Discount Percent<strong>*</strong></span></ion-label>
+        <ion-input type="number" name="basic_discount_percent" #basic_discount_percent="ngModel" [(ngModel)]="form.basic_discount_percent" ></ion-input>
+    </ion-item>
+  
+    <ion-item  >
+        <ion-label floating><span> Sd Discount Percent<strong>*</strong></span></ion-label>
+        <ion-input type="number" name="sd_discount_percent" #sd_discount_percent="ngModel" [(ngModel)]="form.sd_discount_percent" ></ion-input>
+    </ion-item>
+    <ion-item  >
+        <ion-label floating><span> Cd Discount Percent<strong>*</strong></span></ion-label>
+        <ion-input type="number" name="cd_discount_percent" #cd_discount_percent="ngModel" [(ngModel)]="form.cd_discount_percent" ></ion-input>
+    </ion-item>
+    <ion-item  >
+        <ion-label floating><span> Other Discount Percent<strong>*</strong></span></ion-label>
+        <ion-input type="number" name="other_discount_percent" #other_discount_percent="ngModel" [(ngModel)]="form.other_discount_percent" ></ion-input>
+    </ion-item>
+
+    <div class="mt16" >
+        <button ion-button class="cs-btn" [disabled]="!form.category || !form.item || !form.qty" (click)="addtolist1()" >Add To List</button>
+    </div>
+    
+    <div class="cs-heading1 pl0 pt0" *ngIf="add_list.length > 0">
+        <p>PRODUCT INFORMATION</p>
+    </div>
+    
+    <div class="list-box mt10" *ngFor="let row of add_list; index as i;">
+        <div class="mid mt0">
+            <div class="content-info">
+                <!-- <div class="left-info">
+                    <div class="circle numbers">{{row.product_size}}</div>
+                </div> -->
+                <div class="right-info">
+                    <p>Product - {{row.product_name}}</p>
+                    <!-- <p>Size - {{row.product_size}}</p> -->
+                </div>
+            </div>
+            <div class="tag-info">
+                <button (click)="listdelete(i)"><i class="material-icons red-clr">delete_sweep</i></button>
+            </div>
+        </div>
+        
+        <div class="three_boxes">
+            <div class="lower">
+                <p>Qty</p>
+                <p>{{row.qty}}</p>
+            </div>
+            <div class="lower">
+                <p>Type</p>
+                <p>{{row.product_type}}</p>
+            </div>
+            <div class="lower">
+                <p>Price</p>
+                <p>{{row.price}}</p>
+            </div>
+            <div class="lower">
+                <p>Amount</p>
+                <p>₹ {{row.amount}}</p>
+            </div>
+        </div>
+        <div class="three_boxes">
+            <div class="lower">
+                <p>Discount Amount</p>
+                <p>₹ {{row.discount_amount}} </p>
+            </div>
+            <div class="lower">
+                <p>GST Amount</p>
+                <p>₹ {{row.gst}} ({{row.gstPercentage?row.gstPercentage+' %':'0 %'}})</p>
+            </div>
+            <div class="lower">
+                <p>Total Amount</p>
+                <p>₹ {{row.total_amount}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="time_show amount-listing" *ngIf="add_list.length > 0">
+        <p>Total Qty</p>
+        <p>{{total_qty}}</p>
+    </div>
+    <div class="time_show amount-listing" *ngIf="add_list.length > 0">
+        <p>Sub Total</p>
+        <p>₹ {{sub_total}} /-</p>
+    </div>
+    <div class="time_show amount-listing" *ngIf="add_list.length > 0">
+        <p>Total Discount Amount</p>
+        <p>₹ {{totaldiscount_amount}} /-</p>
+    </div>
+    <div class="time_show amount-listing" *ngIf="add_list.length > 0">
+        <p>Total GST Amount</p>
+        <p>₹ {{total_gst_amount}} /-</p>
+    </div>
+    
+    <div class="time_show amount-listing" *ngIf="add_list.length > 0">
+        <p>Grand Total</p>
+        <p>₹ {{grand_total}} /-</p>
+    </div>
+    
+    <div style="-webkit-user-select:text; user-select:text;" contenteditable="true"></div>
+    <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && term_condition?.invalid}" *ngIf="add_list.length > 0">
+        <ion-label floating><span>Term and Condition <strong>*</strong></span></ion-label>
+        <ion-textarea type="text" name="term_condition" #term_condition="ngModel" [(ngModel)]="form.term_condition" required></ion-textarea>
+    </ion-item>
+    <p  *ngIf="f.submitted && term_condition?.invalid && !form.term_condition" class="error-line">Term & Condition Is Required</p>
+</ion-list>
+</div>
+
+<div class="padding16" *ngIf="add_list.length > 0">
+    <button ion-button class="cs-btn">Save</button>
+</div>
+</form>
+</ion-content>

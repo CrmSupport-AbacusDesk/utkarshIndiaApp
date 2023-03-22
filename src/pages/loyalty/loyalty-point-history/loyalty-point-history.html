@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Point History</ion-title>
+  </ion-navbar>
+  <ion-toolbar class="custom-toolbar-height">
+    <div class="ion-tab-btn ">
+      <ion-segment [(ngModel)]="history">
+        <ion-segment-button value="Ledger" (click)="getLedger('')">
+          <span class="black capitalize f16">{{ 'Ledger'}}</span>
+        </ion-segment-button>
+
+        <ion-segment-button value="scanned" (click)="getPointList()">
+          <span class="black capitalize f16">{{ 'Scan History'}}</span>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div [ngSwitch]="history">
+
+
+    <ng-container *ngSwitchCase="'Ledger'">
+      <div class="transation-tabel" style="margin: 0px -10px;">
+        <table>
+          <tr *ngFor="let row of ledger_list; let i = index;">
+            <td>
+              <div class="point-date">
+                <div class="led-date">{{row.transaction_remark ? row.transaction_remark : '--'}}</div>
+                <div class="led-amount" [ngClass]="{'credit' : row.credit > 0, 'debit' : row.debit > 0 } ">
+                  <span *ngIf="row.credit > 0">{{row.credit}} Pt</span>
+                  <span *ngIf="row.debit > 0">{{row.debit}} Pt</span>
+                  <i class="material-icons" *ngIf="row.credit > 0">add</i>
+                  <i class="material-icons" *ngIf="row.debit > 0">remove</i>
+                </div>
+              </div>
+
+              <div class="point-remark mb0">
+                <div class="date">
+                  {{row.date_created | date:'d MMM yy, h:mm a'}}
+                </div>
+                <div class="avl-bal">
+                  Balance: {{row.balance}} Pt
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+      <div class="no-history" *ngIf="ledger_list.length == 0">
+        <i class="material-icons">history_edu</i>
+        <p>{{'No History'}}</p>
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngSwitchCase="'scanned'">
+        <div  class="Point-main" *ngFor="let list of coupon_list; let i=index">
+          <div class="point-block">
+          <div class="point-content">
+            <p><strong>Product Name</strong> :<span>{{list.product_detail}}</span></p>
+            <p><strong>Coupon Code</strong> :<span>{{list.coupon_code}} <ng-container *ngIf="list.scanned_date != '0000-00-00 00:00:00'">{{list.scanned_date | date:'d MMM yy, h:mm a'}}</ng-container></span></p>
+          </div>
+          </div>
+          <div class="Bottom-content">
+            <div class="bottom-value">
+              <span>{{list.total_point}}</span>
+              <p>Scan Point</p>
+            </div>
+            <div class="bottom-value">
+              <span>{{list.bonus_point}}</span>
+              <p>Bonus Point</p>
+            </div>
+            <div class="bottom-value">
+              <span>{{list.total_point + list.bonus_point}}</span>
+              <p>Total Point</p>
+            </div>
+         </div>
+        </div>
+        <div class="no-history" *ngIf="coupon_list.length == 0">
+          <i class="material-icons">history_edu</i>
+          <p>{{'No History'}}</p>
+        </div>
+    </ng-container>
+
+  </div>
+
+
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, history)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

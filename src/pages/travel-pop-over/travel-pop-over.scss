@@ -1,0 +1,27 @@
+page-travel-pop-over {
+
+    .popover_list{
+        margin-bottom: 0px !important;
+        div{
+            font-size: 14px;
+            border-bottom: 1px solid #dedcdc;
+            flex-direction: row;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            // padding-left: 2px;
+        }
+        .img{
+            background-color: black;
+            position: relative;
+        }
+        button{
+            font-size: 14px;
+            padding-right: 8px;
+            img{
+                position: relative;
+                top:5px
+            }
+        }
+    }
+}

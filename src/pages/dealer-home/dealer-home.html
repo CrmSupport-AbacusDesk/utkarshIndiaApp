@@ -1,0 +1,274 @@
+<ion-header>
+    <ion-toolbar color="white">
+        <div class="custom-head">
+            <img src="assets/imgs/logo.png" alt="">
+            
+            
+            <div class="left-auto">
+                <button (click)="getNotification()">
+                    <ion-icon name="notifications"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    
+    <div class="silder-container" *ngIf="appbanner.length > 0">
+        <div class="round-slider">
+            <ion-slides [initialSlide]="0" pager autoplay="1000" speed="1000">
+                <ion-slide *ngFor="let row of appbanner">
+                    <img src="{{bannerURL+row.banner}}">
+                </ion-slide>
+            </ion-slides>
+        </div>
+    </div>
+    
+    
+    <div class="my-profile-container">
+        <div class="User_detail fix-arrow">
+            <div>
+                <h1>Hi, {{dashboardData.company_name ? dashboardData.company_name : '---'}}</h1> 
+                <p *ngIf="dashboardData.mobile"> {{dashboardData.name | titlecase}} - {{dashboardData.mobile}}</p>
+            </div>
+            <div>
+                <i class="material-icons" style="font-weight:800" (click)="GoToProfile()">
+                    chevron_right
+                </i>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="pl16 pr16 mt16 mb40">
+        <ng-container  *ngIf="constant.UserLoggedInData.all_data?.type!=3">
+            <div class="shorcuts mb16">
+                <h1>Payment Information</h1>
+                <table>
+                    <tr>
+                        <td>
+                            <p>{{paymentDetail.credit_limit > 0 ? ( '₹' + paymentDetail.credit_limit) : '0'}}</p>
+                            <span>Credit Limit</span>
+                        </td>
+                        <td>
+                            <p>{{paymentDetail.credit_period}}</p>
+                            <span>Credit Day's</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class="green-clr">{{paymentDetail.Outstanding_balance > 0 ? ( '₹' + paymentDetail.Outstanding_balance) : '---'}}</p>
+                            <span>Outstanding</span>
+                        </td>
+                        <td>
+                            <p class="red-clr">{{paymentDetail.Overdue_balance > 0 ? ( '₹' + paymentDetail.Overdue_balance) : '---'}}</p>
+                            <span>Overdue</span>
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+            
+            <div class="shorcuts mb16">
+                <h1>Target vs Achievement Mar 2023</h1>
+                <div class="round-box black-white">
+                    <div class="circle">4%</div>
+                    <div class="square">
+                        <span>{{'₹ '+20+' L'}}</span>
+                        <p>Current Rate Per Day</p>
+                    </div>
+                    <div class="square">
+                        <span>{{'₹ '+15+' L'}}</span>
+                        <p>Required Rate Per Day</p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        
+        
+        
+        <div class="shorcuts">
+            <h1>Shortcuts</h1>
+            <div class="shortcut-btns">
+                <div class="btns-group" (click)="goToDashboard()" *ngIf="constant.UserLoggedInData.all_data?.type==1">
+                    <i class="material-icons ">dashboard</i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="btns-group" (click)="orderAdd()">
+                    <i class="material-icons ">add_shopping_cart</i>
+                    <span>Add Order</span>
+                </div>
+                
+                <div class="btns-group" (click)="goToOrderlist()">
+                    <i class="material-icons ">shopping_cart</i>
+                    <span>My Order's</span>
+                </div>
+                
+                <div class="btns-group" (click)="goToassignedDr()" *ngIf="constant.UserLoggedInData.all_data?.type!=7">
+                    <i class="material-icons ">storefront</i>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type==1">Dealer's</span>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type==3">Channel Partner's</span>
+                </div>
+                
+                
+                <ng-container  *ngIf="constant.UserLoggedInData.all_data?.type!=3">
+                    <div class="btns-group" (click)="goTosecondary()"  *ngIf="constant.UserLoggedInData.all_data?.type==1">
+                        <i class="material-icons ">shopping_cart</i>
+                        <span>Dealer's Order</span>
+                    </div>
+                    
+                    <div class="btns-group" (click)="viewAchievement()">
+                        <i class="material-icons ">equalizer</i>
+                        <span>Target</span>
+                    </div>
+                    <div class="btns-group" (click)="goOnLedger()">
+                        <i class="material-icons ">swap_horiz</i>
+                        <span>Ledger</span>
+                    </div>
+                    <div class="btns-group" (click)="goOnInvoice()">
+                        <i class="material-icons ">receipt_long</i>
+                        <span>Invoice</span>
+                    </div>
+                </ng-container>
+                
+                
+                
+                <ng-container *ngIf="constant.UserLoggedInData.all_data?.type==3">
+                    <div class="btns-group" (click)="scan()">
+                        <i class="material-icons">qr_code_scanner</i>
+                        <span>Scan</span>
+                    </div>
+                    
+                    
+                    <div class="btns-group" (click)="goToGift()">
+                        <i class="material-icons">card_giftcard</i>
+                        <span>Redeem Points</span>
+                    </div>
+                    
+                    
+                    <div class="btns-group" (click)="goToTracker()">
+                        <i class="material-icons">fmd_good</i>
+                        <span>Track Request</span>
+                    </div>
+                </ng-container>
+                
+                <div class="btns-group" (click)="goToWallet()" *ngIf="constant.UserLoggedInData.all_data?.type ==1 || constant.UserLoggedInData.all_data?.type ==3">
+                    <i class="material-icons ">swap_horiz</i>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type==1">Point Transfer</span>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type==3">Point History</span>
+                </div>
+                
+                <div class="btns-group" (click)="goOnProductPage()">
+                    <i class="material-icons ">category</i>
+                    <span>Product</span>
+                </div>
+                
+                <div class="btns-group" (click)="goOnDigitalcatPage()">
+                    <i class="material-icons ">picture_as_pdf</i>
+                    <span>E-Catalogue</span>
+                </div>
+                
+                
+                <div class="btns-group" (click)="goToDealerCheckin()">
+                    <i class="material-icons ">place</i>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type==1">Dealer Check-in</span>
+                    <span *ngIf="constant.UserLoggedInData.all_data?.type!=1">Sales User Check-in</span>
+                </div>
+                
+                <div class="btns-group" (click)="goTopop()">
+                    <i class="material-icons ">card_giftcard</i>
+                    <span>Pop & Gift</span>
+                </div>
+                
+                
+                
+                <div class="btns-group" (click)="announcementList()">
+                    <div class="rel">
+                        <i class="material-icons">campaign</i>
+                        <ng-container *ngIf="announcementCount > 0">
+                            <span [ngClass]="{'new-dot': announcementCount > 0}">{{announcementCount}}</span>
+                        </ng-container>
+                    </div>
+                    <span>Announcement</span>
+                </div>
+                <div class="btns-group" (click)="goToSurvey()">
+                    <i class="material-icons ">poll</i>
+                    <span>Survey</span>
+                </div>
+                <div class="btns-group" (click)="goToSupport();">
+                    <i class="material-icons">help</i>
+                    <span>Support</span>
+                </div>
+                <div class="btns-group" (click)="goToVideo();">
+                    <i class="material-icons">play_circle</i>
+                    <span>Videos</span>
+                </div>
+                <div class="btns-group" (click)="goToAbout();">
+                    <i class="material-icons">info</i>
+                    <span>About Us</span>
+                </div>
+                
+                <div class="btns-group" (click)="goOnContactPage()">
+                    <i class="material-icons">contact_phone</i>
+                    <span>Contact Us</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ 
+    <div class="pd-left-right16">
+        <div class="go-btn mb16" (click)="goToOrders('Primary')"   *ngIf="dashboardData.primary && constant.UserLoggedInData.all_data?.type==1">
+            <div class="g-left">
+                <p>{{dashboardData.primary.total_count}}</p>
+                <p>Total</p>
+            </div>
+            <div class="g-right">
+                <div class="g-content">
+                    <p>Primary Order</p>
+                    <p> ₹ {{dashboardData.primary.total_amount }}</p>
+                </div>
+                <div class="g-count">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="go-btn" (click)="goToOrders('Primary')"  *ngIf="dashboardData.primary && constant.UserLoggedInData.all_data?.type!=1">
+            <div class="g-left">
+                <p>{{dashboardData.primary.total_count}} </p>
+                <p>Total</p>
+            </div>
+            <div class="g-right">
+                <div class="g-content">
+                    <p>Primary Order</p>
+                    <p> ₹ {{dashboardData.primary.total_amount }}</p>
+                </div>
+                <div class="g-count">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="go-btn" (click)="goToOrders('Secondary')" *ngIf="dashboardData.secondary && constant.UserLoggedInData.all_data?.type==1">
+            <div class="g-left">
+                <p>{{dashboardData.secondary.total_count }}</p>
+                <p>Total</p>
+            </div>
+            <div class="g-right">
+                <div class="g-content">
+                    <p>Secondary Order</p>
+                    <p> ₹ {{dashboardData.secondary.total_amount}}</p>
+                </div>
+                <div class="g-count">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

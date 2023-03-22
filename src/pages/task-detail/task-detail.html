@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Task Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="attendance-list flat-list">
+    <div class="slab slab-bg">
+      <div class="slab-day">
+        <p>{{task_detail.date_created != '0000-00-00 00:00:00' ? (task_detail.date_created | date:'d MMM yyy') : '---' }}</p>
+        <span>Date Created</span>
+      </div>
+      <div class="slab-day">
+        <p>{{task_detail.assign_to_name ? task_detail.assign_to_name  : '---'}}</p>
+        <span>Assign To</span>
+      </div>
+      <div class="slab-day">
+        <p>{{task_detail.assign_to_type ? task_detail.assign_to_type: '---'}}</p>
+        <span>Assignee Type</span>
+      </div>
+      
+    </div>
+    <div class="other-block">
+      <p><strong>Remark :</strong>
+        {{task_detail.escalation_description ? task_detail.escalation_description : 'N/A'}}
+      </p>
+    </div>
+    <div class="other-block" *ngIf="task_detail.promise_date">
+      <p><strong>Promise Date :</strong>
+        {{task_detail.promise_date ? (task_detail.promise_date | date:'dd MMM yyyy') : 'N/A'}}
+      </p>
+    </div>
+    <div class="other-block" *ngIf="task_detail.close_date && task_detail.status == 'close'">
+      <p><strong>Closing Date :</strong>
+        {{task_detail.close_date ? (task_detail.close_date | date:'dd MMM yyyy') : 'N/A'}}
+      </p>
+    </div>
+    <div class="other-block" *ngIf="task_detail.close_date && task_detail.status == 'close'">
+      <p><strong>Closing Remark :</strong>
+        {{task_detail.close_remark ? task_detail.close_remark : 'N/A'}}
+      </p>
+    </div>
+    
+    <div class="search add-search" *ngIf="!task_detail.promise_date&& task_type == 'assign_task'">
+      <div class="filter" style="display:flex;align-items:center;justify-content: center;">
+        <a class="date-pick" style="width:auto;padding:6px;border-radius: 4px">
+          <label class="chedate">
+            <p class="bold">Select Promise Date</p>
+            <input type="date" name="date" [min]="date" [(ngModel)]="promise_date" (keyup.enter)="get_task_detail()" />
+            <i class="material-icons">date_range</i>
+          </label>
+        </a>
+        <div class="text-line" *ngIf="promise_date">
+          <div class="lf-text">
+            <p>Date</p>
+            <p>{{promise_date | date:'d MMM y'}}</p>
+          </div>
+          <div class="rf-text">
+            <i class="material-icons" (click)="promise_date='';get_task_detail()">cancel</i>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div class="upload-doc pl16 pr16">
+    <div class="">
+      Task Image
+    </div>
+    <ul class="no-padding" *ngIf="task_detail.image">
+      <li class="image-upload" *ngFor="let image of task_detail.image; index as i">
+        <img (click)="imageModal(url+image.document_name)" src="{{url+image.document_name}}">
+      </li>
+    </ul>
+    <div class="nothing-here" style="height: 50%;" *ngIf="!task_detail.image?.length">
+      <div class="outer">
+        <div class="innear">
+          <img src="assets/imgs/No data-pana.png" alt="">
+          <p>Image not Available</p>
+        </div>
+      </div>
+    </div>
+    <ng-container>
+      <div class="form padding0 mt6" *ngIf="task_detail.status == 'promise_pending'&& task_type == 'assign_task'">
+        <button ion-button class="cs-btn mb0" [disabled]="!promise_date" (click)="submitDate(task_detail.status);">Save Promise
+          Date</button>
+        </div>
+        <div class="form padding0 mt6" *ngIf="task_detail.status == 'promise_done'&& task_type == 'assign_task'">
+          <form #f="ngForm" (ngSubmit)="f.form.valid && submitDate(task_detail.status)">
+            <ion-list>
+              <ion-item [ngClass]="{'error':f.submitted && remark?.invalid}">
+                <ion-label floating>Remark <strong>*</strong></ion-label>
+                <ion-textarea name="remark" #remark="ngModel" [(ngModel)]="data.remark" required></ion-textarea>
+              </ion-item>
+              <div class="eror" *ngIf="f.submitted && remark?.invalid">
+                <p> {{ 'This field is required'}}</p>
+              </div>
+            </ion-list>
+            <button ion-button class="cs-btn mb0" [disabled]="spinLoader">
+              <ion-spinner *ngIf="spinLoader"></ion-spinner>
+              Close Task
+            </button>
+          </form>
+        </div>
+      </ng-container>
+      
+    </div>
+    
+    
+  </ion-content>

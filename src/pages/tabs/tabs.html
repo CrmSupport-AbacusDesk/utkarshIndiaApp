@@ -1,0 +1,39 @@
+<div class="tabs" *ngIf="constant.UserLoggedInData.userLoggedInChk==false">
+    <ion-tabs>
+        <!-- {{constant.UserLoggedInData.userLoggedInChk}} -->
+        <ion-tab [root]="constant.UserLoggedInData.userLoggedInChk == false ? tab1Root : tab5Root " tabTitle="Home" tabIcon="tab-home"></ion-tab>
+        <!-- <ion-tab [root]="tab4Root" tabTitle="Category" tabIcon="tab-category"></ion-tab> -->
+        <!-- <ion-tab [root]="tab5Root" tabTitle="Product" tabIcon="tab-product"></ion-tab> -->
+        <ion-tab [root]="tab3Root" tabTitle="About" tabIcon="tab-about"></ion-tab>
+        <ion-tab [root]="tab4Root" tabTitle="Contact Us" tabIcon="tab-contactUS"></ion-tab>
+        <ion-tab [root]="tab2Root" tabTitle="Enquiry" tabIcon="tab-enquiry"></ion-tab>
+    </ion-tabs>
+</div>
+
+<!-- <div class="tabs" *ngIf="userType =='DrLogin'">
+    <ion-tabs selectedIndex={{index}}>
+        <ion-tab [root]="tab2Root" tabTitle="Home" tabIcon="tab-home"></ion-tab>
+        <ion-tab [root]="tab4Root" tabTitle="Category" tabIcon="tab-category"></ion-tab>
+        <ion-tab [root]="tab5Root" tabTitle="Product" tabIcon="tab-product"></ion-tab>
+        <ion-tab [root]="tab6Root" tabTitle="Profile" tabIcon="tab-profile"></ion-tab>
+    </ion-tabs>
+
+</div>
+
+<div class="tabs" *ngIf="userType =='Employee'">
+    <ion-tabs selectedIndex={{index}}>
+        <ion-tab [root]="tab3Root" tabTitle="Home" tabIcon="tab-home"></ion-tab>
+        <ion-tab [root]="tab4Root" tabTitle="Category" tabIcon="tab-category"></ion-tab>
+        <ion-tab [root]="tab5Root" tabTitle="Product" tabIcon="tab-product"></ion-tab>
+    </ion-tabs>
+</div> -->
+
+<!-- *ngIf=" service.karigar_info.type == 'Plumber'"  -->
+<!-- <div *ngIf=" service.karigar_info?.type == 'Plumber'" class="tabs">
+    <ion-tabs selectedIndex={ {index}}>
+        <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="tab-home"></ion-tab>
+        <ion-tab [root]="tab2Root" tabTitle="Category" tabIcon="tab-category"></ion-tab>
+        <ion-tab [root]="tab3Root" tabTitle="Product" tabIcon="tab-product"></ion-tab>
+        <ion-tab [root]="tab8Root" tabTitle="Profile" tabIcon="tab-profile"></ion-tab>
+    </ion-tabs>
+</div> -->

@@ -1,0 +1,84 @@
+<!--
+  Generated template for the RetailerListPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="Type=='My'">Dealer</ion-title>
+    <ion-title *ngIf="Type!='My'">Team Dealer</ion-title>
+    <ion-buttons end>
+      <ion-buttons end  >
+        <button ion-button icon-only (click)="presentPopover($event)">
+          <ion-icon name="more"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-buttons>
+  </ion-navbar>
+  
+  <ion-toolbar>
+    <ion-searchbar class="distributorSearchbar p10" (keyup.enter)="retailer_data()" [(ngModel)]="search" name="search">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+  refreshingText="Refreshing...">
+</ion-refresher-content>
+</ion-refresher>
+  <div class="pd-left-right16 mt16 mb100">
+    <div class="attendance-list"  *ngFor="let data of retailer_list" (click)="retailer_detail(data.id)">
+      <div class="slab slab-bg">
+        <div class="slab-day">
+          <p>{{data.last_checkin != '0000-00-00 00:00:00' ? (data.last_checkin | date:'d MMM yyy') : 'N/A'  }}</p>
+          <span>Last visit {{data.last_checkin_day != "" ? (data.last_checkin_day == 0 ? 'Today' : data.last_checkin_day + ' '+' day') : ''}}</span>
+        </div>
+        <div class="slab-day left-auto">
+          <p>{{data.last_order != '0000-00-00 00:00:00' ? (data.last_order | date:'d MMM yyy'): "N/A"}}</p>
+          <span>Last order {{data.last_order_day != "" ? (data.last_order_day == 0 ? 'Today' : data.last_order_day + ' '+' day') : ''}}</span>
+        </div>
+        <div class="slab-day left-auto">
+          <p>{{data.total_order_value ? '₹' +' '+data.total_order_value+' '+ '/-' : '0'}}</p>
+          <span>Order Value</span>
+        </div>
+      </div>
+      <div class="center-block">
+        <div class="circle">{{data.company_name?.trim().substring(0,1).toUpperCase()}}</div>
+        <h1>{{data.company_name?.toUpperCase()}}</h1>
+        <p>{{data.name | titlecase}} ({{data.mobile}})</p>
+        <a class="cell-phone" href="tel:{{data.mobile}}"><i class="material-icons">phone</i></a>
+      </div>
+      <div class="other-block pb0">
+        <p *ngIf=" data.address  || data.state  || data.district  || data.city  || data.area  || data.pincode"><strong>Address :</strong> {{data.address}} {{data.area_details | titlecase}} {{data.district | titlecase}} {{data.state | titlecase}}</p>
+      </div>
+      <div class="other-block pb0">
+        <p  *ngIf="Type != 'My'"><strong>Assigned To :</strong> {{data.assinged_User  }}</p>
+      </div>
+
+      
+      <div class="next-forword">
+        <i class="material-icons">chevron_right</i>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!retailer_list.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="addretailer()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

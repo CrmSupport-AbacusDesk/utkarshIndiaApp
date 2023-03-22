@@ -1,0 +1,48 @@
+
+<ion-header>
+  <ion-navbar>
+  <ion-title>Add Visiting Card</ion-title>
+  </ion-navbar>
+  </ion-header>
+  
+  <ion-content >
+  <div class="edit mt16">
+  <ion-list>
+  <ng-container> 
+
+    <ion-item  class="cs-normal-select mt16">
+      <ion-label>Select type</ion-label>
+      <ion-select  placeholder="Select Type" name="type"  [(ngModel)]="data.networkType" (ngModelChange)="get_network_list(data.networkType)">
+          <ion-option value="1">Channel Partner/Dealer</ion-option>
+          <ion-option value="7">Direct Dealer</ion-option>
+          <ion-option value="3">Retailer</ion-option>
+      </ion-select>
+  </ion-item>
+  
+
+  </ng-container>
+  <ion-item style="background: transparent !important;">
+  <ion-label floating><span> Request Quantity</span></ion-label>
+  <ion-input type="text" name="request_qty" #request_qty="ngModel" [(ngModel)]="data.request_qty"></ion-input>
+  </ion-item> 
+    </ion-list>
+  <ion-list *ngIf="data.networkType">            
+    <ion-item class="cs-select mt16" >
+        <ion-label *ngIf="data.networkType == '1'">Distributor/Dealer</ion-label>
+        <ion-label *ngIf="data.networkType == '3'">Retailer</ion-label>
+        <ion-label *ngIf="data.networkType == '7'">Direct Dealer</ion-label>
+    
+    <ion-select  [(ngModel)]="data.type_name">
+      <ion-option *ngFor="let item of distributor_network_list;" value="{{item.networkType}}">{{item.company_name }} </ion-option>
+</ion-select>
+
+</ion-item>		
+
+
+</ion-list>
+
+
+  <button ion-button block class="h35 green-color mt20" style="letter-spacing: 1px;" (click)="addVisitingCardRequest()">Save</button>
+  
+  </div>
+  </ion-content>

@@ -1,0 +1,76 @@
+page-survey-detail {
+    
+    
+    .survey-count {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9;
+        border-radius: 10px;
+        border-bottom: 3px solid #808080;
+        overflow: hidden;
+        background: #ffffff;
+        grid-column-gap: 10px;
+        padding: 10px;
+        
+        
+        .count-box
+        {
+            background: #b4b4b4;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+            
+            p{
+                font-size: 12px;
+                line-height: 20px;
+                padding: 5px;
+                letter-spacing: 0.5px;
+                
+                &:last-child{
+                    background: rgba(0, 0, 0, 0.2);
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+                
+            }
+        }
+    }
+    .survey-que{
+        ul{
+            
+            li{
+                
+                padding: 16px 16px 8px 16px;
+                border-bottom: 4px solid #e6e6e6;
+                
+                h2{
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+    
+                .item.item-md .checkbox-md{
+                    margin: 9px 16px 9px 4px !important;
+                }
+    
+                .item-md.item-block .item-inner{
+                    border-bottom: 0px !important;
+                }
+    
+                .label-md{
+                    font-size: 14px;
+                    font-weight: 500;
+                    margin: 5px;
+    
+                }
+            }
+        }
+    }
+
+}
+
+

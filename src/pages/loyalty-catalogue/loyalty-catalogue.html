@@ -1,0 +1,40 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>E-Catalogue</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content  pullingIcon="arrow-dropdown"
+    pullingText="Pull to refresh"
+    refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+
+
+<div class="container padding16">
+  <div class="main" *ngFor="let list of pdfData; let i = index">
+    
+    <a  (click)=" this.isInfoVisible[i] == false ? openCatelogue(url + list.doc, i) :this.isInfoVisible[i] = false" >
+      <div class="part1">
+        <ion-spinner class="black-spinner" *ngIf="this.isInfoVisible[i]" ></ion-spinner>
+        <img  src="assets/imgs/pdf.png" alt="#" *ngIf="!this.isInfoVisible[i]">
+        <span>{{list.title | titlecase}}</span>
+      </div>  
+    </a>  
+  </div>
+</div>
+<div class="nothing-here" style="height: 50%;" *ngIf="!pdfData?.length">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+
+</ion-content>

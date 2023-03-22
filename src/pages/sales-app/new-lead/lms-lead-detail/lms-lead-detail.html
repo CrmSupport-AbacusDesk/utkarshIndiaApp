@@ -1,0 +1,64 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Enquiry Detail</ion-title>
+        <ion-buttons end *ngIf="lead_detail.stage_level == 'Qualified' && actionType == 'My'">
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div class="attendance-list flat-list">
+        <div class="slab slab-bg">
+            <div class="slab-day">
+                <p>{{lead_detail.date_created | date:'d MMM y'}}</p>
+                <span>Date Created</span>
+            </div>
+            <div class="slab-day">
+                <p>{{lead_detail.created_by_name}}</p>
+                <span>Created by</span>
+            </div>
+
+            <div class="date-section">
+                <p>{{lead_detail.stage_level}}</p>
+                <p>Status</p>
+            </div>
+        </div>
+        <div class="center-block">
+            <div class="circle">{{(lead_detail.name | titlecase) | slice:0:1}} </div>
+            <h1 class="f12">{{lead_detail.name | titlecase}}</h1>
+            <p>{{lead_detail.mobile}}</p>
+            <p>Address- {{lead_detail.address}} {{lead_detail.district}} {{lead_detail.city}}  {{lead_detail.pincode}} {{lead_detail.state}}  {{lead_detail.country}}</p>
+        </div>
+    </div>
+
+    <div class="pb100">
+        <div class="remarkSent" *ngFor="let row of activity_list">
+            <p class="remarkMsg">{{row.msg ? row.msg : row.remark}}</p>
+            <div class="dateCreated"><span>({{row.changes_by_name}})</span> <span>{{row.date_created | date:'d MMM
+                    y'}}</span></div>
+        </div>
+
+        <div class="nothing-here" *ngIf="activity_list == 0">
+            <div class="outer">
+                <div class="innear">
+                    <img src="assets/imgs/no_found.svg" alt="">
+                    <p>Data Not Available</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ion-content>
+
+
+<ion-footer *ngIf="lead_detail.stage_level == 'Qualified' && actionType == 'My'" color="light">
+    <div class="footer-input-block">
+        <textarea type="text" placeholder="Add Remark" name="remark" #remark="ngModel"
+            [(ngModel)]="form.remark"></textarea>
+        <button ion-button icon-start color="success" (click)="addRemark()"><ion-icon name="send"></ion-icon></button>
+    </div>
+</ion-footer>

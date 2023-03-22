@@ -1,0 +1,59 @@
+<!--
+  Generated template for the DealerNetworkPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar class="h60">
+    <ion-title>Retailers</ion-title>
+    <ion-buttons end *ngIf="LoginType == 'Employee'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="fix-container" *ngIf="data_status != false && LoginType == 'Employee'">
+    <div class="attendance-list flat-list" >
+      <div class="center-block" *ngIf="LoginType== 'Employee'">
+        <div class="circle">{{distributor_detail.company_name?.substring(0,1).toUpperCase()}}</div>
+        <h1>{{distributor_detail.company_name}}</h1>
+        <p>{{distributor_detail.name}} - {{distributor_detail.mobile}}</p>
+        <a class="cell-phone" href="tel:{{distributor_detail?.mobile}}"><i class="material-icons">phone</i></a>
+      </div>
+    </div>
+    
+    
+  </div>
+  <div class="pd-left-right16 mt16 mb100" *ngIf="retailer_list?.length && !search.date">
+    <div class="attendance-list"  *ngFor="let row of retailer_list" >
+      
+      <div class="center-block">
+        <div class="circle">{{row.company_name?.substring(0,1).toUpperCase()}}</div>
+        <h1>{{row.company_name?.toUpperCase()}}</h1>
+        <p>{{row.name | titlecase}} ({{row.mobile}})</p>
+        <!-- <a class="cell-phone" href="tel:{{row.mobile}}"><i class="material-icons">phone</i></a> -->
+      </div>
+      <div class="other-block pb0">
+        <p *ngIf=" row.address  || row.state  || row.district  || row.city  || row.area  || row.pincode"><strong>Address :</strong> {{row.address}} {{row.area_details | titlecase}} {{row.district | titlecase}} {{row.state | titlecase}}</p>
+      </div>
+     
+    </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!retailer_list">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+   
+</ion-content>

@@ -1,0 +1,180 @@
+
+<ion-header>
+    
+    <ion-navbar>
+        <ion-title>Check In Detail</ion-title>
+        
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+                
+                <!-- <ion-icon name="ellipsis-vertical"></ion-icon> -->
+            </button>
+        </ion-buttons>
+        
+    </ion-navbar>
+    
+</ion-header>
+
+
+<ion-content>
+    
+    
+    
+    <div class="pd-left-right16">
+        
+        <div class="list-box mt16" >
+            <div class="upper">
+                <div class="left-date">
+                    <div class="date-section">
+                        <p>{{checkin_data.activity_date | date: 'MMM d, y'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                    <div class="date-section">
+                        <p>{{checkin_data.visit_start | date:'hh:mm a'}}</p>
+                        <p>Start Time</p>
+                    </div>
+                    <div class="date-section" *ngIf="checkin_data.visit_end != '0000-00-00 00:00:00'">
+                        <p>{{checkin_data.visit_end | date:'hh:mm a'}}</p>
+                        <p>End Time</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div class="mid" >
+                <div class="content-info">
+                    <div class="left-info">
+                        <div *ngIf="checkin_data.dr_id != 0" class="circle">{{checkin_data.dr_name | slice:0:1 }}</div>
+                        <div *ngIf="checkin_data.dr_id == 0" class="circle">O</div>
+                    </div>
+                    <div class="right-info">
+                        <p *ngIf="checkin_data.dr_id != 0">{{checkin_data.dr_name | titlecase}}</p>
+                        <p *ngIf="checkin_data.dr_id == 0">{{checkin_data.other_name | titlecase}}</p>
+                        <p *ngIf="checkin_data.dr_id != 0">{{checkin_data.mobile_no}}</p>
+                        <p *ngIf="checkin_data.dr_id == 0">{{checkin_data.mobile}}</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="lower" *ngIf=" checkin_data.address  || checkin_data.state  || checkin_data.district  || checkin_data.city  || checkin_data.area  || checkin_data.pincode">
+                <p>Address</p>
+                <p>{{checkin_data.address}} {{checkin_data.state | titlecase}} {{checkin_data.district | titlecase}} {{checkin_data.city | titlecase}} {{checkin_data.area | titlecase}}  {{checkin_data.pincode}}</p>
+                <p></p>
+            </div>
+            
+            
+            <div class="three_boxes" *ngIf="checkin_data.start_address"> 
+                <div class="lower one-line">
+                    <p>Start Location : <span>{{checkin_data.start_address | titlecase}}</span></p>
+                </div>
+            </div>
+            <div class="three_boxes" *ngIf="checkin_data.address"> 
+                <div class="lower one-line">
+                    <p>End Location : <span>{{checkin_data.address | titlecase}}</span></p>
+                </div> 
+            </div>
+        </div>  
+    </div>
+    
+    <div class="pd-left-right16 mt20">
+        <div class="list-box mt16" >           
+            <div class="lower mt0">
+                <p>Visit Remark</p>
+                <p>{{checkin_data.description ? checkin_data.description : '--'}}</p>
+            </div>
+        </div>  
+    </div>
+    
+    <div class="pd-left-right16 pt16">
+        <div class="forword-page flat-item">
+            <a class="no-height" *ngIf="(checkin_data.dr_type != '0') && ((checkin_data.dr_type== '1') || (checkin_data.dr_type== '7'))">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.order_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.order_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Order</div>
+            </a>
+            
+            <a class="no-height" *ngIf="(checkin_data.dr_type != '0') && (checkin_data.dr_type== '3')">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.order_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.order_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Order</div>
+            </a>
+            
+            <a class="no-height">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.followup_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.followup_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Followup</div>
+            </a>
+            
+            <!-- <a class="no-height" *ngIf="(checkin_data.lead_type != 'Lead') && (checkin_data.dr_type != '0')">
+                <p >
+                    <span>
+                        <i *ngIf="checkin_data.visitingCard_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.visitingCard_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Visiting Card Request</div>
+            </a> -->
+            
+            <a class="no-height" *ngIf="((checkin_data.dr_type != '0') && (checkin_data.lead_type != 'Lead') || (checkin_data.dr_type == '3') || (checkin_data.dr_type == '1') || (checkin_data.dr_type == '7'))">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.popgift_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.popgift_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Pop & Gifts</div>
+            </a>
+            
+            <a class="no-height" *ngIf="(checkin_data.dr_type != '0') && (checkin_data.lead_type != 'Dr')">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.quotation_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.quotation_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Quotation</div>
+            </a>
+            
+            <!-- <a class="no-height" *ngIf="(checkin_data.dr_type != '0') && (checkin_data.lead_type != 'Lead') && (checkin_data.dr_type == '3')">
+                <p>
+                    <span>
+                        <i *ngIf="checkin_data.contractor_meet_flag == '1'" class="material-icons">verified</i>
+                        <i *ngIf="checkin_data.contractor_meet_flag == '0'" class="material-icons red-clr">cancel</i>
+                    </span>
+                </p>
+            <div class="info af-none">Contractor Meet</div>
+            </a> -->
+            <a class="no-height">
+                <p><span>
+                    <i *ngIf="checkin_data.Doc != '' " class="material-icons">verified</i>
+                    <i *ngIf="checkin_data.Doc == '' " class="material-icons red-clr">cancel</i>
+                </span>
+                <div class="info af-none">Document</div>
+            </a>
+        </div>
+    </div>
+    
+    <div class="add-new" *ngIf="checkin_data.Doc">
+        <h4 class="font14">Document</h4>
+        <div class="uplode-image" >
+            <ul>
+                <li class="ml0"><img src="{{checkin_data.Doc}}"></li>
+            </ul>
+        </div>
+    </div>
+</ion-content>

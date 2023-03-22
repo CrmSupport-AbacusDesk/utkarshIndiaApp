@@ -1,0 +1,57 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Redeem Points</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="fix">
+    <div class="top-nav">
+      <p>{{'Balance Points'}}</p>
+      <h1>{{influencer_point.wallet_point}}</h1>
+    </div>
+  </div>
+  <div class="padding16">
+    <div class="image-card">
+      <img src="{{uploadUrl+gift_detail.gift_img}}" *ngIf="gift_detail.gift_type != 'Cash'">
+      <img src="assets/imgs/cash.png" alt=""  *ngIf="gift_detail.gift_type == 'Cash'">
+      
+    </div>
+    
+    <div class="gift-content">
+      <h1>{{gift_detail.title |  titlecase}}</h1>
+      <h2 *ngIf="gift_detail.gift_type == 'Gift'">{{gift_detail.gift_point}} {{'Points'}}</h2>
+      <h2 *ngIf="gift_detail.gift_type == 'Cash'">{{gift_detail.range_start}} to {{gift_detail.range_end}} {{'Points'}}</h2>
+      <p><span>Description</span>:- {{gift_detail.termsNcondition}}</p>
+    </div>
+    
+    
+    <div class="form padding0" *ngIf="gift_detail.gift_type == 'Cash'">
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label floating>{{'Enter Point'}}<span>*</span></ion-label>
+          <ion-input type="tel" name="cash_point" #cash_point="ngModel" [(ngModel)]="data.cash_point"
+          (ngModelChange)="getValue(data.cash_point)"
+          required></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label floating>{{'Point Value'}}<span>*</span></ion-label>
+          <ion-input type="tel" name="cash_value" #cash_value="ngModel" [(ngModel)]="data.cash_value"></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+    
+    
+    <ng-container *ngIf="influencer_point.kyc_status != 'Verified'">
+      <div class="error-bg" [ngClass]="{'kyc-pending': influencer_point.kyc_status == 'Pending', 'kyc-reject': influencer_point.kyc_status == 'Reject'}">
+        Your KYC status is {{influencer_point.kyc_status}}. After KYC is Verified send redeem request. For more information contact us at {{contact.contact_number}}
+      </div>
+    </ng-container>
+    <!-- *ngIf="offer_balance >= gift_detail.coupon_points" -->
+    <button ion-button round  block color="secondary" (click)="SendRequest()" [disabled]="influencer_point.kyc_status != 'Verified'">
+      Send Redeem Request
+    </button>
+  </div>
+</ion-content>

@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Invoice</ion-title>
+    <ion-buttons end *ngIf="LoginType == 'Employee'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="fix-container" *ngIf="LoginType == 'Employee'">
+    <div class="attendance-list flat-list">
+      <div class="center-block" >
+        <div class="circle">{{invoice_detail.company_name?.substring(0,1).toUpperCase()}}</div>
+        <h1>{{invoice_detail.company_name}}</h1>
+        <p>{{invoice_detail.name}} - {{invoice_detail.mobile}}</p>
+        <a class="cell-phone" href="tel:{{invoice_detail?.mobile}}"><i class="material-icons">phone</i></a>
+      </div>
+
+      <div class="search-container">
+        <ion-searchbar class="distributorSearchbar p10" (keyup.enter)="invoice_list()" [(ngModel)]="search"
+          name="search">
+        </ion-searchbar>
+      </div>
+    </div>
+  </div>
+  <div class="search-container" *ngIf="LoginType != 'Employee'">
+    <ion-searchbar class="distributorSearchbar p10" (keyup.enter)="invoice_list()" [(ngModel)]="search"
+      name="search">
+    </ion-searchbar>
+  </div>
+  <div class="pl16 pr16 mt16 mb50">
+    <div class="attendance-list" *ngFor="let row of invoice_info" (click)="go_to(row.id ,row.customer_code)">
+      <div class="slab slab-two">
+        <div class="slab-day">
+          <p>{{row.billing_date != '0000-00-00 00' ? (row.billing_date| date:'d MMM y') : 'N/A' }}</p>
+          <span>Date Created</span>
+        </div>
+        <div class="slab-day">
+          <p>{{row.bill_number ? row.bill_number : 'N/A'}}</p>
+          <span>Invoice No.</span>
+        </div>
+      </div>
+      <div class="slab slab-three boder-top1 pt10 mt10">
+        <div class="slab-day">
+          <p>{{row.total_billing_item ? row.total_billing_item : '0'}}</p>
+          <span>Total Item</span>
+        </div>
+        <div class="slab-day">
+          <p>{{row.total_billing_item_qty ? row.total_billing_item_qty : '0'}}</p>
+          <span>Total Qty.</span>
+        </div>
+        <div class="slab-day">
+          <p>{{row.pending_balance ?'₹'+''+ row.pending_balance : '0'}}</p>
+          <span>Total Amount</span>
+        </div>
+      </div>
+      <div class="next-forword">
+        <i class="material-icons">chevron_right</i>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!invoice_info.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

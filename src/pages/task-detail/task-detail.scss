@@ -1,0 +1,15 @@
+page-task-detail {
+    .text-line {
+        top: 40px;
+        right: 120px;
+        &:after {
+            content: "arrow_right";
+            top: 0px;
+            right: -17px;
+        }
+    }
+    .slab {
+        justify-content:space-between;
+    }
+    
+}

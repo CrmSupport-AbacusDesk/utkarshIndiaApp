@@ -1,0 +1,330 @@
+<ion-header>
+    <ion-toolbar color="white">
+        <div class="custom-head">
+            <img src="assets/imgs/logo.png" alt="">
+
+
+            <div class="left-auto">
+                <button (click)="announcementModal()">
+                    <ion-icon name="notifications"></ion-icon>
+                    <!-- <span class="badge">{{announcementCount}}</span> -->
+                </button>
+            </div>
+
+        </div>
+
+
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <div *ngIf="skLoading == false">
+        <div class="slide-image" *ngIf="appbanner.length > 0">
+            <ion-slides *ngIf="appbanner.length " [initialSlide]="0" pager autoplay="1000" speed="1000">
+                <ion-slide *ngFor="let row of appbanner">
+                    <img src="{{bannerURL+row.banner}}">
+                </ion-slide>
+            </ion-slides>
+        </div>
+
+
+        <div class="my-profile-container">
+            <div class="User_detail fix-arrow" (click)="GoToProfile()">
+                <div>
+                    <h1>Hi, {{!user_data.name ? '---' : user_data.name | titlecase}}</h1>
+                    <p *ngIf="user_data.mobile">+91 {{user_data.mobile}}</p>
+                </div>
+                <i class="material-icons">chevron_right </i>
+            </div>
+
+            <button ion-button color="success" block round (click)="takePhoto('start')" [disabled]="spinner == true"
+                *ngIf="(last_attendence_data.manual_absent=='0') && (last_attendence_data.start_time == '00:00:00'||last_attendence_data.start_time == '')">
+                <ion-icon *ngIf="spinner == false" name="time" class="mr10"></ion-icon>
+                <ion-spinner *ngIf="spinner == true" color="success"></ion-spinner>&nbsp;Start working
+            </button>
+
+            <div class="time-tabel" *ngIf="(last_attendence_data.manual_absent=='0')">
+                <div class="time-slot"
+                    *ngIf=" (last_attendence_data.start_time != '') && (last_attendence_data.stop_time != '' )">
+                    Working Start <span>{{start_attend_time}}</span>
+                </div>
+                <div class="time-slot"
+                    *ngIf="(last_attendence_data.stop_time != ''&&last_attendence_data.stop_time != '00:00:00') && last_attendence_data.start_time != ''">
+                    Working Stop <span>{{stop_attend_time}}</span>
+                </div>
+                <div *ngIf="last_attendence_data.Total_Working_Time != ''">
+                    <div class="time-slot" *ngIf="last_attendence_data.Total_Working_Time != '0 hr 0 min' ">
+                        Total Working Time <span>{{last_attendence_data.Total_Working_Time}}</span>
+                    </div>
+                </div>
+                <button class="mt16" ion-button color="danger" (click)="stopAttendanceAlert()" block round
+                    [disabled]="spinner == true"
+                    *ngIf="((last_attendence_data.stop_time == '00:00:00'||last_attendence_data.stop_time == '') && (last_attendence_data.start_time != ''||last_attendence_data.start_time == '00:00:00'))">
+                    <ion-icon *ngIf="spinner == false" name="clock" class="mr10"></ion-icon><ion-spinner
+                        *ngIf="spinner == true" color="success"></ion-spinner>&nbsp; Stop working
+                </button>
+            </div>
+
+            <div class="time-tabel" *ngIf="(last_attendence_data.manual_absent=='1')">
+                <div class="time-slot">
+                    For Attendence Information, Contact To Admin
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pl16 pr16 mb40">
+            <div class="workimg_summary">
+                <div class="summary-heading">Today Working Summary</div>
+                <ion-list>
+                    <ion-item (click)="goToCheckin()">
+                        <ion-avatar item-start>
+                            <span class="count">{{today_count.today_checkin}}</span>
+                        </ion-avatar>
+                        <h6>Checkin <ion-icon name="arrow-forward"></ion-icon></h6>
+                    </ion-item>
+                    <ion-item (click)='goToFollowup()'>
+                        <ion-avatar item-start>
+                            <span class="count">{{today_count.today_followup}}</span>
+                        </ion-avatar>
+                        <h6>Followup <ion-icon name="arrow-forward"></ion-icon></h6>
+                    </ion-item>
+                    <ion-item (click)="goToPrimaryOrders()"
+                        *ngIf="(user_data.order_type && user_data.order_type.toLowerCase() == 'primary') || (user_data.order_type && user_data.order_type.toLowerCase() == 'both')">
+                        <ion-avatar item-start>
+                            <span class="count">{{today_count.total_primary_order}}</span>
+                        </ion-avatar>
+                        <h6>Primary Order's <ion-icon name="arrow-forward"></ion-icon></h6>
+                    </ion-item>
+                    <ion-item (click)="goToSecondaryOrders()"
+                        *ngIf="(user_data.order_type && user_data.order_type.toLowerCase() == 'secondary') || (user_data.order_type && user_data.order_type.toLowerCase() == 'both' )">
+                        <ion-avatar item-start>
+                            <span class="count">{{today_count.total_secondary_order}}</span>
+                        </ion-avatar>
+                        <h6>Secondary Order's <ion-icon name="arrow-forward"></ion-icon></h6>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+
+            <div class="workimg_summary" *ngIf="team_count  > 0 && (leaveany || Approval_array || expense) ">
+                <div class="summary-heading">Waiting For Approval</div>
+                <ion-list>
+                    <ion-item *ngIf="leaveany" (click)="goToLeave('Team')">
+                        <ion-avatar item-start>
+                            <i class="material-icons ">exit_to_app</i>
+                        </ion-avatar>
+                        <h2>Leave</h2>
+                        <p>{{leaveany ? leaveany : 0}} leave waiting for your approval</p>
+                    </ion-item>
+                    <!-- <ion-item *ngIf="Approval_array" (click)="goToTravel('Team')">
+                        <ion-avatar item-start>
+                            <i class="material-icons ">directions_transit</i>
+                        </ion-avatar>
+                        <h2>Travel Plan</h2>
+                        <p>{{Approval_array ? Approval_array : 0}} travel plan waiting for your approval</p>
+                    </ion-item> -->
+                    <ng-container *ngIf="user_data.role_id !=17 && user_data.role_id !=14 && user_data.role_id!=4">
+                        <ion-item *ngIf="expense" (click)="goToExpense('Team')">
+                            <ion-avatar item-start>
+                                <i class="material-icons ">account_balance_wallet</i>
+                            </ion-avatar>
+                            <h2>Expense</h2>
+                            <p>{{expense ? expense : 0}} expense waiting for your approval</p>
+                        </ion-item>
+                    </ng-container>
+
+                </ion-list>
+            </div>
+
+
+
+            <div class="shorcuts mb16">
+                <h1>Customer Network</h1>
+                <div class="shortcut-btns" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <ng-container *ngFor="let row of networkType">
+                        <div class="btns-group" (click)="goToMainDistributorListPage(row.type)">
+                            <i class="material-icons ">storefront</i>
+                            <span>{{row.module_name}}</span>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- <div class="shorcuts mb16">
+            <h1>Influencer Network</h1>
+            <div class="shortcut-btns" style="grid-template-columns: 1fr 1fr 1fr;" >
+                <ng-container *ngFor="let row of influencerUser">
+                    <div class="btns-group"
+                        (click)="goSiteListPage(row.module_name, row.scanning_rights, row.point_transfer_right, row.type)">
+                        <i class="material-icons ">{{row.scanning_rights == 'Yes' ? 'engineering' : (row.scanning_rights
+                            == 'No' && row.point_transfer_right == "Yes") ? 'person' : 'apartment'}}</i>
+                        <span>{{row.module_name}}</span>
+                    </div>
+                </ng-container>
+            </div>
+        </div> -->
+            <div class="shorcuts">
+                <h1>Shortcuts</h1>
+                <div class="shortcut-btns">
+                    <div class="btns-group" (click)="goToDashboard()">
+                        <i class="material-icons ">dashboard</i>
+                        <span>Dashboard</span>
+                    </div>
+
+                    <div class="btns-group" (click)="goToPrimaryOrders()"
+                        *ngIf="user_data.order_type.toLowerCase() == 'primary' || user_data.order_type.toLowerCase() == 'both' ">
+                        <i class="material-icons ">shopping_cart</i>
+                        <span>Primary Order</span>
+                    </div>
+                    <div class="btns-group" (click)="goToSecondaryOrders()"
+                        *ngIf="user_data.order_type.toLowerCase() == 'secondary' || user_data.order_type.toLowerCase() == 'both' ">
+                        <i class="material-icons ">shopping_cart</i>
+                        <span>Secondary Order</span>
+                    </div>
+                    <div class="btns-group" (click)="goToAttendence()">
+                        <i class="material-icons ">insert_invitation</i>
+                        <span>Attendance</span>
+                    </div>
+
+                    <div class="btns-group" (click)="goToFollowup()">
+                        <i class="material-icons ">add_ic_call</i>
+                        <span>Follow Up</span>
+                    </div>
+
+                    <div class="btns-group" (click)="goToCheckin()">
+                        <i class="material-icons ">my_location</i>
+                        <span>Check In</span>
+                    </div>
+
+                    <div class="btns-group" (click)="goToLead()">
+                        <div class="rel">
+                            <i class="material-icons ">people_alt</i>
+                            <ng-container *ngIf="enquiry_count > 0">
+                                <span [ngClass]="{'new-dot': enquiry_count > 0}">{{enquiry_count}}</span>
+                            </ng-container>
+                        </div>
+                        <span>Enquiry</span>
+                    </div>
+
+                    <!-- <div class="btns-group" (click)="goToevent()">
+                        <i class="material-icons ">groups</i>
+                        <span>Event Plan</span>
+                    </div> -->
+                    <div class="btns-group" (click)="viewAchievement()">
+                        <i class="material-icons ">show_chart</i>
+                        <span>Target</span>
+                    </div>
+                    <!-- <div class="btns-group" (click)="goTopop()">
+                        <i class="material-icons ">card_giftcard</i>
+                        <span>Pop & Gift</span>
+                    </div> -->
+                    <div class="btns-group" (click)="goToTravel('My')">
+                        <i class="material-icons ">directions_transit</i>
+                        <span>Travel Plan</span>
+                    </div>
+                    <div class="btns-group" (click)="goToExpense('My')">
+                        <i class="material-icons ">account_balance_wallet</i>
+                        <span>Expense</span>
+                    </div>
+                    <div class="btns-group" (click)="goToLeave('My')">
+                        <i class="material-icons ">exit_to_app</i>
+                        <span>Leave</span>
+                    </div>
+                    <div class="btns-group" (click)="goToTask()">
+                        <i class="material-icons ">task</i>
+                        <span>Task</span>
+                    </div>
+                    <!-- <div class="btns-group" (click)="scanProduct()">
+                        <i class="material-icons ">qr_code_scanner</i>
+                        <span>Product Scan</span>
+                    </div> -->
+                    <div class="btns-group" (click)="goOnProductPage()">
+                        <i class="material-icons ">category</i>
+                        <span>Products</span>
+                    </div>
+                    <div class="btns-group" (click)="goOnDigitalcatPage();">
+                        <i class="material-icons">picture_as_pdf</i>
+                        <span>E-Catalogue</span>
+                    </div>
+
+                    <!-- <div class="btns-group" (click)="manualProduct()">
+                    <i class="material-icons ">qr_code</i>
+                    <span>Manual Check</span>
+                </div> -->
+
+                    <div class="btns-group" (click)="announcementList()">
+                        <div class="rel">
+                            <i class="material-icons">campaign</i>
+                            <ng-container *ngIf="announcementCount > 0">
+                                <span [ngClass]="{'new-dot': announcementCount > 0}">{{announcementCount}}</span>
+                            </ng-container>
+                        </div>
+                        <span>Announce ment</span>
+                    </div>
+                    <div class="btns-group" (click)="gotoHolidayList();">
+                        <i class="material-icons">calendar_month</i>
+                        <span>Holidays</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------- Skelton starts here -------------------------------------->
+    <ng-container>
+        <div *ngIf="skLoading">
+            <div class="slide-image sk-loading">
+                <ion-slides>
+                    <ion-slide>
+                    </ion-slide>
+                </ion-slides>
+            </div>
+
+            <div class="my-profile-container ">
+                <div class="User_detail fix-arrow sk-loading"> </div>
+                <button ion-button color="white" block round class="sk-loading"></button>
+            </div>
+
+            <div class="pl16 pr16 mb40">
+                <div class="workimg_summary ">
+                    <div class="summary-heading">Today Working Summary</div>
+                    <ion-list>
+                        <ion-item class="sk-loading" *ngFor="let item of [].constructor(3)">
+                            <ion-avatar item-start>
+                            </ion-avatar>
+                        </ion-item>
+
+                    </ion-list>
+                </div>
+
+                <div class="shorcuts mb16 ">
+                    <h1>Customer Network</h1>
+                    <div class="shortcut-btns sk-loading" style="height:100px">
+                        <ng-container *ngFor="let row of [].constructor(10)">
+                            <div class="btns-group">
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="shorcuts ">
+                    <h1>Shortcuts</h1>
+                    <div class="shortcut-btns sk-loading" style="height:100px">
+                        <div class="btns-group " *ngFor="let item of [].constructor(12)">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ion-content>

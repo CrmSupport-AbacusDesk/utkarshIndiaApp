@@ -1,0 +1,182 @@
+page-work-type-modal {
+    .upload-doc ul li.image-upload{
+        width: auto !important;
+    }
+    .add-image-css{
+        border: 1px dashed rgb(0, 102, 255);
+        // background-color: rgb(175, 183, 239);
+        border-radius: 4px;
+        color:#00668c;
+        // width: 150px;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        padding: 6px;
+        p{
+            background-color: #029f31db;
+            border-radius: 4px;
+            padding: 4px;
+            color: #fff;
+        }
+    }
+    .login-feild{
+        padding: 20px 0px;
+        position: relative;
+        background-color: #cccccc;
+    }
+    .Input{
+        border-radius: 4px;
+    }
+    .Input:active,
+    .Input:focus,
+    .Input:hover {
+        outline: none;
+        border-bottom-color: #67799e;}
+    .transprant-bg
+    {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .work-modal
+    {
+        padding: 16px;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .work-modal-bg
+    {
+        width: 100%;
+        background: #fff;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.5);
+        
+        .head
+        {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: -16px -16px 16px -16px;
+            padding: 10px 16px;
+            border-bottom: 1px solid #cccccc;
+            
+            h2
+            {
+                font-size: 16px;
+            }
+            
+            a
+            {
+                &.close
+                {
+                    line-height: 0px;
+                    
+                    i
+                    {
+                        font-size: 20px;
+                        color: #64104b;
+                    }
+                }
+            }
+        }
+
+        ion-item
+        {
+            padding-left: 0px;
+        }
+    }
+    
+    ion-label 
+    {
+        font-size: 14px !important;
+    }
+
+    ion-list
+    {
+        &.list-box.workType_checkBox{
+            display: flex;
+            justify-content: space-between;
+            .item-inner{
+                border-color: #32db64;
+            }
+            ion-item{
+                max-width: 45%;
+
+                &.item-radio-checked{
+                    .item-inner{
+                        background-color: #32db64;
+
+                    }
+                }
+            }
+        }
+
+        &.list-box
+        {
+            border-radius: 10px;
+            border: 1px solid #dedede;
+            overflow: hidden;
+            margin-bottom: 16px !important;
+            
+            
+            ion-item
+            {
+                padding: 0px !important;
+                min-height: 45px !important;
+                
+                .item-inner
+                {
+                    padding-left: 10px;
+                    border-radius: 10px;
+                    border: 1px solid #00668c;
+                    ion-label
+                    {
+                        margin: 0px;
+                    }
+                }
+                
+                &.item-radio-checked
+                {
+                    
+                    .item-inner
+                    {
+                        background-color: #00668c;
+                        color: white;
+                        ion-label
+                        {
+                            color: #fff;
+                        }
+                        
+                        ion-radio
+                        {
+                            .radio-checked
+                            {
+                                border-color: #fff;
+                                
+                                .radio-inner
+                                {
+                                    background-color: #fff;
+                                }
+                            }
+                        }
+                        
+                        .radio-ios .radio-checked .radio-inner
+                        {
+                            background: transparent;
+                            top: 1px;
+                            width: 8px;
+                            height: 19px;
+                            border-color: #32db64;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+}

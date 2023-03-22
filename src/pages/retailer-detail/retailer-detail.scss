@@ -1,0 +1,170 @@
+page-retailer-detail {
+    .Head-box {
+        padding: 8px 10px;
+        border-radius: 10px;
+        @extend.blue-shadow_light;
+        margin-bottom: 16px;
+        background: rgb(246, 252, 255);
+        z-index: 1;
+        position: relative;
+
+        span {
+            font-size: 12;
+            font-weight: 600;
+            color: rgb(85, 85, 85);
+        }
+
+        .lower-data {
+            // display: flex;
+            // flex-direction:row;
+            // align-items: center;
+            // position:relative;
+            // // top: -2px;
+            // z-index: 1;
+            border-radius: 10px;
+            background: #fff;
+            border: 1px solid rgb(220, 220, 220);
+
+            // @extend.blue-shadow_light;
+            p:nth-child(1) {
+                color: grey;
+                font-size: 10px;
+                font-weight: bold;
+                padding-right: 4px;
+            }
+
+            p:nth-child(2) {
+
+                font-size: 12px;
+                font-weight: bold;
+                padding-right: 4px;
+            }
+        }
+    }
+
+    .main-box {
+        box-shadow: 0px 0px 15px 0px #a4e3e3, 0px 0px 15px 0px #d2e3e3 !important;
+    }
+
+    .DetailTable {
+        max-height: 150px;
+        flex-wrap: wrap;
+        overflow-x: hidden;
+        overflow-y: scroll !important;
+
+        .Main-head {
+            // display: flex;
+            // max-width: 100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            // flex-direction: row;
+            .dist-list:nth-child(odd) {
+                display: flex;
+                align-items: center;
+                background: rgb(183, 207, 218);
+                @extend.blue-shadow_light;
+                border-radius: 6px;
+                margin: 6px;
+                span:nth-child(2) {
+                    padding-left: 4px;
+                    font-weight: bold;
+                    font-size: 10px;
+                }
+            }
+            .dist-list:nth-child(even) {
+                display: flex;
+                align-items: center;
+                background: rgb(205, 196, 210);
+                @extend.blue-shadow_light;
+                border-radius: 6px;
+                margin: 6px;
+                span:nth-child(2) {
+                    padding-left: 4px;
+                    font-weight: bold;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+
+
+    .header {
+        background-color: #e2e2e2;
+        display: flex;
+        flex-direction: row;
+
+        .sub-head:nth-child(1) {
+            border-right: solid 1px #ccc;
+            flex: 1;
+            // text-align: center;
+            align-items: center;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sub-head:nth-child(2) {
+            flex: 1;
+            align-items: center;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .ImageBG{
+        display: flex;
+        align-items: center;
+        border-radius: 22px;
+        margin: auto;
+        width: 34px;
+        height: 32px;
+        @extend.blue-shadow_light;
+        img{
+            display: block;
+            margin: auto;
+           }
+    }
+    .NavTabs:nth-child(1){
+        .ImageBG{
+
+            background-color: rgb(252, 183, 151);
+        }
+    }
+    .NavTabs:nth-child(2){
+        .ImageBG{
+
+            background-color: rgb(151, 252, 203);
+        }
+    }
+    .NavTabs:nth-child(3){
+        .ImageBG{
+
+            background-color: rgb(151, 193, 252);
+        }
+    }
+    .Navigation{
+        display: flex;
+        flex-direction: row;
+        margin: 12px;
+        justify-content: space-between;
+        // width: 100%;
+        .NavTabs{
+            text-align: center;
+            align-items: center;
+            p{
+                // white-space:;
+                padding-top: 4px;
+                font-size: 12px;
+                font-weight: 600;
+                color: rgb(51, 51, 51);
+            }
+        }
+
+    }
+
+
+
+    .slab{
+        justify-content: space-between;
+    }
+}

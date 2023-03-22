@@ -1,0 +1,110 @@
+<ion-header [hidden]="true">
+    <ion-navbar>
+        <ion-title>catalogue-home</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div class="dashboard_header">
+        <div class="csm_header"> 
+            <!-- flat -->
+            <div class="logo"><img src="assets/imgs/logo.png" alt=""></div>
+            <!-- <div class="buttons">
+                <button ion-button (click)="open_menu()"> <ion-icon ios="ios-menu" md="md-menu" class="menu_icon"></ion-icon></button>
+            </div> -->
+            <div class="buttons">
+                <button ion-button (click)="goToLogin()"><img src="assets/imgs/login.svg" alt=""></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher> -->
+
+    <div class="cs-slider">
+        <ion-slides pager >
+            <!-- autoplay=3000 -->
+            <ion-slide>
+                <img src="assets/imgs/banner.jpg" alt="slide2">
+            </ion-slide>
+            <ion-slide>
+                <img src="assets/imgs/specialist-banner.jpg" alt="slide3">
+            </ion-slide>
+            <ion-slide>
+                <img src="assets/imgs/safety-banner-1.jpg" alt="slide4">
+            </ion-slide>
+            <ion-slide>
+                <img src="assets/imgs/web-banner-safety-02.jpg" alt="slide4">
+            </ion-slide>
+            <ion-slide>
+                <img src="assets/imgs/idac-banner.jpg" alt="slide4">
+            </ion-slide>
+            <ion-slide>
+                <img src="assets/imgs/superbrand-banner.jpg" alt="slide4">
+            </ion-slide>
+        </ion-slides>
+    </div>
+
+    <!-- <div class="bg-outer" style="background: #b3e5fc;">
+        <div class="bg-inner">
+            <div class="head">
+                <h2>Shop By Category</h2>
+                <button class="cs-ion-btn" ion-button (click)="goToProductList()">View All</button>
+            </div>
+            <div class="carousel">
+                <div class="carousel-item" *ngFor="let list of category_list; let i=index" (click)="goToProductList('category',list.id)">
+                    <img *ngIf="list.image != '' && list.image != null" src="{{image_url}}+{{list.image}}" alt="">
+                    <img *ngIf="list.image == '' || list.image == null" src="assets/imgs/default.png" alt="">
+                    <label>{{list.category_name}}</label>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="bg-outer" style="background: #c4ffce;" *ngIf="new_arrival.length > 0 ">
+        <div class="bg-inner">
+            <div class="head">
+                <h2>New Arrival</h2>
+                <button class="cs-ion-btn" ion-button style="background: #0bb72c;" (click)="goToarrivals()">View All</button>
+            </div>
+            <div class="carousel">
+
+                <div class="carousel-item" *ngFor="let list of new_arrival; let i=index" (click)='goOnProductDetailPage(list.id)'>
+                    <img *ngIf="list.image != '' && list.image != null" src="{{image_url}}+{{list.image}}" alt="">
+                    <img *ngIf="list.image == '' || list.image == null" src="assets/imgs/default.png" alt="">
+                    <label>{{list.product_name}}</label>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+    <div class="bg-outer" style="background: #fff59d;" >
+
+        <!-- *ngIf="best_selling.length > 0 " -->
+
+        <div class="bg-inner">
+            <div class="head">
+                <h2>Our Products</h2>
+            </div>
+
+            <div class="grid-item">
+              
+                <div class="grid-item-content" *ngFor="let list of products; let i=index" (click)="goOnProductDetailPage(list.id)">
+                    <div class="thumbnail">
+                        <button class="add-fav" [ngClass]="{'active':list.favorite == true}" *ngIf="userId !=''" ion-button><i class="material-icons">&nbsp;</i></button>
+                        <img *ngIf="list.image != '' && list.image != null" src="{{image_url+list.image}}" alt="">
+                        <img *ngIf="list.image == '' || list.image == null" src="assets/imgs/default.png" alt="">
+                    </div>
+                    <div class="item-info">
+                        <p>{{list.product_name}}</p>
+                      
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</ion-content>

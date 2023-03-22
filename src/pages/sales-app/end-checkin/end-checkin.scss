@@ -1,0 +1,90 @@
+page-end-checkin {
+    .forword-page{
+        a{
+            &:after{
+                display: none !important;
+            }
+            background-color: #f9f9f9 !important;
+            border: 1px solid #b6b6f5 !important;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            p{
+                width: auto !important;
+                border: none !important;
+                background-color: rgba(0, 0, 0, 0.167);
+                height: 35px;
+                min-width: 30px !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            span{
+                font-size: 10px;
+                color: black;
+            }
+            div{
+                color: black;                
+                border-radius: 5px;
+                padding: 3px 3px 1px 3px;
+                img{
+                    max-width: 100%;
+                    border: 0;
+                    width: 22px;
+                    height: auto !important;
+                }
+            }
+        }
+    }
+    .callbtnBg{
+        background-color: #fff;
+        border-bottom-left-radius: 50%;
+        padding: 5px;
+    
+        border-top-right-radius: 10px;
+        margin-right: -10px;
+        margin-top: -8px;
+        
+    }
+    .list-box{
+        border: 1px solid #ddd;
+        // box-shadow: 8px 8px 4px 0 #f1f1f1 !important;
+        border-radius: 6px;
+        margin-top: 16px;
+        padding: 10px;
+        .seeDetailsBox{
+            content: 'See Details';
+            position: absolute;
+            top: 4px;
+            right: 0px;
+            z-index: 1;
+            color: rgb(164, 164, 164);
+            font-size: 9px;
+            background: #f2f7ff;
+            padding: 2px;
+            border-bottom-left-radius: 6px;
+            border-top-left-radius: 6px;
+        }
+        .upper{
+            padding-top: 8px;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            background-color: #f2f5f9;
+            border-bottom: 1px dashed #ccc !important;
+            margin: 0;
+        }
+    }
+    .edit{
+        margin-top: -10px;
+        border:0px !important;
+        padding:0px!important;
+    }
+    .button-round-md {
+        border-radius: 4px!important;
+        padding: 0 2.6rem!important;
+    }
+}

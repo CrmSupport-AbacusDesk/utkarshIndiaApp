@@ -1,0 +1,37 @@
+<!--
+  Generated template for the LoyaltyEnterCouponCodePage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Enter Coupon Code</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <div class="coupon-container">
+    <div class="heading-info">
+      <p class="head">Scan QR Code</p>
+      <p class="info">Enter coupon code to get your points .</p>
+    </div>
+    <form #f="ngForm">
+      
+      <div class="form padding0 pt0">
+        <ion-list>
+       
+        <ion-item>
+          <ion-label floating>Coupon Code</ion-label>
+          <ion-input type="text" [(ngModel)]="data.code" #code="ngModel" name="code" minlength="16" maxlength="16" required></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+    <!-- f.form.valid &&  -->
+    <button type="button" ion-button round block color="secondary" (click)="submit()"  [disabled]="spinnerLoader && f.form.valid">
+      <ion-spinner *ngIf="spinnerLoader" ></ion-spinner>&nbsp;{{'Submit'}}
+    </button>
+  </form>
+</div>
+</ion-content>

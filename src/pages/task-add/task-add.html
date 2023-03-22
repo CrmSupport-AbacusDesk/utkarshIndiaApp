@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Task</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf="user_list.length>0 ">
+  <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+    <div class="form">
+      <ion-list no-lines class="padding10 mb0 mt30">
+        <ion-item [ngClass]="{'error':f.submitted && user_id?.invalid}">
+          <ion-label floating>Assign To <strong>*</strong></ion-label>
+          <ion-select name="user_id" #user_id="ngModel" [(ngModel)]="data.user_id" required>
+            <ion-option *ngFor="let row of user_list" value="{{row.id}}">{{row.name | titlecase}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <div class="eror" *ngIf="f.submitted && data.user_id?.invalid">
+          <p> {{ 'This field is required'}}</p>
+        </div>
+
+
+        <ion-item [ngClass]="{'error':f.submitted && promise_date?.invalid}">
+          <ion-label floating><span>Promise Date<strong>*</strong></span></ion-label>
+          <ion-datetime display-format="MMM DD, YYYY" type="text" name="promise_date" #promise_date="ngModel"
+            [(ngModel)]="data.promise_date" class="calander" required>
+          </ion-datetime>
+        </ion-item>
+        <div class="eror" *ngIf="f.submitted && data.promise_date?.invalid">
+          <p> {{ 'This field is required'}}</p>
+        </div>
+        <ion-item [ngClass]="{'error':f.submitted && remarks?.invalid}">
+          <ion-label floating>Remark <strong>*</strong></ion-label>
+          <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks"></ion-textarea>
+        </ion-item>
+        <div class="eror" *ngIf="f.submitted && remarks?.invalid">
+          <p> {{ 'This field is required'}}</p>
+        </div>
+      </ion-list>
+
+      <div class="upload-doc pl10 ">
+        <div class="">
+          Attach image
+        </div>
+        <ul class="no-padding">
+          <li class="add-image" (click)="onUploadChange()">
+            <i class="material-icons">add_a_photo</i>
+          </li>
+          <li class="image-upload" *ngFor="let image of selectImage;index as i">
+            <img src="{{image}}">
+            <button class="del" (click)="delete_img(i)"><i class="material-icons">delete_sweep</i></button>
+          </li>
+        </ul>
+      </div>
+      <button ion-button block color="primary" [disabled]="spinner == true">
+        <ion-spinner *ngIf="spinner == true"></ion-spinner>&nbsp;Save
+      </button>
+    </div>
+  </form>
+
+
+</ion-content>
+
+
+<ion-content *ngIf="user_list.length<1">
+  <div class="nothing-here">
+
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No User Assigned</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

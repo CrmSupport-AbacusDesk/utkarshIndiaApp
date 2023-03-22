@@ -1,0 +1,126 @@
+page-site-list {
+
+    .attendance-list {
+        border: 1px solid #ccc;
+        padding: 0px;
+        margin-bottom: 16px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        position: relative;
+        
+        &:last-child {
+            margin-bottom: 0px;
+        }
+    
+        &.flat-list {
+            border-bottom: 2px dashed #91beff;
+            border-radius: 0px;
+        }
+    
+        .next-forword {
+            position: absolute;
+            top: 60%;
+            right: -8px;
+            transform: translateY(-60%);
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            padding: 2px;
+            box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1);
+        }
+    
+        &.new {
+            background: #dfecff;
+        }
+    
+        &.green_bg {
+            background: #dafcc5;
+    
+            .slab.slab-bg {
+                background: #a8ffa3ab
+            }
+        }
+    }
+    .slab.slab-bg {
+        border-top-left-radius: 6px !important;
+        border-top-right-radius: 6px !important;
+    }
+.OutOver {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0px;
+    padding: 0px;
+
+
+    .primary-column {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0px;
+
+        p {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.2px;
+            line-height: 20px;
+        }
+
+        span {
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        &.outstanding {
+            background: #e7ffbd;
+        }
+
+        &.overdue {
+            background: #ffbdbd;
+        }
+
+        &.pending-bg {
+            background: #FFE0B2;
+        }
+
+        &.order-bg {
+            background: #fdffb1;
+        }
+
+        &.light-red {
+            background: #FFEBEE;
+        }
+
+        &.light-pink {
+            background: #FCE4EC;
+        }
+
+        &.light-purpel {
+            background: #F3E5F5;
+        }
+        &.light-grey {
+            background: #dadada;
+        }
+        &.light-medium {
+            background:#cacaca;
+        }
+    }
+
+    &.two-column {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    &.three-column {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+}

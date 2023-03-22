@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Product Detail</ion-title>
+        <ion-buttons end (click) ="shareProducts()">
+            <button ion-button icon-only color="light">
+                <ion-icon name="md-share"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content> 
+    <div class="detais mt10">
+        <div *ngIf="prod_detail.image != ''" class="bg-thumbnail">
+            <img src="{{image_url+prod_detail.image}}">
+        </div>
+        
+        <div *ngIf="prod_detail.image == ''">
+            <i  class="material-icons" style="font-size: 50px; padding: 60px; color: #c3c3c3;">perm_media</i>
+        </div>
+        
+        
+        <div class="padding16">
+            <table>
+                <tr>
+                    <th class="w100">Category</th>
+                    <td>{{prod_detail.category ? prod_detail.category : '---'}}</td>
+                </tr>
+                <tr>
+                    <th>Sub Category</th>
+                    <td>{{prod_detail.sub_category_name ? prod_detail.sub_category_name :'---'}}</td>
+                </tr>
+                
+                <tr>
+                    <th>Product Name</th>
+                    <td>{{prod_detail.product_name ? prod_detail.product_name : '---'}}</td>
+                </tr>
+                <tr>
+                    <th>Product Code</th>
+                    <td>{{prod_detail.product_code ? prod_detail.product_code : '---'}}</td>
+                </tr>
+                <tr >
+                    <th>Brand</th>
+                    <td>{{prod_detail.brand ? prod_detail.brand : '---'}}</td>
+                </tr>
+                <tr>
+                    <th>Color</th>
+                    <td>{{prod_detail.color ? prod_detail.color :'---'}}</td>
+                </tr>
+                <tr>
+                    <th>MRP</th>
+                    <td>&#8377;{{prod_detail.mrp ? ( prod_detail.mrp) :'---'}}</td>
+                </tr>
+                <tr>
+                    <th>Master Packing Size</th>
+                    <td>{{prod_detail.master_packing_size ? prod_detail.master_packing_size : '---'}} {{prod_detail.master_packing_size ? prod_detail.uom : ''}}</td>
+                </tr>
+                <tr>
+                    <th>Small Packing Size</th>
+                    <td>{{prod_detail.small_packing_size ? prod_detail.small_packing_size :'---'}} {{prod_detail.small_packing_size ? prod_detail.uom :''}}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{prod_detail.description?prod_detail.description:'---'}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</ion-content>
+
+
+
+
+
+
+
+

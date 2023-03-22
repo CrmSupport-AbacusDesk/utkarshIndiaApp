@@ -1,0 +1,30 @@
+<ion-content class="transprant-bg">
+  
+  <div class="work-modal">
+    <div class="work-modal-bg">
+
+      <div class="head">
+        <h2>Upload File</h2>
+        <a class="close" (click)="close()"><i class="material-icons">close</i></a>
+      </div>
+
+     
+
+      <div class="scroll_in_modal">
+
+        <div class="cs-file">
+          <label>
+            <input multiple type="file" name="file" required (change)="fileChange($event)" placeholder="Upload file">
+          </label>
+        </div>
+
+        <div class="text-right">
+          <a class="link" (click)="downloadFile()">Downlaod Sample File</a>
+          <!-- <a class="link" href="https://apps.abacusdesk.com/kei/sample_travel.csv">Downlaod Sample File</a> -->
+
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</ion-content>

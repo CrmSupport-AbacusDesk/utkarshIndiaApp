@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>My {{user_data.type != 1 ? 'Channel Partner' : 'Dealer'}}s</ion-title>        
+    </ion-navbar>    
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar (ngModelChange)="get_assign_dr()" [(ngModel)]="filter.master" name="master" ></ion-searchbar>
+            </div>
+        </div>
+    </ion-toolbar> 
+</ion-header>
+
+<ion-content>
+    <div class="nothing-here" *ngIf="!dr_list.length && load_data == '1' ">
+        
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pd-left-right16">
+        <div class="list-box mt16" *ngFor="let data of dr_list" >
+            <div class="mid mt0">
+                <div class="content-info" >
+                    <div class="left-info" >
+                        <div class="circle" *ngIf="!data.dr_image">{{data.company_name.substring(0,1).toUpperCase()}}</div>
+                        <div class="circle image-in"  *ngIf="data.dr_image">
+                            <img src="http://phpstack-83335-1970078.cloudwaysapps.com/uploads/{{data.dr_image}}"  (click) = "viewProfiePic(data.dr_image)">
+                        </div>
+                    </div>
+                    
+                    <div class="right-info" >
+                        <p *ngIf="data.dealer_verify!=0"> {{data.company_name.toUpperCase()}}</p>
+                        <p *ngIf="data.dealer_verify==0"> {{data.company_name.toUpperCase()}}</p>
+                        <p > {{data.name | titlecase}} ({{data.mobile}})</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{data.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            <div class="lower" >
+                <p>Address</p>
+                <p>{{data.address}} {{!data.state ? 'N/A' : data.state | titlecase}} {{!data.district ? '' : ', '+data.district | titlecase}}  {{!data.pincode ? '' : ' - '+data.pincode}}</p>
+            </div>
+        </div>  
+    </div>
+    
+    
+    <ion-fab right bottom *ngIf="constant.UserLoggedInData.all_data?.type!=3">
+        <button ion-fab color="primary" (click)="delaerexecutive('dealer')">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+    
+    
+    <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)"  *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+</ion-content>

@@ -1,0 +1,105 @@
+<ion-content class="transprant-bg">
+    <div class="work-modal" *ngIf="type!='DISPATCH'">
+        <div class="work-modal-bg">
+            <div class="head">
+                <h2>ACHIEVEMENT LOG</h2>
+                <a class="close" (click)="close()"><i class="material-icons">close</i></a>
+            </div>
+            
+            <div class="scroll_in_modal">
+                <div class="list-box" *ngFor="let row of target_array">
+                    <div class="mid mt0">
+                        <div class="content-info">
+                            <!-- <div class="left-info"> 
+                                <div class="circle">{{row.product_name.substring(0,1).toUpperCase()}}</div>
+                            </div> -->
+                            
+                            <div class="right-info">
+                                <p>{{row.date| date : 'MMMM , y'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="three_boxes"> 
+                        <div class="lower">
+                            <p>Target</p> 
+                            <p>&#8377;{{row.target == null? '0' : row.target}}</p>
+                        </div>
+                        <div class="lower">
+                            <p>Achievement</p>
+                            <p>&#8377;{{row.achieve  == null ? '0' : row.achieve| number : '1.2-2' }}</p>
+                        </div>
+                        <div class="lower">
+                            <p>Achievement %</p>
+                            <p>{{row.achieve=='null' ? '0' : (((row.achieve / row.target)*100 | number : '1.2-2')+'%') }}</p>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    
+    <div class="work-modal" *ngIf="type=='DISPATCH'">
+        <div class="work-modal-bg">
+            <div class="head">
+                <h2>SELECT DISPATCH QUANTITY</h2>
+                <a class="close" (click)="close()"><i class="material-icons">close</i></a>
+            </div>
+            
+            <div style="overflow: auto; min-height: auto; max-height: 70vh;">
+                <section class="ac-container padding0">
+                    <figure *ngFor="let order of orderDetail1;let j = index;">
+                        <input id="ac-{{j+100}}" name="accordion-1" type="radio" class="ds-none">
+                        
+                        <label class="header-label" [ngClass]="{'cs-art':collObject1.index == true}" for="ac-{{j+100}}" (click)="collapse_t(j)">
+                            <p>{{order.product_name}}</p>
+                            <!-- <span>Total : ₹ {{order.dispatchQty * order.price}}</span> -->
+                        </label>
+                        
+                        <article [ngClass]="{'cs-art':collObject1.index == true}">
+                            <div class="box complete">
+                                <div class="data-table padding0">
+                                    <table>
+                                        <div>
+                                            <tr>
+                                                <th>Size</th>
+                                                <td>{{order.product_size}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w70">Channel Partner Stock</th>
+                                                <td>{{order.stock == null ? '0' : order.stock  }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Qty</th>
+                                                <td>{{order.qty}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w70">Pending Qty</th>
+                                                <td>{{order.pending_qty}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w60">Dispatch Qty</th>
+                                                <td><input type="number" string-to-number name="dispatchQty{{j}}" [(ngModel)]="order.dispatchQty" #dispatchQty="ngModel" placeholder="QTY." (keyup)="order.dispatchQty=='undefined' ? '' : check_qty(j)">
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </article>
+                    </figure>
+                </section>
+                
+                <!-- <div style="padding: 0px 16px 16px 16px;">
+                    <div class="time_show amount-listing">
+                        <p>Net Total</p>
+                        <p>₹ {{userDetail.sub_total | number:'1.2-2'}} </p>
+                    </div>
+                </div>  -->
+                
+            </div>
+            
+            <button class="cs-button mt16" (click)="dispatchOrder()">DISPATCH</button>
+        </div>        
+    </div>
+</ion-content>

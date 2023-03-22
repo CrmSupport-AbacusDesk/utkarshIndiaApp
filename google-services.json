@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "696963043768",
+    "project_id": "pearl-bad70",
+    "storage_bucket": "pearl-bad70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696963043768:android:737bee78f5563ef3a83f4d",
+        "android_client_info": {
+          "package_name": "com.pearl.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696963043768-dtmgfq09277ndd2a36l6qurmv9tba9dt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1_BwieYUnPmDA2Yr7MfYQo0qXJZpmJrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696963043768-dtmgfq09277ndd2a36l6qurmv9tba9dt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

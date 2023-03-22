@@ -1,0 +1,197 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="travelViewType=='My'">Travel Plan</ion-title>
+    <ion-title *ngIf="travelViewType!='My'">Team Travel Plan</ion-title>
+    <ion-buttons end *ngIf="teamCount!=null">
+      <button ion-button icon-only *ngIf="teamCount > 0" (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ng-container>
+    <div class="edit flat" *ngIf="travelViewType=='Team'">
+      <ion-list>
+        <ng-container>
+          <ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+            <ion-label>Select Team Member</ion-label>
+            <ionic-selectable item-content name="data" [(ngModel)]="selectData.team" [items]="user_list" itemValueField="id" itemTextField="name" [canSearch]="true" #selectComponent  (ngModelChange)="getTravelData()"></ionic-selectable>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </div>
+
+  </ng-container>
+
+  <ng-container *ngIf="userId">
+    <div class="calender-section">
+      <div class="head">
+        <button (click)="goToLastMonth()"><i class="material-icons"> keyboard_arrow_left</i></button>
+        <p>{{currentMonth}} {{currentYear}}</p>
+        <button (click)="goToNextMonth()"><i class="material-icons"> keyboard_arrow_right</i></button>
+      </div>
+      <div class="body">
+        <ion-grid class="padding0 top-bdr">
+          <ion-row class="weekday">
+            <ion-col col-1>Mo</ion-col>
+            <ion-col col-1>Tu</ion-col>
+            <ion-col col-1>We</ion-col>
+            <ion-col col-1>Th</ion-col>
+            <ion-col col-1>Fr</ion-col>
+            <ion-col col-1>Sa</ion-col>
+            <ion-col col-1>Su</ion-col>
+          </ion-row>
+          <ion-row class="date">
+            <ion-col col-1 *ngFor="let lastDay of daysInLastMonth">
+              <span> </span>
+            </ion-col>
+            <!-- (click)="day.date>=TodayDate?goToPage(day.date, day.travel_planstatus):null" -->
+            <ion-col col-1 *ngFor="let day of daysInThisMonth;let i=index"
+              [ngClass]="day.travel_planstatus=='Approve'?'green-box':day.travel_planstatus=='Pending'?'yellow-box':day.travel_planstatus=='Reject'?'red-box' : day.isSunday=='true'?'grey-box':day.isHoliday=='true'?'blue-box': day.isOnLeave=='TRUE'?'purple-box':TodayDate>day.date?'pastDays':''">
+              <span>
+                {{day.day}}
+              </span>
+            </ion-col>
+
+            <ion-col col-1 *ngFor="let lastDay of daysInNextMonth">
+              <span> </span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+
+
+    <div class="date-suggest">
+
+      <ul>
+        <li>
+          <span class="white-box"></span>
+          <p>No Travel Plan</p>
+        </li>
+        <li>
+          <span class="yellow-box"></span>
+          <p>Plan Approval Pending</p>
+        </li>
+        <li>
+          <span class="green-box"></span>
+          <p>Plan Approved</p>
+        </li>
+        <li>
+          <span class="red-box"></span>
+          <p>Plan Rejected</p>
+        </li>
+        <li>
+          <span class="blue-box"></span>
+          <p>Holiday</p>
+        </li>
+        <li>
+          <span class="purple-box"></span>
+          <p>Leave</p>
+        </li>
+        <li>
+          <span class="grey-box"></span>
+          <p>Weekly Rest</p>
+        </li>
+      </ul>
+    </div>
+
+    <ng-container>
+      <div class="padding16" *ngIf="daysInThisMonth.length">
+        <div class="collapse" *ngFor="let item of daysInThisMonth;let idx = index;"
+          [ngClass]="{'expand':item.collapse == true,'travel-pending':item.travel_planstatus =='Pending','travel-approved':item.travel_planstatus =='Approve','travel-reject':item.travel_planstatus =='Reject','travel-leave':item.isOnLeave=='TRUE','travel-holiday':item.isHoliday=='true','travel-rest':item.isSunday=='true'}">
+          <div class="collapse-head" (click)="item.collapse=!item.collapse">
+            <div class="date-head">
+              <p>{{item.day_name}}</p>
+              <span>{{item.date | date:'d MMM y'}}</span>
+            </div>
+            <div style="margin-left:-11px" class="date-head">
+              <p>Visit Plan : <span>{{item.total_travel_count}}</span></p>
+              <p>Visited : <span>{{item.checkinDone}}</span></p>
+              <!-- <span>{{item.date | date:'d MMM y'}}</span> -->
+            </div>
+
+
+            <div class="info">
+
+
+              
+              <span *ngIf="item.weeklyOff == 'FALSE' && item.isHoliday == 'FALSE' && item.isOnLeave == 'FALSE' && item.travelPlan =='TRUE' ">Travel</span>
+              <span *ngIf="item.weeklyOff == 'FALSE' && item.isHoliday == 'FALSE' && item.isOnLeave == 'FALSE' && item.travelPlan == 'FALSE' ">Working</span>
+              
+              <span *ngIf="item.isOnLeave=='TRUE' ">Leave</span>
+              <span *ngIf="item.isOnLeave=='FALSE' && item.isHoliday=='TRUE'">Holiday</span>
+              <span *ngIf="item.isOnLeave=='FALSE' && item.isHoliday=='FALSE' && item.weeklyOff=='TRUE' ">Weekly Off</span>
+              <i class="material-icons"> keyboard_arrow_right</i>
+            </div>
+            <!-- <button (click)="goToEditPage(item.date)"  *ngIf="item.date>TodayDate && item.collapse && travelViewType=='My' && item.travel_planstatus!='Reject' && item.travelPlan !='false'"><i class="material-icons">  edit_view</i></button> -->
+
+
+          </div>
+          <div class="collapse-body padding0">
+
+            <table *ngIf="item.travel_info.length">
+              <tr>
+                <th class="w75">Visit Type</th>
+                <!-- <th>Remark</th> -->
+                <th>Company Name</th>
+
+              </tr>
+              <tr *ngFor="let row of item.travel_info">
+                <td>{{row.travel_type}}</td>
+                <!-- <td>{{row.status_remark}}</td> -->
+                <td>{{row.company_name}}</td>
+
+              </tr>
+            </table>
+
+            <div class="padding10" *ngIf="item.travel_info.length==0">
+              <span>No Plan Exist</span>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="travel-chart">
+      <div class="circle-1"
+        [ngClass]="{'P-5':percentages>0&&percentages<=5,'P-10':percentages>5&&percentages<=10,'P-15':percentages>10&&percentages<=15,'P-20':percentages>15&&percentages<=20,'P-25':percentages>20&&percentages<=25,'P-30':percentages>25&&percentages<=30,'P-35':percentages>30&&percentages<=35 ,'P-40':percentages>35&&percentages<=40,'P-45':percentages>40&&percentages<=45,'P-50':percentages>45&&percentages<=50,'P-55':percentages>50&&percentages<=55,'P-60':percentages>55&&percentages<=60,'P-65':percentages>60&&percentages<=65,'P-70':percentages>65&&percentages<=70,'P-75':percentages>70&&percentages<=75, 'P-80':percentages>75&&percentages<=80,'P-85':percentages>80&&percentages<=85,'P-90':percentages>85&&percentages<=90,'P-95':percentages>90&&percentages<=99,'P-100':percentages>=100}">
+        <div class="outer">
+          <div class="innear">
+            <div class="circle-2">
+              <h1>{{percentages}}%</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="travel-detail">
+        <div class="item-flex">
+          <p> TOTAL WORKING DAYS</p>
+          <div class="count">
+            <span class="pink"></span>
+            <h1>{{travel_data.working_days}}</h1>
+          </div>
+        </div>
+        <div class="item-flex">
+          <p> TRAVEL PLANNED</p>
+          <div class="count">
+            <span class="green"></span>
+            <h1>{{travel_data.travel_plan}}</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt16 pl16 pr16">
+      <button *ngIf="travelViewType !='My' && this.travel_data.travel_plan>0" (click)="changeStatusModel()" ion-button
+        round block class="upload-btn"><i class="material-icons add-file-icon">swap_horiz</i> Change Status</button>
+    </div>
+  </ng-container>
+</ion-content>

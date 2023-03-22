@@ -1,0 +1,73 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title *ngIf="constant.UserLoggedInData.type==1">Dealer Check-in</ion-title>
+        <ion-title *ngIf="constant.UserLoggedInData.type==3">Sales User Check-in</ion-title>
+    </ion-navbar>
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar type='text' name="master" [(ngModel)]="filter.master" (ngModelChange)="get_all_checkin()"></ion-searchbar>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    
+    <div class="nothing-here" *ngIf="!checkin_list?.length && norec">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    <div class="checkinlist">
+        <div class="pd-left-right16">
+            <div class="list-box p10 mt16" *ngFor="let row of checkin_list;let i=index;">
+                <div class="upper">
+                    <div class="left-date">
+                        <div class="date-section">
+                            <p>{{row.date_created | date: 'MMM d, y'}}</p>
+                            <p>Date</p>
+                        </div>
+                        <div class="date-section" *ngIf="row.visit_start!='0000-00-00 00:00:00'">
+                            <p>{{row.visit_start  | date: 'h:m a'}}</p>
+                            <p>Start Time</p>
+                        </div>
+                        <div class="date-section" *ngIf="row.visit_end!='0000-00-00 00:00:00'">
+                            <p>{{row.visit_end  | date: 'h:m a'}}</p>
+                            <p>End Time</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mid">
+                    <div class="content-info">
+                        <div class="left-info">
+                            <div class="circle">{{row.name?.substring(0,1).toUpperCase()}}</div>
+                        </div>
+                        <div class="right-info">
+                            <p>{{row.name | titlecase}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lower" *ngIf="row.start_address">
+                    <p>Start Location</p>
+                    <p>{{row.start_address | titlecase}}</p>
+                </div>
+                <div class="lower" *ngIf="row.end_address">
+                    <p>End Location</p>
+                    <p>{{row.end_address | titlecase}}</p>
+                </div>
+            </div>  
+        </div>
+        
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)"  *ngIf="flag!=1">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+    
+    <div class="h80"></div>
+</ion-content>
