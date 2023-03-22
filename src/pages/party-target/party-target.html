@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Party Target Achievement</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="workimg_summary flat">
+    <ion-list no-lines>
+        <ion-item *ngFor="let row of [].constructor(10); let i = index;" (click)="goToTarget()">
+            <ion-avatar item-start>
+                <span class="count">{{i+30}}%</span>
+            </ion-avatar>
+            <h6>Ravi Machinery And Sanitary (SD09_168)</h6>
+            <div class="round-box">
+              <div class="square">
+                <span>₹	1.35 L</span>
+                <p>Achievement</p>
+              </div>
+              <div class="square">
+                <span>₹	2.35 L</span>
+                <p>Target</p>
+              </div>
+             </div>
+            <div class="progress">
+              <div class="in-progress {{'wp' + (i + 30)}}"></div>
+            </div>
+        </ion-item>
+    </ion-list>
+</div>
+</ion-content>

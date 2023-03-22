@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>My Influencer</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <div class="search add-search">
+      <div class="filter">
+        <ion-searchbar (ngModelChange)="getInfluencer(filter.search)" [(ngModel)]="filter.search" name="search" ></ion-searchbar>
+      </div>
+    </div>
+  </ion-toolbar> 
+</ion-header>
+
+<ion-content >
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+<div class="nothing-here" *ngIf="!influencer_list.length && load_data == '1'">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+
+<div class="pd-left-right16 mt16 mb100">
+  <div class="attendance-list"  *ngFor="let data of influencer_list" (click)="goOnDetail(data.id)">
+    <div class="center-block">
+      <div class="circle">{{data.name?.substring(0,1).toUpperCase()}}</div>
+      <h1 class="f12">{{data.name?.toUpperCase()}}</h1>
+      <p>{{data.influencer_type | titlecase}} {{data.mobile_no}}</p>
+      <a class="cell-phone" href="tel:{{data.mobile_no}}"><i class="material-icons">phone</i></a>
+    </div>
+    <div class="other-block pb0" *ngIf=" data.address  || data.city  || data.district  || data.state || data.pincode">
+      <p ><strong>Address :</strong> {{data.address}} {{data.city}} {{data.district | titlecase}} {{data.state | titlecase}} {{data.pincode}}</p>
+    </div>
+    <div class="next-forword">
+      <i class="material-icons">chevron_right</i>
+    </div>
+  </div>
+</div>
+
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</ion-content>

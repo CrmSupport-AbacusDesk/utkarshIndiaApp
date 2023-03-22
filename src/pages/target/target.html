@@ -1,0 +1,352 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="target_Type=='My' || target_Type=='Dr' ">Target</ion-title>
+    <ion-title *ngIf="target_Type=='Team'">
+      Team Target
+    </ion-title>
+    
+    <ion-buttons end *ngIf="teamCount > 0">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  
+  <ion-toolbar color="white" *ngIf="target_Type !='Dr'">
+    <div class="ion-tab-btn">
+      <ion-segment [(ngModel)]="TargetType">
+        <ion-segment-button value="Sales" *ngIf="assigned_orderType!=''" (click)="TargetType = 'Sales'; Target(sale_type);">
+          Sale Target
+        </ion-segment-button>
+        <ion-segment-button value="Visit" (click)="TargetType = 'Visit'; Target('Visit')">
+          Visit Target
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)"> 
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+</ion-refresher>
+<div class="searchBarBox mb15" *ngIf="target_Type=='Team'">
+  <div class="edit m4">
+    <ion-list>
+      <ng-container>
+        <ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+          <ion-label>Select User</ion-label>
+          <ionic-selectable item-content name="data" [(ngModel)]="data" [items]="user_list" itemValueField="id"
+          itemTextField="name" [canSearch]="true" #selectComponent
+          (ngModelChange)="Target(sale_type)"></ionic-selectable>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </div>
+</div>
+
+<ng-container *ngIf="target_Type !='Dr'">
+  <div [ngSwitch]="TargetType" [hidden]="dataVisible">
+    <div *ngSwitchCase="'Visit'">
+      <div class="capsule-tabsnew">
+        <ul>
+          <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+          (click)="current_month=row.month;current_year=row.year;current_month_name=row.month_name ;Target('Visit')">
+          {{row.month_name}}
+          {{row.year}}</li>
+        </ul>
+      </div>
+      
+      <div class="pl16 pr16 mb30">
+        <div class="workimg_summary" *ngIf="TargetType == 'Visit'">
+          <div class="summary-heading">Target Summary</div>
+          
+          <ion-list *ngIf="target_list.total_visit_target > 0">
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count">{{target_list.total_visit_target||'0'}}</span>
+              </ion-avatar>
+              <h6>Total visit target</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count yellow-text">{{target_list.total_new_visit_target||'0'}}</span>
+              </ion-avatar>
+              <h6>New counter visit target</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count green-text">{{target_list.total_visit_achieve}}</span>
+              </ion-avatar>
+              <h6>Visit completed</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count sky-text">{{target_list.new_visit_achieve||'0'}}</span>
+              </ion-avatar>
+              <h6>New counter added</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count purpel-text">{{target_list.Per_day_achieve ? target_list.Per_day_achieve + ' %' : '---'}}</span>
+              </ion-avatar>
+              <h6>Target achievement</h6>
+              <!-- Target Status<p>{{'In Progress'}}</p> -->
+            </ion-item>
+            <ion-item>
+              <!-- <ion-avatar item-start>
+                <span class="count purpel-text">{{target_list.achieve_per ? target_list.achieve_per + ' %' : '---'}}</span>
+              </ion-avatar> -->
+              <h6>Target Status <span class="left-count status-bg">{{(target_list.Per_day_achieve==100)?'Completed':"In Progress"}}</span></h6>
+              <!-- Target Status<p>{{'In Progress'}}</p> -->
+            </ion-item>
+          </ion-list>
+          
+          <div class="data-not-found" *ngIf="target_list.total_visit_target <= 0">
+            <i class="material-icons">track_changes</i>
+            <p>No target of this month</p>
+          </div>
+        </div>
+        <!-- <div class="workimg_summary">
+          <div class="summary-heading">Visit Graph</div>
+          <div class="border-container">
+            <canvas #lineCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          </div>
+        </div> -->
+        <!-- <div class="workimg_summary">
+          <div class="summary-heading">Target Achievement Rate Per Day</div>
+          <div class="border-container">
+            <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div *ngSwitchCase="'Sales'">
+      <div class="pl16 pr16 mb30">
+        <!-- <div class="workimg_summary">
+          <div class="summary-heading">Target V/S Achievement</div>
+          <div class="border-container">
+            <div id="barChartBox"></div>
+          </div>
+        </div> -->
+        
+        <ion-card [hidden]="!target_list.length"> 
+          <ion-card-header class="card-head">
+            <ion-card-title class="card-title">
+              <h2>Brand Wise Target v/s Achievement</h2>
+            </ion-card-title>
+            <div class="indicators segmentWiseIndicators">
+              <ul>
+                <li class="above75Indicator">Achievement >= 75% of Target</li>
+                <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+                <li class="below25Indicator">Achievement < 25% of Target</li>
+                <li class="targetIndicator">Target</li>
+              </ul>
+            </div>
+          </ion-card-header>
+          <ion-card-content class="p0 ">
+            <div id="barChartBox"></div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <div class="ion-tab-btn mb16">
+        <ion-segment [(ngModel)]="sale_type">
+          <ion-segment-button value="Primary" *ngIf="(assigned_orderType=='both') || (assigned_orderType=='primary')"
+          (click)="sale_type = 'Primary'; Target('Primary')">
+          Primary Sale
+        </ion-segment-button>
+        <ion-segment-button value="Secondary" *ngIf="(assigned_orderType=='both') || (assigned_orderType=='secondary')"
+        (click)="sale_type = 'Secondary'; Target('Secondary')">
+        Secondary Sale
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div class=" capsule-tabsnew">
+    <ul>
+      <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+      (click)="current_month=row.month;current_year=row.year;current_month_name=row.month_name; Target(sale_type)">
+      {{row.month_name}}
+      {{row.year}}</li>
+    </ul>
+  </div>
+  <ng-container>
+    <div class="pl16 pr16">
+      <div class="data-not-found" *ngIf="!target_list.length">
+        <i class="material-icons">track_changes</i>
+        <p>No target of this month</p>
+      </div>
+      
+      <div class="workimg_summary">
+        <ng-container *ngIf="target_list.length">
+          <div class="summary-heading">Target Summary</div>
+          <ion-list *ngFor="let row of target_list">
+            <ion-item>
+              <h6>{{row.brand||'---'}} <span class="left-count">{{('₹ '+row.target+' L')||'0'}}</span></h6>
+            </ion-item>
+            <ion-item>
+              <h6>Target achieved <span class="left-count">{{('₹ '+row.achieved+' L')||'0'}}</span></h6>
+            </ion-item>
+            <ion-item>
+              <h6>Target achievement <span class="left-count">{{row.achieved_percentage ?
+                row.achieved_percentage : 0}}%</span> </h6>
+              </ion-item>
+              <ion-item *ngIf="row.achieved_percentage < 100 ">
+                <h6>Required Rate Per Day <span class="left-count">{{('₹ '+(row.RequiredRate | number : '1.2-2')+' L')||'0'}}</span></h6>
+              </ion-item>
+              <ion-item *ngIf="row.achieved < row.target">
+                <h6>Target Status <span class="left-count status-bg">{{"In Progress"}}</span></h6>
+              </ion-item>
+            </ion-list>
+          </ng-container>
+        </div>
+      </div>
+      
+    </ng-container>
+  </div>
+</div>
+</ng-container>
+
+
+
+
+<ng-container *ngIf="target_Type =='Dr'">
+  <div [ngSwitch]="TargetType" [hidden]="dataVisible">
+    <div *ngSwitchCase="'Visit'">
+      <div class="capsule-tabsnew">
+        <ul>
+          <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+          (click)="current_month=row.month;current_year=row.year;current_month_name=row.month_name ;Target('Visit')">
+          {{row.month_name}}
+          {{row.year}}</li>
+        </ul>
+      </div>
+      
+      <div class="pl16 pr16 mb30">
+        <div class="workimg_summary">
+          <div class="summary-heading">Target Summary</div>
+          
+          <ion-list *ngIf="target_list.total_visit_target > 0">
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count">{{target_list.total_visit_target||'0'}}</span>
+              </ion-avatar>
+              <h6>Total visit target</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count yellow-text">{{target_list.total_new_visit_target||'0'}}</span>
+              </ion-avatar>
+              <h6>New counter visit target</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count green-text">{{target_list.total_visit_achieve}}</span>
+              </ion-avatar>
+              <h6>Visit completed</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count sky-text">{{target_list.new_visit_achieve||'0'}}</span>
+              </ion-avatar>
+              <h6>New counter added</h6>
+            </ion-item>
+            <ion-item>
+              <ion-avatar item-start>
+                <span class="count purpel-text">{{target_list.Per_day_achieve ? target_list.Per_day_achieve + ' %' : '---'}}</span>
+              </ion-avatar>
+              <h6>Target achievement</h6>
+              <!-- Target Status<p>{{'In Progress'}}</p> -->
+            </ion-item>
+            <ion-item>
+              <!-- <ion-avatar item-start>
+                <span class="count purpel-text">{{target_list.achieve_per ? target_list.achieve_per + ' %' : '---'}}</span>
+              </ion-avatar> -->
+              <h6>Target Status <span class="left-count status-bg">{{(target_list.Per_day_achieve==100)?'Completed':"In Progress"}}</span></h6>
+              <!-- Target Status<p>{{'In Progress'}}</p> -->
+            </ion-item>
+          </ion-list>
+          
+          <div class="data-not-found" *ngIf="target_list.total_visit_target <= 0">
+            <i class="material-icons">track_changes</i>
+            <p>No target of this month</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div >
+      <div class="pl16 pr16 mb30">
+        
+        <ion-card [hidden]="!target_list.length"> 
+          <ion-card-header class="card-head">
+            <ion-card-title class="card-title">
+              <h2>Brand Wise Target v/s Achievement</h2>
+            </ion-card-title>
+            <div class="indicators segmentWiseIndicators">
+              <ul>
+                <li class="above75Indicator">Achievement >= 75% of Target</li>
+                <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+                <li class="below25Indicator">Achievement < 25% of Target</li>
+                <li class="targetIndicator">Target</li>
+              </ul>
+            </div>
+          </ion-card-header>
+          <ion-card-content class="p0 ">
+            <div id="barChartBox"></div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <div class="ion-tab-btn mb16">
+        <h2>Primary Sale</h2>
+      </div>
+      <div class=" capsule-tabsnew">
+        <ul>
+          <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+          (click)="current_month=row.month;current_year=row.year;current_month_name=row.month_name; Target(sale_type)">
+          {{row.month_name}}
+          {{row.year}}</li>
+        </ul>
+      </div>
+      <ng-container>
+        <div class="pl16 pr16">
+          <div class="data-not-found" *ngIf="!target_list.length">
+            <i class="material-icons">track_changes</i>
+            <p>No target of this month</p>
+          </div>
+          
+          <div class="workimg_summary">
+            <ng-container *ngIf="target_list.length">
+              <div class="summary-heading">Target Summary</div>
+              <ion-list *ngFor="let row of target_list">
+                <ion-item>
+                  <h6>{{row.brand||'---'}} <span class="left-count">{{('₹ '+row.target+' L')||'0'}}</span></h6>
+                </ion-item>
+                <ion-item>
+                  <h6>Target achieved <span class="left-count">{{('₹ '+row.achieved+' L')||'0'}}</span></h6>
+                </ion-item>
+                <ion-item>
+                  <h6>Target achievement <span class="left-count">{{row.achieved_percentage ?
+                    row.achieved_percentage : 0}}%</span> </h6>
+                  </ion-item>
+                  <ion-item *ngIf="row.achieved_percentage < 100 ">
+                    <h6>Required Rate Per Day <span class="left-count">{{('₹ '+(row.RequiredRate | number : '1.2-2')+' L')||'0'}}</span></h6>
+                  </ion-item>
+                  <ion-item *ngIf="row.achieved < row.target">
+                    <h6>Target Status <span class="left-count status-bg">{{"In Progress"}}</span></h6>
+                  </ion-item>
+                </ion-list>
+              </ng-container>
+            </div>
+          </div>
+          
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+  
+  
+  
+  
+</ion-content>

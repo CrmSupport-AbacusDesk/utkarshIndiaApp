@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Target</ion-title> 
+    <ion-buttons end >
+      <button ion-button *ngIf="LoginType.loggedInUserType == 'Employee'" icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="pl16 pr16 mb10">
+    <div class="workimg_summary">
+      <div class="summary-heading">Primary Sale Target</div>
+      <div class="border-container">
+        <canvas #barCanvas style="position:relative;height:20vh;width: 40vw;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="capsule-tabsnew">
+    <ul>
+      <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+      (click)="current_month=row.month;current_year=row.year;current_month_name=row.month_name; Target(sale_type)">
+      {{row.month_name}}
+      {{row.year}}</li>
+    </ul>
+  </div>
+  <div class="pl16 pr16 mb50">
+    <div class="workimg_summary">
+      <div class="summary-heading">Target Summary</div>
+      <ng-container *ngIf="target_list.length">
+        <ion-list  *ngFor="let row of target_list">
+          <ion-item>
+            <h6>{{row.segment_name||'N/A'}}  <span class="left-count">{{row.segment_target||'0'}}</span></h6>
+          </ion-item>
+          <ion-item>
+            <h6>Target achieved <span class="left-count">{{row.achieved}}</span></h6>
+          </ion-item>
+          <ion-item>
+            <h6>Target achievement in percentage <span class="left-count">{{row.achieved_percentage ? row.achieved_percentage : 0}}%</span> </h6>
+          </ion-item>
+          <ion-item *ngIf="row.achieved_percentage < 100 ">
+            <h6>Required Rate Per Day <span class="left-count">{{row.RequiredRate | number : '1.2-2'}}</span></h6>
+          </ion-item>
+          <ion-item *ngIf="row.achieved < row.segment_target">
+            <h6>Target Status 
+              <span class="left-count status-complete" *ngIf="row.achieved >= row.segment_target">{{"Completed"}}</span>
+              <span class="left-count status-pending" *ngIf="row.achieved < row.segment_target" >{{"In Progress"}}</span>
+            </h6>
+          </ion-item>
+          
+        </ion-list>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ng-container>
+      <div class="data-not-found" *ngIf="!target_list.length">
+        <i class="material-icons">track_changes</i>
+        <p>No target of this month</p>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+  <!-- </ng-container> -->
+</ion-content>

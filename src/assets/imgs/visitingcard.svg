@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="73.7" height="44.745" viewBox="0 0 73.7 44.745">
+  <g id="visit-cards" transform="translate(0 -79.812)">
+    <rect id="Rectangle_2" data-name="Rectangle 2" width="68.209" height="41.798" transform="translate(5.491 82.759)" fill="#7a7674"/>
+    <rect id="Rectangle_3" data-name="Rectangle 3" width="68.209" height="41.798" transform="translate(0 79.812)" fill="#bec8d6"/>
+    <circle id="Ellipse_3" data-name="Ellipse 3" cx="4.593" cy="4.593" r="4.593" transform="translate(14.547 91.065)" fill="#ffe1d6"/>
+    <path id="Path_50" data-name="Path 50" d="M69.535,222.505a9.527,9.527,0,0,0-9.186,7.01H78.722A9.527,9.527,0,0,0,69.535,222.505Z" transform="translate(-50.395 -119.158)" fill="#fff"/>
+    <g id="Group_3" data-name="Group 3" transform="translate(35.984 89.918)">
+      <path id="Path_51" data-name="Path 51" d="M230.206,145.676h-9.744a2.3,2.3,0,1,1,0-4.593h9.744a2.3,2.3,0,1,1,0,4.593Z" transform="translate(-218.165 -141.083)" fill="#524e4d"/>
+      <path id="Path_52" data-name="Path 52" d="M239.951,197.2H220.463a2.3,2.3,0,1,1,0-4.593h19.488a2.3,2.3,0,1,1,0,4.593Z" transform="translate(-218.166 -184.105)" fill="#524e4d"/>
+      <path id="Path_53" data-name="Path 53" d="M239.951,248.714H220.463a2.3,2.3,0,0,1,0-4.593h19.488a2.3,2.3,0,0,1,0,4.593Z" transform="translate(-218.166 -227.126)" fill="#524e4d"/>
+    </g>
+  </g>
+</svg>

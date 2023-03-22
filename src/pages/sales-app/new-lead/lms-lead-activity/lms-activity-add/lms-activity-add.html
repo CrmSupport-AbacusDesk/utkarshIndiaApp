@@ -1,0 +1,154 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Add Activity</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    
+    <form name="f" #f="ngForm" (ngSubmit)="f.valid && submit()">
+        <div class="edit">
+            <ion-list>
+                
+                <!-- <ion-item class="cs-normal-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && !lead_type.valid}">
+                    <ion-label><span>Lead Type</span></ion-label> -->
+                    <!-- <ion-select name="lead_type" #lead_type="ngModel" [(ngModel)]="form.lead_type" (ngModelChange)="get_assign_dr(form.lead_type)" required>
+                        <ion-option value="1">Distributor </ion-option>
+                        <ion-option value="7">Direct Dealers</ion-option>
+                        <ion-option value="3">Retailer</ion-option>
+                        <ion-option value="9">Project</ion-option>
+                        <ion-option value="5">End User</ion-option>
+                        <ion-option value="6">Others</ion-option>
+
+                        <ion-option value="11">Electrician</ion-option>
+                        <ion-option value="12">Sub-dealer</ion-option>
+    
+                        <ion-option value="13">Private Contractor</ion-option>
+                        <ion-option value="14">Government Contractor</ion-option>
+                        <ion-option value="15">Builder</ion-option>
+                        <ion-option value="16`">Architect</ion-option>
+
+
+                    </ion-select> -->
+                    <!-- <ion-select   name="lead_type" name="lead_type" #lead_type="ngModel" [(ngModel)]="form.lead_type" (ngModelChange)="get_assign_dr(form.lead_type)" required>
+                        <ion-option *ngFor="let row of networkType" value="{{row.type}}"  >{{row.module_name}}</ion-option>
+                    </ion-select>
+                </ion-item> -->
+                <!-- <p  *ngIf="f.submitted && !lead_type.valid" class="error-line">Type Is Required</p> -->
+                
+                <ion-item class="cs-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && dr_id?.invalid}" *ngIf="form.lead_type == '3' || form.lead_type == '1' || form.lead_type == '5' || form.lead_type == '9' || form.lead_type == '7' || form.lead_type == '6'|| form.lead_type == '11'|| form.lead_type == '12'|| form.lead_type == '13'|| form.lead_type == '14'|| form.lead_type == '15'|| form.lead_type == '16'" required>
+                    <ion-label *ngIf="form.lead_type == '3'"><span>Select Dealer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '1'"><span>Select Channel Partner</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '2'"><span>Select Direct Dealer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '5'"><span>Select End User</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '9'"><span>Select Project</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '6'"><span>Select Others</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '11'"><span>Select Electrician</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '12'"><span>Select Sub-dealer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '13'"><span>Select Private Contractor</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '14'"><span>Select Government Contractor</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '15'"><span>Select Builder</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '16'"><span>Select Architect</span></ion-label>
+
+                    
+                    <!-- <ion-label *ngIf="form.lead_type == '11'"><span>Select Architect</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '15'"><span>Select Customer</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '13'"><span>Select Builder</span></ion-label>
+                    <ion-label *ngIf="form.lead_type == '14'"><span>Select Cement Dealer</span></ion-label> -->
+                    <ionic-selectable
+                    item-content 
+                    [(ngModel)]="form.dr_id"
+                    [items]="type_list"
+                    itemValueField="id"
+                    name="company_name"
+                    value="company_name"
+                    itemTextField="company_name"
+                    [canSearch]="true"
+                    (onChange)="test(form.dr_id)"
+                    #selectComponent>
+                </ionic-selectable>
+            </ion-item>
+            
+            <p  *ngIf="f.submitted && dr_id?.invalid" class="error-line">Select Type Is Required</p>
+            
+            <ion-item class="cs-normal-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && !activity_type.valid}">
+                <ion-label><span>Select Activity Type</span></ion-label>
+                <ion-select name="activity_type" #activity_type="ngModel" [(ngModel)]="form.activity_type" required>
+                    <ion-option value="Meeting">Meeting</ion-option>
+                    <ion-option value="Call">Call</ion-option>
+                    <ion-option value="SMS">SMS</ion-option>
+                    <ion-option value="Email">Email</ion-option>
+                </ion-select>
+            </ion-item>
+            <p  *ngIf="f.submitted && !activity_type.valid" class="error-line"> Activity Type Is Required</p>
+            
+            <!-- <ion-item class="cs-normal-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && !category.valid}">
+                <ion-label><span>Stage</span></ion-label>
+                <ion-select name="category" #category="ngModel" [(ngModel)]="form.category" required>
+                    <ion-option value="Hot">Hot</ion-option>
+                    <ion-option value="Cold">Cold</ion-option>
+                    <ion-option value="Warm">Warm</ion-option>
+                    <ion-option value="Close">Close</ion-option>
+                </ion-select>
+            </ion-item> -->
+            <!-- <p  *ngIf="f.submitted && !category.valid" class="error-line">Select Category Is Required</p> -->
+            
+            <!-- <ion-item class="cs-normal-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && !stage.valid}">
+                <ion-label><span>Status</span></ion-label>
+                <ion-select name="stage" #stage="ngModel" [(ngModel)]="form.stage" required>
+                    <ion-option value="Lead Bank">Lead Bank</ion-option>
+                    <ion-option value="Qualified">Qualified</ion-option>
+                    <ion-option value="Disqualified">Disqualified</ion-option>
+                    <ion-option value="Win">Win</ion-option>
+                    <ion-option value="Lost">Lost</ion-option>
+                </ion-select>
+            </ion-item> -->
+            <!-- <p  *ngIf="f.submitted && !stage.valid" class="error-line">Stage Is Required</p> -->
+            
+            <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && !remark.valid}">
+                <ion-label floating><span>Remark </span></ion-label>
+                <ion-textarea type="text" name="remark" #remark="ngModel" [(ngModel)]="form.remarks" required></ion-textarea>
+            </ion-item>
+            <p  *ngIf="f.submitted && !remark.valid" class="error-line">Remark Is Invalid</p>
+            
+            <!-- <div class="check-box" >
+                <ion-item>
+                    <ion-label>Do you want to create any follow up ?</ion-label>
+                    <ion-checkbox color="theme"  name="isFollowup"  #isFollowup="ngModel" [(ngModel)]="form.isFollowup" ></ion-checkbox>
+                </ion-item>                        
+            </div> -->
+            
+            <!-- <ng-container *ngIf="form.isFollowup">
+                <ion-item class="cs-normal-select mb0" [ngClass]="{'cs-error':f.submitted && !followup_type.valid}" >
+                    <ion-label><span>Followup Type</span></ion-label>
+                    <ion-select name="followup_type"  #followup_type="ngModel" [(ngModel)]="form.followup_type" required>
+                        <ion-option value="Meeting">Meeting</ion-option>
+                        <ion-option value="Call">Call</ion-option>
+                        <ion-option value="SMS">SMS</ion-option>
+                        <ion-option value="Email">Email</ion-option>
+                    </ion-select>
+                </ion-item>
+                <p  *ngIf="f.submitted && !followup_type.valid" class="error-line">Followup Type Is Required</p>
+                
+                
+                <ion-item [ngClass]="{'cs-error':f.submitted && !followup_date.valid}" >
+                    <ion-label floating><span>Next Followup Date *</span></ion-label>
+                    <ion-datetime  placeholder ="Next Followup Date" name="followup_date" min="{{today_date}}" [(ngModel)]="form.followup_date" #followup_date="ngModel" required></ion-datetime>
+                </ion-item>
+                
+                <p *ngIf="f.submitted && !followup_date.valid"  class="error-line relative">Followup Date is Required!</p>
+                
+                <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && !description.valid}">
+                    <ion-label floating><span>Description </span></ion-label>
+                    <ion-textarea  placeholder="Enter Description"  type="text" name="description" #description="ngModel" [(ngModel)]="form.description" required></ion-textarea>
+                </ion-item>
+                <p  *ngIf="f.submitted && !description.valid" class="error-line">Description Is Invalid</p>
+            </ng-container> -->
+        </ion-list>
+    </div>
+    
+    <div class="padding16">
+        <button ion-button class="cs-btn" type="submit">Save</button>
+    </div>		  
+</form>
+</ion-content>

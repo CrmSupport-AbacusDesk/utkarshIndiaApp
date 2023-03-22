@@ -1,0 +1,43 @@
+page-loyalty-enter-coupon-code {
+    
+
+      
+
+    button{
+        text-transform: capitalize !important;
+    }
+    .heading-info{
+        background-color: rgb(234, 234, 234);
+        height:100px;
+        padding: 6px;
+        border-radius: 6px;
+        align-items: center;
+        .head{
+            text-align: center;
+            font-weight: bold;
+    
+        }
+        .info{
+            padding-top: 16px;
+            // line-height: 30px;
+            color: grey;
+            text-align: center;
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
+    .select-item{
+        margin:10px 0px;
+        border: 1px solid rgb(233, 233, 233);
+        border-radius: 4px;
+    
+    }
+    .list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child, .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child{
+         border-bottom-color: none !important;
+        -webkit-box-shadow: none !important; 
+         box-shadow: none !important; 
+    }
+    .ionic-selectable-md .ionic-selectable-icon-inner{
+        margin-top: -10px;
+    }
+} 

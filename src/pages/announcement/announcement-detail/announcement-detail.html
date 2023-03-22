@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Announcement Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="notification-list">
+    <p class="view-full"><span class="sm-heading">Message:</span> {{announcementDetail.msg}}</p>
+    <span class="cs-date">{{announcementDetail.date_created | date:'d MMM, y'}}</span>
+  </div>
+
+  
+  <div class="upload-doc pl16 pr16" *ngIf="announcementDetail.doc && announcementDetail.doc.length > 0">
+    <p class="">Attachment</p>
+    <ul class="no-padding">
+      <li class="image-upload" *ngFor="let val of announcementDetail.doc">
+      <!-- <a (click)="openDocument(image_url+val.image)"> -->
+        <a (click)="openDocument(image_url+val.image ,val.tittle,val.image)">
+        <img *ngIf ="val.tittle == 'jpg' || val.tittle == 'jpeg' || val.tittle == 'png'"   height="60" width="60" src="{{image_url+val.image}}">
+        <img *ngIf ="val.tittle == 'pdf'" height="75" width="75" src="assets/imgs/pdf1.svg">
+        <img *ngIf ="val.tittle == 'docx'" height="75" width="75" src="assets/imgs/doc.png">
+      
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+  
+</ion-content>
+<!--  -->

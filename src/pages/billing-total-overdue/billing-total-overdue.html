@@ -1,0 +1,41 @@
+<ion-header  class="home-header">
+  <ion-navbar>
+    <ion-title>
+      Over Due
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content >
+  <ion-refresher (ionRefresh)="get_outstanding_data()">
+    <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="Pull to refresh"     refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+ 
+
+  <div class="pie-chart">
+    <canvas  width="300" height="300" #pieCanvas></canvas>
+  </div>
+  
+
+  <div class="pd-left-right16 button-space pt20" *ngFor="let overdue_data of overdue_summary; let i=index">
+    <div class="go-btn" (click)="go_to_billing_list(overdue_data.days)" >
+      <div class="g-left wp50">
+        <p>{{overdue_data.days}}</p>
+        <p>Days</p>
+      </div>
+      <div class="g-right">
+        <div class="g-content">
+          <p>&#8377; {{overdue_data.value}}</p>
+          <p ><span>Amount</span></p>
+        </div>
+        <div class="g-count">
+          <i class="material-icons">keyboard_arrow_right</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</ion-content>
+

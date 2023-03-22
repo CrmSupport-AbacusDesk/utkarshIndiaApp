@@ -1,0 +1,71 @@
+<ion-menu  [content]="content" side="start" id="first" [swipeEnabled]=" false">
+    <ion-content>
+        <div class="home-list" style="position: sticky;top: 0px;">
+            <!-- <button ion-item (click)="goto_profile()" menuClose> -->
+                <button ion-item menuClose (click)="open_profile()" >
+                <div class="thumb" *ngIf="user_logged_in" >
+                    <div class="outer">
+                        <div class="innear">
+                            <ng-container >
+                                <img *ngIf="constant?.UserLoggedInData?.all_data?.image" src="https://apps.abacusdesk.com//uploads/{{constant?.UserLoggedInData?.all_data.image}}"  >
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="description person-name">
+                    <div class="innear" *ngIf="user_logged_in">
+                        <h2>{{userLoggedDisplayName}}</h2>
+                        <p class="name-ellipsis" >(Profile)</p>
+                        <ng-container >
+                            <ion-icon name="ios-arrow-forward-outline" ></ion-icon>
+                        </ng-container>
+                    </div>
+                </div>
+            </button>
+        </div>
+        
+        <span *ngFor="let p of pages" >
+            <div class="option" menuClose *ngIf="p.show && user_logged_in" (click)="((userRoleId != '' || userRoleId != undefined) && (userType == 'Sales User')) ?  openPage(p): openDealerPage(p)">
+                <i class="material-icons">{{p.icon}}</i>
+                <a href="#">{{p.title}}</a>
+            </div>
+            <div class="option" menuClose *ngIf="!user_logged_in" (click)="openDealerPage(p)">
+                <i class="material-icons">{{p.icon}}</i>
+                <a href="#">{{p.title}}</a>
+            </div>
+        </span>
+      
+    </ion-content>
+    
+    <ion-footer style="background: #fff !important;">
+        <div *ngIf="app_version" class="app_version"  >
+            <p>Version-{{app_version}}</p>
+        </div>
+
+        <div class="btns" *ngIf="!user_logged_in" menuClose  (click)="login()">
+            <button class ="login" >
+                <div class="lf-btn">
+                    <i class="material-icons">power_settings_new</i>
+                </div>
+                <div class="rt-btn">
+                    <p>LOGIN</p>
+                </div>
+            </button>
+        </div>
+        
+        <div class="btns" *ngIf="user_logged_in" menuClose  (click)="logout()">
+            <!-- login -->
+            <button class="logout"  >
+                <div class="lf-btn">
+                    <i class="material-icons">power_settings_new</i>
+                </div>
+                <div class="rt-btn">
+                    <p>LOGOUT</p>
+                    <!-- <p>LOGIN</p> -->
+                </div>
+            </button>
+        </div>
+    </ion-footer>
+    
+</ion-menu>
+<ion-nav  [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

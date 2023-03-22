@@ -1,0 +1,88 @@
+<!--
+  Generated template for the RequirementlistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Requirement List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div class="pd-left-right16">
+    <div class="list-box mt16" *ngFor="let row of requirement_list;let i=index" >
+        <div class="upper">
+            <div class="left-date">
+                <div class="date-section">
+                    <p>{{row.date_created | date:'d MMM y'}}</p>
+                    <p>Date Created</p>
+                </div>
+            </div>
+            
+            <div class="right-date">
+                <!-- <button class="{{row.status}}">
+                    <p>{{row.status}}</p>
+                </button> -->
+                <button class="font12 ml10" type="button" *ngIf="row.status=='Pending' " (click)="delete_requirement(row.id,i)">
+                    <i class="material-icons red-clr">delete_sweep</i>
+                </button>
+            </div>
+        </div>
+        <div class="mid">
+            <div class="content-info" >
+                <div class="left-info">
+                    <div class="circle">{{row.company_name?.substring(0,1).toUpperCase()}}</div>
+                </div>
+                
+                 <div class="right-info">
+                    <p>{{row.company_name}}</p>
+                </div> 
+                
+             
+            </div>
+            <!-- <div class="tag-info">
+                <a href="tel:{{row.mobile}}"><i class="material-icons">phone</i></a>
+            </div> -->
+        </div>
+        
+        <div class="lower">
+          <div class="right-info">
+            <p>Product Name</p>
+            <p>{{row.product_name}}</p>
+        </div>
+        <div class="right-info">
+          <p>Qty</p>
+          <p>{{row.qty}}</p>
+      </div>
+        </div>
+        <!-- <div class="lower" *ngIf="row.quotation_remark">
+            <p>Quotation Remark</p>
+            <p>{{row.quotation_remark ? row.quotation_remark : 'N/A'}}</p>
+        </div> -->
+        <!-- <div class="lower" (click)="quotationdetail(row.id,row.quotation_status)">
+            <p>Term And Condition</p>
+            <p class="two-line-ellipse" [innerHTML]="row.term_condition"></p>
+            
+        </div> -->
+    </div>  
+</div>
+
+<div class="nothing-here" *ngIf="requirement_list == 0">
+    
+    <div class="outer">
+        <div class="innear">
+            <img src="assets/imgs/no_found.svg" alt="">
+            <p>Data Not Available</p>
+        </div>
+    </div>
+</div>
+
+<div class="h50"></div>
+
+<ion-fab right bottom>
+    <button ion-fab color="danger" (click)="gotorequirement()" ><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+</ion-content>

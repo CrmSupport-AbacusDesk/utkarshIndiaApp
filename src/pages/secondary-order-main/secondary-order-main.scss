@@ -1,0 +1,60 @@
+page-secondary-order-main {
+    .Distributor_info{
+        border-top: 1px dashed grey;
+        padding: 0px;
+        margin-left: -6px;
+        margin-right: -6px;
+        margin-top: 16px;
+
+        .Dist_name{
+            margin-top: 4px;
+            border-radius: 2px;
+            background:linear-gradient(180deg, #66838d, #0273e4);
+            width: 70%;
+            padding: 4px;
+            position: relative;
+            right:-48px;
+            top:-16px;
+               p{
+                color: #fffdfb;
+                text-align: center;
+                font-size: 12px;
+                font-weight: 500;
+               }
+        }
+        .header{
+            // background-color:#e2e2e2;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            // margin-top: -4px;
+            border-top-right-radius: 6px;
+            border-top-left-radius: 6px;
+            // padding: 6px;
+             .sub-head{
+                border: solid 0.2pt #ff9600;
+                padding: 4px;
+                width:100%;
+                margin:2px;
+                border-radius: 4px;
+                p{
+                    font-size: 10px;
+                }
+             }
+             .sub-head:last-child{
+                border: solid 1.5px #006eff;
+                padding: 4px;
+                width:100%;
+                margin:2px;
+                border-radius: 4px;
+                p{
+                    font-size: 10px;
+                }
+             }
+         }
+     }
+
+     .slab{
+        justify-content: space-between;
+     }
+}

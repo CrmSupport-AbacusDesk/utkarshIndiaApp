@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Product Detail</ion-title>
+        <ion-buttons end>
+            <button ion-button class="top-cart-btn" *ngIf="cart_array?.length">
+                <span class="counter">{{cart_array.length}}</span>
+                <i class="material-icons">shopping_cart</i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar type='text' name='search_key' [(ngModel)]="filter.search_key"
+                (keyup.enter)="getProductDetail()">
+            </ion-searchbar>
+        </div>
+    </div>
+</ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+    </ion-refresher-content>
+</ion-refresher>
+
+<div class="grid-layout"  *ngIf="prod_detail.length > 0">
+    <div class="product-data two-column" *ngFor="let row of prod_detail"  (click)="goToDetail(row.id)">
+        <div class="image-thubmnail">
+            <img *ngIf="row.image" src="{{image_url+row.image}}">
+            <i class="material-icons" *ngIf="!row.image">perm_media</i>
+        </div>
+        <div class="content">
+            <h6>{{row.product_name}}</h6>
+            <div class="code">
+                <!-- <span>{{row.product_code}} MRP- &#8377;{{row.mrp?row.mrp:'--'}}</span> -->
+                <span>MRP- &#8377;{{row.mrp?row.mrp:'--'}}</span>
+                <span > <ion-icon name="arrow-forward"></ion-icon></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="nothing-here" style="height: 50%;" *ngIf="prod_detail.length == 0">
+    <div class="outer">
+        <div class="innear">
+            <img src="assets/imgs/no_found.svg" alt="">
+            <p>Data Not Available</p>
+        </div>
+    </div>
+</div>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+</ion-content>

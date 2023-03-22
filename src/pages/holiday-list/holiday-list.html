@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Holiday List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="pr16 pl16 mt16 mb50">
+    <ng-container>
+      <div class="attendance-list" *ngFor="let item of holidayList;let idx = index;">
+        <div class="slab">
+          <div class="slab-day">
+            <p>{{item.holiday_date | date:'d MMM y'}}</p>
+            <span>Date</span>
+          </div>
+          <div class="slab-day">
+            <p>{{item.holiday_day}}</p>
+            <span>Day</span>
+          </div>
+          <div class="slab-day">
+            <p>{{item.holiday_type}}</p>
+            <span>Type</span>
+          </div>
+        </div>
+        <div class="slab mt10">
+          <div class="slab-day">
+            <p>{{item.holiday_title}}</p>
+            <span>Title</span>
+          </div>
+        </div>
+       
+      </div>
+    </ng-container>
+  </div>
+</ion-content>

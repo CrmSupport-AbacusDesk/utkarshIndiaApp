@@ -1,0 +1,90 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <ion-title>{{checkinType}} Checkin's</ion-title>
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div class="nothing-here" *ngIf="!previous_checkin.length">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    <div class="padding16 no-dtp" *ngIf="!previous_checkin.length && search.check_in_date">
+        <p>No Previous Check-In's</p>
+    </div>
+    <div class="pd-left-right16" *ngIf="previous_checkin.length">
+        <div class="travel">
+            <ul>
+                <li class="list-box mt16 p0" *ngFor="let row of previous_checkin">
+                    <div>
+
+                        <!-- <h2>{{'Abacusdesk' | titlecase}}</h2> -->
+                        <div class="visit-time">
+                            <div class="visit-hours">
+                                <span>Date</span>
+                                <p class="font10">{{row.visit_start| date:'d MMM, y'}}</p>
+                            </div>
+                            <div class="visit-hours">
+                                <span>Check-in</span>
+                                <p class="font10">{{row.visit_start| date:'hh:mm a'}}</p>
+                            </div>
+                            <div class="visit-hours">
+                                <span>Check-out</span>
+                                <p class="font10">{{row.visit_end| date:'hh:mm a'}}</p>
+                            </div>
+                            <div class="visit-hours">
+                                <span>Total time spend</span>
+                                <p class="font10">{{row.TOTAL_TIME_TAKE}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="type-visit">
+                        <div class="types">
+                            <span *ngIf="row.order_flag=='1'"class="active">&nbsp;</span>
+                            <span *ngIf="row.order_flag=='0'">&nbsp;</span>
+
+                            Order
+                        </div>
+                        <div class="types">
+                            <span *ngIf="row.followup_flag=='1'"class="active">&nbsp;</span>
+                            <span *ngIf="row.followup_flag=='0'">&nbsp;</span>
+                            Followup
+                        </div>
+                        <div class="types">
+                            <!-- <span *ngIf="row.Doc!=''||row.Doc!=null"class="active">&nbsp;</span> -->
+                            <span *ngIf="row.Doc != ''" class="active">&nbsp;</span>
+                            <span *ngIf="row.Doc==''||row.Doc==null">&nbsp;</span>
+                            Photo upload
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <div
+                        style="display: flex;flex-direction:row;background-color: rgb(216, 216, 216);padding:5px 2px 5px 2px;border-radius: 0px 0px 4px 4px;">
+                        <p class="font12">Remark : </p>
+                        <p class="font12"> {{row.description}}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
+
+</ion-content>

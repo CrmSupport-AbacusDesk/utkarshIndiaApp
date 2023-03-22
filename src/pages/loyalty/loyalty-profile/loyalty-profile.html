@@ -1,0 +1,182 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Profile</ion-title>
+        <ion-buttons end (click)="logout()">
+            <button ion-button icon-only>
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content style="background-color: #f8f8f8;">
+    <div class="profile-container">
+        <div class="background-white hero"></div>
+        <button class="edit" (click)="updateProfile()" *ngIf="karigar_detail.status != 'Approved'"> <i
+                class="material-icons">edit</i></button>
+
+        <div class="user-profile">
+            <div class="dp">
+                <div class="dp-hidden">
+                    <i class="material-icons" *ngIf="karigar_detail.profile ==''">person</i>
+                    <img src="{{upload_url+karigar_detail.profile}}" *ngIf="karigar_detail.profile">
+                </div>
+                <a class="cmra-btn"><i class="material-icons" (click)="openeditprofile()">camera_alt</i></a>
+            </div>
+            <h2>{{karigar_detail.name |titlecase}}</h2>
+            <h6>{{karigar_detail.influencer_type}}</h6>
+            <ng-container
+                *ngIf="karigar_detail.scanning_rights == 'Yes' || karigar_detail.point_transfer_right == 'Yes' ">
+                <p class="{{karigar_detail.status}}">
+                    {{karigar_detail.status}}
+                    <i class="material-icons Verified" *ngIf="karigar_detail.status =='Verified'">verified_user </i>
+                    <i class="material-icons Pending" *ngIf="karigar_detail.status =='Pending'">update</i>
+                    <i class="material-icons Suspect" *ngIf="karigar_detail.status =='Suspect'">help</i>
+                    <i class="material-icons Reject" *ngIf="karigar_detail.status =='Reject'">cancel</i>
+                </p>
+            </ng-container>
+
+        </div>
+        <div class="padding16">
+            <div class="profile-card">
+                <div class="text-box">
+                    <p>{{ 'Mobile No' }}.</p>
+                    <h6>{{karigar_detail.mobile_no}}</h6>
+                </div>
+                <div class="text-box" *ngIf="karigar_detail.type==8">
+                    <p>{{ 'Paytm Mobile No.' }}.</p>
+                    <h6>{{karigar_detail.paytm_mobile_no || '--'}}</h6>
+                </div>
+                <div class="text-box">
+                    <p>{{ 'KYC Status' }}.</p>
+                    <h6 class="{{karigar_detail.kyc_status}}">{{karigar_detail.kyc_status || '--'}}</h6>
+                </div>
+                <div class="text-box" *ngIf="karigar_detail.email">
+                    <p>{{ 'Email ID' }}</p>
+                    <h6>{{karigar_detail.email}}</h6>
+                </div>
+                <div class="text-box">
+                    <p>{{ 'Date of Birth'}}</p>
+                    <h6>{{(karigar_detail.dob !='0000-00-00') ? (karigar_detail.dob| date:'d MMM,y'):('----')}}</h6>
+                </div>
+                <div class="text-box">
+                    <p>{{ 'Date of Anniversary'}}</p>
+                    <h6>{{(karigar_detail.doa !='0000-00-00') ? (karigar_detail.doa| date:'d MMM,y'):('----')}}</h6>
+                </div>
+                <div class="text-box">
+                    <p>{{ 'Address'}}</p>
+                    <h6>{{karigar_detail.address |titlecase}} {{karigar_detail.state |titlecase}}
+                        {{karigar_detail.district |titlecase}} {{karigar_detail.city |titlecase}}
+                        {{karigar_detail.pincode}}</h6>
+                </div>
+
+            </div>
+
+
+
+            <div class="profile-card"
+                *ngIf="karigar_detail.document_image && karigar_detail.document_image_back && karigar_detail.adhar_no">
+                <div class="text-center">
+                    <h2>Document Information</h2>
+                </div>
+                <div class="text-box">
+                    <div class="doc-box">
+                        <img src="{{upload_url + karigar_detail.document_image}}">
+                    </div>
+
+                    <div class="doc-box">
+                        <img src="{{upload_url + karigar_detail.document_image_back}}">
+                    </div>
+                </div>
+                <div class="text-box">
+                    <p>Document number</p>
+                    <h6>{{karigar_detail.adhar_no}}</h6>
+                </div>
+            </div>
+            <div class="profile-card" *ngIf="karigar_detail.pan_img && karigar_detail.pan_no">
+                <div class="text-center">
+                    <h2>Pan Card Information</h2>
+                </div>
+                <div class="text-box">
+                    <div class="doc-box">
+                        <img src="{{upload_url + karigar_detail.pan_img}}">
+                    </div>
+                </div>
+                <div class="text-box">
+                    <p>Pan card number</p>
+                    <h6>{{karigar_detail.pan_no}}</h6>
+                </div>
+            </div>
+
+            <ng-container *ngIf="karigar_detail.type!=11">
+
+                <div class="profile-card">
+                    <div class="text-center">
+                        <h2>{{ 'Bank Information' }}</h2>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Account Holder Name'}}</p>
+                        <h6>{{karigar_detail.account_holder_name ? karigar_detail.account_holder_name:'----'}}</h6>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Bank Name'}}</p>
+                        <h6>{{karigar_detail.bank_name ? karigar_detail.bank_name:'----'}}</h6>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Bank Account Number'}}</p>
+                        <h6>{{karigar_detail.account_no ? karigar_detail.account_no:'----'}}</h6>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Bank IFSC Code'}}</p>
+                        <h6>{{karigar_detail.ifsc_code ? karigar_detail.ifsc_code:'----'}}</h6>
+                    </div>
+                    <div class="profile-card" *ngIf="karigar_detail.bank_img">
+                        <div class="text-box">
+                            <div class="doc-box">
+                                <img src="{{upload_url + karigar_detail.bank_img}}">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <div class="text-center">
+                        <h2>{{'Dealer Detail'}}</h2>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Name'}}</p>
+                        <h6>{{karigar_detail.dealer_name ? karigar_detail.dealer_name :'----'}}</h6>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Mobile No.'}}</p>
+                        <h6>{{karigar_detail.dealer_mobile ? karigar_detail.dealer_mobile :'----'}}</h6>
+                    </div>
+                    <div class="text-box">
+                        <p>{{'Channel Partner Name'}}</p>
+                        <h6>{{karigar_detail.distributor_name ? karigar_detail.distributor_name :'----'}}</h6>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <div class="text-center">
+                        <h2>{{ 'Referral Code Information' }}</h2>
+                        <a class="share" (click)="ShareApp()"><i class="material-icons">share</i></a>
+                    </div>
+
+                    <div class="text-box">
+                        <p>{{'Referral Code'}}</p>
+                        <h6 style="text-transform: uppercase;">{{karigar_detail.referral_code ?
+                            karigar_detail.referral_code
+                            : 'N/A'}}</h6>
+                    </div>
+                </div>
+            </ng-container>
+
+
+
+            <div class="app-version" *ngIf="karigar_detail.app_version">
+                APP VERSION {{karigar_detail.app_version}}
+            </div>
+        </div>
+    </div>
+</ion-content>

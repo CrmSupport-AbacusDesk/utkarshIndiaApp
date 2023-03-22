@@ -1,0 +1,27 @@
+<!--
+  Generated template for the TravelNewlistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Travel Pending Approval</ion-title>
+  </ion-navbar>
+</ion-header>
+<!--  -->
+<ion-content padding>
+  <div class="leave-list" *ngFor="let data of travel_data">
+    <div class="head" (click)="gototravel(data.asm_id,data.month,data.year)">
+      <h2>{{data.name}}</h2>
+      <p>Travel Days : {{data.total}}</p>
+    </div>
+    
+    <div class="mid-content">
+      <p><span>Month : </span>{{data.month_name}}</p>
+      <p ><span>Year:</span>{{data.year}}</p>
+     
+    </div>
+  </div>
+
+</ion-content>

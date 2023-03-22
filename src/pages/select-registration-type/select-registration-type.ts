@@ -1,0 +1,52 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
+import { MobileLoginPage } from '../login-section/mobile-login/mobile-login';
+import { LoginPage } from '../login/login';
+// import { EnquiryserviceProvider } from '../../providers/enquiryservice/enquiryservice';
+// import { SignupPage } from '../signup/signup';
+// import { LoginPage } from '../login/login';
+import { Storage } from '@ionic/storage';
+import { RegistrationPage } from '../login-section/registration/registration';
+import { CatalogueHomePage } from '../catalogue-home/catalogue-home';
+
+
+/**
+* Generated class for the SelectRegistrationTypePage page.
+*
+* See https://ionicframework.com/docs/components/#navigation for more info on
+* Ionic pages and navigation.
+*/
+
+@IonicPage()
+@Component({
+    selector: 'page-select-registration-type',
+    templateUrl: 'select-registration-type.html',
+})
+export class SelectRegistrationTypePage {
+    
+    data:any={};
+    tokenName:any='';
+    loginType:any='';
+    token:any='';
+    
+    constructor(public navCtrl: NavController, 
+        public navParams: NavParams,
+        public loadingCtrl: LoadingController,
+        public storage: Storage) 
+        {}
+        
+        ionViewDidLoad() {
+        }
+        
+        goToRegisterPage()
+        {
+            this.navCtrl.push(LoginPage,{'registerType':this.data.registerType});
+        }
+        
+        goToHome() {
+            // go to the MyPage component
+            this.navCtrl.push(CatalogueHomePage);
+        }
+        
+    }
+    // catalogue-home

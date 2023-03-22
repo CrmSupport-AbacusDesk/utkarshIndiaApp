@@ -1,0 +1,36 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Notification</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content  class="transprant-bg">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+    refreshingText="Refreshing...">
+  </ion-refresher-content>
+  </ion-refresher>
+  
+     
+      <div class="nothing-here" *ngIf="!announcementList.length ">
+        <div class="outer">
+          <div class="innear">
+            <img src="assets/imgs/no_found.svg" alt="">
+            <p>Data Not Available</p>
+          </div>
+        </div>
+      </div>
+      <ng-container  *ngFor="let data of announcementList">
+        <div class="notification-list" [ngClass]="{'new': data.read_status == 0}" >
+          <p><span class="sm-heading"></span>{{data.msg | titlecase}}</p>
+          <span class="cs-date">{{data.date_created | date:'d MMM, y'}}</span>
+        </div>
+      </ng-container>
+   
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+   
+</ion-content>

@@ -1,0 +1,190 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title *ngIf="leaveType=='My'">My Leave</ion-title>
+		<ion-title *ngIf="leaveType!='My'">Team Leave</ion-title>
+
+		<ion-buttons end>
+			<button ion-button icon-only *ngIf="teamCount > 0" (click)="presentPopover($event)">
+				<ion-icon name="more"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-refresher (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+			refreshingText="Refreshing...">
+		</ion-refresher-content>
+	</ion-refresher>
+	<div class="sticky bg-white">
+
+		<div class="edit flat" *ngIf="leaveType=='Team'">
+			<ion-list>
+				<ng-container>
+					<ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+						<ion-label>Select Team Member</ion-label>
+						<ionic-selectable item-content name="data" [(ngModel)]="selectData.team" [items]="user_list"
+							itemValueField="id" itemTextField="name" [canSearch]="true" #selectComponent
+							(ngModelChange)="leave_list()"></ionic-selectable>
+					</ion-item>
+				</ng-container>
+			</ion-list>
+		</div>
+
+
+		<div class="capsule-tabs">
+			<ul>
+				<li [ngClass]="{'active':leaveStatus == 'Pending'}" (click)="leaveStatus = 'Pending';leave_list()">
+					<p>Pending<span>{{leave_data_count.Pending?leave_data_count.Pending:'0'}}</span></p>
+				</li>
+				<li [ngClass]="{'active':leaveStatus == 'Approved'}" (click)="leaveStatus = 'Approved';leave_list()">
+					<p>Approved<span>{{leave_data_count.Approved?leave_data_count.Approved:'0'}}</span></p>
+				</li>
+				<li [ngClass]="{'active':leaveStatus == 'Reject'}" (click)="leaveStatus = 'Reject';leave_list()">
+					<p>Rejected<span>{{leave_data_count.Reject?leave_data_count.Reject:'0'}}</span></p>
+				</li>
+			</ul>
+		</div>
+
+
+		<ng-container>
+			<div class="tabs-count">
+				<div class="tab-content working">
+					<p>{{leaveMasterType.cl || '0'}}</p>
+					<span>CL</span>
+				</div>
+				<div class="tab-content present">
+					<p>{{leaveMasterType.el || '0'}}</p>
+					<span>EL</span>
+				</div>
+				<div class="tab-content absent">
+					<p>{{leaveMasterType.sl || '0'}}</p>
+					<span>SL</span>
+				</div>
+				<div class="tab-content leave">
+					<p>{{leaveMasterType.comp_off || '0'}}</p>
+					<span>COMP OFF</span>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+
+
+
+
+
+
+	<div class="pd-left-right16 mb80 mt15">
+		<div class="attendance-list" *ngFor="let data of leave_data">
+
+			<div class="slab slab-bg">
+				<ng-container *ngIf="data.type != 'Half Day' && leaveType=='My'">
+					<div class="slab-day">
+						<p>{{(data.leave_start_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date From</span>
+					</div>
+					<div class="slab-day">
+						<p>{{(data.leave_end_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date To</span>
+					</div>
+					<div class="slab-day" *ngIf="data.Days">
+						<p>{{(data.Days)||'0'}}</p>
+						<span>Total Days</span>
+					</div>
+				</ng-container>
+
+				<ng-container *ngIf="data.type == 'Half Day' && leaveType=='My'">
+					<div class="slab-day">
+						<p>{{(data.leave_start_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date </span>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="data.type != 'Half Day' && leaveType=='Team'">
+					<div class="slab-day">
+						<p>{{(data.leave_start_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date From</span>
+					</div>
+					<div class="slab-day">
+						<p>{{(data.leave_end_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date To</span>
+					</div>
+					<div class="slab-day" *ngIf="data.Days">
+						<p>{{(data.Days)||'0'}}</p>
+						<span>Total Days</span>
+					</div>
+					<div class="editBtn" *ngIf="leaveStatus == 'Pending'" (click)="statusModal(data.id)">
+						<ion-icon name="md-create"></ion-icon>
+					</div>
+				</ng-container>
+
+				<ng-container *ngIf="data.type == 'Half Day' && leaveType=='Team'">
+					<div class="slab-day">
+						<p>{{(data.leave_start_date | date:'d MMM, y')||'N/A'}}</p>
+						<span>Date </span>
+					</div>
+				</ng-container>
+			</div>
+
+			<div class="mid" style="margin-bottom: 10px;">
+				<div class="content-info">
+					<div class="right-info" *ngIf="data.leave_type == 'Half Day'">
+						<p *ngIf="leaveType=='Team'">Name: {{data.user_name||'N/A'}}</p>
+
+						<p *ngIf="leaveType=='My'">Description : <span
+								class="discriptionBox">{{data.description||'N/A'}}</span></p>
+					</div>
+
+					<div class="right-info" *ngIf="data.leave_type == 'Full Day'">
+						<p *ngIf="leaveType=='Team'">Name: {{data.user_name||'N/A'}}</p>
+						<p *ngIf="leaveType=='My'">Description : <span
+								class="discriptionBox">{{data.description||'N/A'}}</span></p>
+					</div>
+					<div class="right-info" *ngIf="data.leave_type=='Short Leave(2hrs)'">
+						<p *ngIf="leaveType=='Team'">Name: {{data.user_name||'N/A'}}</p>
+						<p *ngIf="leaveType=='My'">Description : <span
+								class="discriptionBox">{{data.description||'N/A'}}</span></p>
+					</div>
+				</div>
+				<div class="content-info" *ngIf="data.leave_type!='Short Leave(2hrs)'">
+					<div class="right-info" style="margin-left: auto;">
+						<p class="leaveType"><span class="noSpace">{{(data.leave_type | titlecase) || 'N/A'}}</span></p>
+					</div>
+				</div>
+				<div class="content-info" *ngIf="data.leave_type=='Short Leave(2hrs)'">
+					<div class="right-info" style="margin-left: auto;">
+						<p class="leaveType">
+							<span>{{(data.leave_type | titlecase) || 'N/A'}}</span>
+							<span
+								style="font-size: 9px; display:block; margin-left:auto; text-align:right;">({{data.short_leave_type||'N/A'}})</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="lower one-line" *ngIf="leaveType=='Team'">
+				<p>Description : <span>{{data.description||'N/A'}}</span></p>
+			</div>
+			<div class="lower one-line" *ngIf="data.reject_remark">
+				<p>Reject Remark : <span>{{data.reject_remark||'N/A'}}</span></p>
+			</div>
+		</div>
+
+	</div>
+	<div class="nothing-here" *ngIf="leave_data.length<1 && load_data == 1">
+		<div class="outer">
+			<div class="innear">
+				<img src="assets/imgs/no_found.svg" alt="">
+				<p>Data Not Available</p>
+			</div>
+		</div>
+	</div>
+	<!-- infinite scroll -->
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<!-- infinite scroll end -->
+</ion-content>
+<ion-fab right bottom *ngIf="leaveType!='Team'">
+	<button ion-fab color="primary" (click)="addPage()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>

@@ -1,0 +1,90 @@
+page-order-list {
+    .target-column 
+    {
+        padding: 12px;
+        background: #d8f0f0;
+        
+        .heading 
+        {
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .target-column-grid
+        {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
+            
+            .taget-achievement
+            {
+                border: 1px solid #ffffff;
+                background: #fff;
+                padding: 10px;
+                border-radius: 6px;
+                overflow: hidden;
+                
+                .taget_vs_achievement 
+                {
+                    text-align: center;
+                    min-height: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    
+                    p
+                    {
+                        font-size: 14px;
+                        font-weight: 700;
+                        line-height: 24px;
+                        
+                        &.green-text
+                        {
+                            color: #51ac08;
+                        }
+                        
+                        &.red-text
+                        {
+                            color:#55a9e4;
+                        }
+                    }
+                    span
+                    {
+                        font-size: 10px;
+                        font-weight: 500;
+                        line-height: 20px;
+                        white-space: nowrap;
+                        width: 100%;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        
+                        
+                        &.green-text
+                        {
+                            color: #51ac08;
+                        }
+                        
+                        &.red-text
+                        {
+                            color: #55a9e4;
+                        }
+                    }
+                }
+                
+                .vs 
+                {
+                    text-align: center;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-shadow: 2px 2px 4px #ea704d;
+                    color: #000000;
+                    padding: 5px 0px;
+                    margin: 0px -10px;
+                    background: #fbfbfb;
+                }
+            }
+        }
+    }
+}

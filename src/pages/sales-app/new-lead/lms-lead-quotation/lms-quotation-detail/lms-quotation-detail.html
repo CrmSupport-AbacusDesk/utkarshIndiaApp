@@ -1,0 +1,237 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Quotation detail</ion-title>
+        <!-- <ion-buttons end>
+            <button ion-button icon-only color="light" (click)="shareproduct()">
+                <ion-icon name="md-share"></ion-icon>
+            </button> 
+        </ion-buttons> -->
+    </ion-navbar>
+</ion-header>
+
+<ion-content >
+    <form name="f" #f="ngForm" (ngSubmit)="f.valid && submit()">
+        <div class="edit">
+            
+            
+            <ion-list>
+              
+                <div class="time_show mt16">
+                    <p>Lead Type</p>
+                    <p>{{form.lead_type}}</p>
+                </div>
+                
+                <div class="time_show mt16">
+                    <p>Retailer</p>
+                    <p>{{Quotation_list.dr_name}}</p>
+                </div>
+                
+                <ion-item class="cs-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && form.item?.invalid}" *ngIf="status=='Pending'" >
+                    <ion-label><span>Select Category</span></ion-label>
+                    <ionic-selectable
+                    item-content 
+                    [(ngModel)]="form.category"
+                    [items]="category_list"
+                    itemValueField="category"
+                    name="category"
+                    value="category"
+                    itemTextField="category"
+                    [canSearch]="true"
+                    (onChange)="get_item_list()"
+                    #selectComponent>
+                  </ionic-selectable>
+                  </ion-item>
+
+                <ion-item class="cs-select mt15 mb0" [ngClass]="{'cs-error':f.submitted && form.item?.invalid}" *ngIf="status=='Pending'">
+                    <ion-label><span>Select Item</span></ion-label>
+                    <ionic-selectable
+                    item-content 
+                    [(ngModel)]="form.item"
+                    [items]="item_list"
+                    itemValueField="id"
+                    name="product_name"
+                    value="product_name"
+                    itemTextField="product_name"
+                    [canSearch]="true"
+                    (onChange)="get_item_list();form.price=form.item.rate;"
+                    #selectComponent>
+                </ionic-selectable>
+            </ion-item>
+            
+            <ion-item  *ngIf="form.item">
+                <ion-label floating><span>Enter Qty<strong>*</strong></span></ion-label>
+                <ion-input type="text"   name="qty" #qty="ngModel" [(ngModel)]="form.qty" ></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="form.qty">
+                <ion-label floating><span>Price<strong>*</strong></span></ion-label>
+                <ion-input type="text"   name="price" #price="ngModel" [(ngModel)]="form.price" readonly></ion-input>
+            </ion-item>
+
+            <ion-item  >
+                <ion-label floating><span> Basic Discount Percent<strong>*</strong></span></ion-label>
+                <ion-input type="number" name="basic_discount_percent" #basic_discount_percent="ngModel" [(ngModel)]="form.basic_discount_percent" ></ion-input>
+            </ion-item>
+          
+            <ion-item  >
+                <ion-label floating><span> Sd Discount Percent<strong>*</strong></span></ion-label>
+                <ion-input type="number" name="sd_discount_percent" #sd_discount_percent="ngModel" [(ngModel)]="form.sd_discount_percent" ></ion-input>
+            </ion-item>
+            <ion-item  >
+                <ion-label floating><span> Cd Discount Percent<strong>*</strong></span></ion-label>
+                <ion-input type="number" name="cd_discount_percent" #cd_discount_percent="ngModel" [(ngModel)]="form.cd_discount_percent" ></ion-input>
+            </ion-item>
+            <ion-item  >
+                <ion-label floating><span> Other Discount Percent<strong>*</strong></span></ion-label>
+                <ion-input type="number" name="other_discount_percent" #other_discount_percent="ngModel" [(ngModel)]="form.other_discount_percent" ></ion-input>
+            </ion-item>
+            <ion-item class="cs-select mt15 mb0" *ngIf="form.qty">
+                <ion-label><span>Select Item</span></ion-label>
+                <ion-select required [(ngModel)]="form.product_type" name="product_type" >
+                    <ion-option  value="cartoon">CARTOON</ion-option>
+                    <ion-option  value="coil">COIL</ion-option>
+                    <ion-option  value="mtr">MTR</ion-option>
+                    <ion-option  value="drum">DRUM</ion-option>
+                    <ion-option  value="drumlength">DRUM LENGTH</ion-option>
+                    <ion-option  value="cutlength">CUT LENGTH</ion-option>
+        
+        
+        
+                    <!-- <ion-option value="368 * 120 inch">368 * 120 inch</ion-option> -->
+                </ion-select>
+        </ion-item>
+            <p  *ngIf="f.submitted && form.item?.invalid" class="error-line">Select Item Is Required</p>
+            
+            <!-- <a ion-button class="font12 wp100 h35 green-color mt16" (click)="callit()" *ngIf="status=='Pending'">Add To List</a> -->
+            <div class="mt16" >
+
+            <button ion-button class="cs-btn" [disabled]="!form.category || !form.item || !form.qty" (click)="callit()" *ngIf="status=='Pending'" >Add To List</button>
+            </div>
+
+            
+            <div class="cs-heading1 pl0">
+                <p>PRODUCT INFORMATION</p>
+            </div>
+            
+            <div class="list-box mt10" *ngFor="let list of add_list; index as i;">
+                <div class="mid mt0">
+                    <div class="content-info">
+                        <div class="right-info">
+                            <p>Product -{{list.product_name}}</p>
+                            <p>Product Code - {{list.product_code}}</p>
+                            <!-- <p>qid - {{list.quotation_id}}</p> -->
+                        </div>
+                    </div>
+                    <div class="tag-info" *ngIf="status=='Pending'">
+                        <button type="button" (click)="listdelete(i,list.id,list.quotation_id)"><i class="material-icons red-clr">delete_sweep</i></button>
+                    </div>
+                </div>
+                
+                <div class="three_boxes">
+                    <div class="lower">
+                        <p>Qty</p>
+                        <p class="input-and-save">
+                            {{list.qty}}
+                        </p>
+                    </div>
+                    <div class="lower">
+                        <p>Type</p>
+                        <p class="input-and-save">
+                            {{list.product_type}}
+                        </p>
+                    </div>
+                    <div class="lower">
+                        <p>Price</p>
+                        <p class="input-and-save">
+                            {{list.price}}</p>
+                    </div>
+                    <div class="lower">
+                        <p>Amount</p>
+                        <p>₹ {{list.qty * list.price ? list.qty * list.price : '0'}}</p>
+                    </div>
+                </div>
+                <div class="three_boxes">
+                    <div class="lower">
+                        <p>Discount Amount</p>
+                        <p>₹ {{list.discount_amount}} ({{list.discount_percent?list.discount_percent+' %':'0 %'}})</p>
+                    </div>
+                    <div class="lower">
+                        <p>GST Amount</p>
+                        <p>₹ {{list.gst_amount}} ({{list.gst_percent?list.gst_percent+' %':'0 %'}})</p>
+                    </div>
+                    <div class="lower">
+                        <p>Total Amount</p>
+                        <p>₹ {{list.total_amount}}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="time_show amount-listing">
+                <p>Total Qty</p>
+                <p>{{total_qty}}</p>
+            </div>
+            
+            <div class="time_show amount-listing">
+                <p>Sub Total</p>
+                <p>₹ {{sub_total}} /-</p>
+            </div>
+            
+            <div class="time_show amount-listing">
+                <p>Total Discount Amount</p>
+                <p>₹ {{totaldiscount_amount}} /-</p>
+            </div>
+
+            <div class="time_show amount-listing">
+                <p>Total GST Amount</p>
+                <p>₹ {{total_gst_amount}} /-</p>
+            </div>
+
+            <div class="time_show amount-listing">
+                <p>Grand Total</p>
+                <p>₹ {{grand_total}} /-</p>
+            </div>
+
+            <div class="field-edit" *ngIf="status=='Pending'">
+                <ion-item class="cs-textarea1" [ngClass]="{'cs-error':f.submitted && term_condition?.invalid}" *ngIf="add_list.length > 0">
+                    <ion-label floating><span>Term and Condition <strong>*</strong></span></ion-label>
+                    <ion-textarea type="text" name="term_condition" #term_condition="ngModel"  [(ngModel)]="form.term_condition" [disabled]="mode==1"  required></ion-textarea>
+                    
+                </ion-item>
+                <!-- [disabled]="mode==1" -->
+                <p  *ngIf="f.submitted && term_condition?.invalid && !form.term_condition" class="error-line">Term & Condition Is Required</p>
+                <a><i class="material-icons" *ngIf="mode==1" (click)="mode=0">edit</i></a>
+                <a><i class="material-icons" *ngIf="mode==0" (click)="mode=1;quotationtermcondition(form.term_condition)">save</i></a>
+            </div>
+
+            <div class="field-edit " *ngIf="status!='Pending'">
+                <ion-item class="cs-textarea1 remove-textarea"  [ngClass]="{'cs-error':f.submitted && term_condition?.invalid}" *ngIf="add_list.length > 0">
+                    <ion-label floating><span>Term and Condition <strong>*</strong></span></ion-label>
+                    <ion-textarea type="text" name="term_condition" #term_condition="ngModel"  [(ngModel)]="form.term_condition" [innerHTML]="form.term_condition"  [disabled]="mode==1"  required></ion-textarea>
+                    
+                </ion-item>
+            </div>
+
+        </ion-list>
+    </div>
+    <div class="padding16" *ngIf="add_list.length > 0 && status=='Pending'">
+        <!-- <button ion-button class="cs-btn">Save</button> -->
+    </div>
+</form>
+
+<ion-fab right bottom >
+    <button *ngIf="Quotation_list.quotation_status == 'Approved' && drMailId "ion-button  class="h35 cs-btn" (click)="sendEmail()">
+        <i class="material-icons mr16">forward_to_inbox</i>
+        Send Email 
+    </button>
+    <button *ngIf="Quotation_list.quotation_status == 'Approved' "ion-button  class="h35 cs-btn" (click)="downloadViewImage()">
+        <i class="material-icons mr16">forward_to_inbox</i>
+        Open PDF 
+    </button>
+</ion-fab>
+<ion-fab right bottom >
+    
+   
+</ion-fab>
+</ion-content>
+
+ 

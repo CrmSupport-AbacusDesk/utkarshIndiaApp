@@ -1,0 +1,7 @@
+{
+  "name": "gravityDemo",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

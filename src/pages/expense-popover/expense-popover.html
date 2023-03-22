@@ -1,0 +1,17 @@
+
+<ion-list class="popover_list" *ngIf="page_from">
+  <button ion-item (click)="close('My')">My {{page_from}}</button>
+  <button ion-item (click)="close('Team')">Team {{page_from}}</button>
+</ion-list>
+
+
+<ion-list class="popover_list"  *ngIf="via">
+  <button *ngIf="(checkInData.dr_type== '1') || (checkInData.dr_type== '7')" ion-item (click)="goto('Primary Orders')"><img src="assets/imgs/product.svg"> Orders</button>
+  <button *ngIf="checkInData.dr_type== '3'" ion-item (click)="goto('Secondary Orders')"><img src="assets/imgs/product.svg"> Orders</button>
+  <!-- <button ion-item (click)="goto('')">Check In</button> -->
+  <!-- <button *ngIf="type != 'newRetailer' " ion-item (click)="goto('Visiting Card')"><img src="assets/imgs/visitingcard.svg"> Visiting Card</button> -->
+  <!-- <button ion-item (click)="goto('Pop & Gifts')"><img src="assets/imgs/product-1.svg"> Pop & Gifts</button> -->
+  <button *ngIf="!showEditRetailer && type == 'newRetailer' " ion-item (click)="goto('Show')"><img src="assets/imgs/cs-network/architect.svg"> Edit Info</button>
+  <button *ngIf="showEditRetailer && type == 'newRetailer'" ion-item (click)="goto('Hide')"><img src="assets/imgs/cs-network/architect.svg"> Edit Info</button>
+  
+</ion-list>

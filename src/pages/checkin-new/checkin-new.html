@@ -1,0 +1,306 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="checkinType=='My'">Checkin Summary</ion-title>
+    <ion-title *ngIf="checkinType!='My'">Team's Checkin Summary</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="teamCount > 0" (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding>
+  <div class="searchBarBox mb15" *ngIf="checkinType!='My'">
+    <div class="edit m4">
+      <ion-list>
+        <ng-container>
+          <ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+            <ion-label>Select User</ion-label>
+            <ionic-selectable item-content name="data" [(ngModel)]="data" [items]="user_list" itemValueField="id"
+              itemTextField="name" [canSearch]="true" #selectComponent
+              (ngModelChange)="getCkeckInData()"></ionic-selectable>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </div>
+  </div>
+  <ng-container>
+    <ng-container *ngIf="checkinType=='My'">
+      <div class="month-calander">
+
+        <button class="dates" (click)="changeDate('previous')"><i
+            class="material-icons">keyboard_arrow_left</i></button>
+        <p>{{selected_date | date:'d MMM, y' }}</p>
+        <button *ngIf="selected_date != today_date" class="dates" (click)="changeDate('next')"><i
+            class="material-icons">keyboard_arrow_right</i></button>
+        <div *ngIf="selected_date == today_date"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="checkinType!='My' && data">
+      <div class="month-calander">
+
+        <button class="dates" (click)="changeDate('previous')"><i
+            class="material-icons">keyboard_arrow_left</i></button>
+        <p>{{selected_date | date:'d MMM, y' }}</p>
+        <button *ngIf="selected_date != today_date" class="dates" (click)="changeDate('next')"><i
+            class="material-icons">keyboard_arrow_right</i></button>
+        <div *ngIf="selected_date == today_date"></div>
+      </div>
+
+    </ng-container>
+
+
+    <div class="checkin-table">
+      <div class="checkin-day">
+        <div class="visits">
+          <span>Day Start</span>
+          <p *ngIf="attendancelist.start_time =='00:00:00'">--</p>
+          <p *ngIf="attendancelist.start_time !='00:00:00'">{{attendancelist.start_time_withDate | date:'hh:mm a'}}</p>
+        </div>
+        <div class="visits">
+          <span>Day End</span>
+          <p *ngIf="attendancelist.stop_time =='00:00:00'">--</p>
+          <p *ngIf="attendancelist.stop_time !='00:00:00'">{{attendancelist.stop_time_withDate | date:'hh:mm a'}}</p>
+        </div>
+        <div class="visits">
+          <span>Total Work Hours</span>
+          <p>{{attendancelist.Total_Working_Time}}</p>
+        </div>
+
+      </div>
+      <table>
+        <tr>
+          <td class="w30">
+            <i class="material-icons">pin_drop</i>
+          </td>
+          <td>
+            Total Counter Visit
+          </td>
+          <td class="w100">
+            {{checkin_count_data.total_checkin_count}}
+          </td>
+        </tr>
+        <tr class="new">
+          <td class="w30">
+            <i class="material-icons">person</i>
+          </td>
+          <td>
+            New Counter
+          </td>
+          <td>
+            {{checkin_count_data.newCounterVisit}}
+          </td>
+        </tr>
+        <tr>
+          <td class="w30">
+            <i class="material-icons">person</i>
+          </td>
+          <td>
+            Old Counter
+          </td>
+          <td>
+            {{checkin_count_data.oldCounterVisit}}
+          </td>
+        </tr>
+        <tr>
+          <td class="w30">
+            <i class="material-icons">location_on</i>
+          </td>
+          <td>
+            Travel in KM
+          </td>
+          <td>
+            {{checkin_count_data.total_km_distance?checkin_count_data.total_km_distance:'0'}} KM
+          </td>
+        </tr>
+        <tr class="primary-odr">
+          <td class="w30">
+            <i class="material-icons">receipt</i>
+          </td>
+          <td>
+            <p>Primary Order</p>
+          </td>
+          <td>
+            {{checkinData.primary_order}}
+          </td>
+        </tr>
+        <tr class="sec-odr">
+          <td class="w30">
+            <i class="material-icons">receipt</i>
+          </td>
+          <td>
+            <p>Secondary Order </p>
+          </td>
+          <td>
+            {{checkinData.secondary_order}}
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+
+
+    <div class="middle-button">
+      <span [ngClass]="{'active' : actual==true}" (click)="actual=true;traveled=false;getCkeckInData()">
+        Actual Travel
+      </span>
+      <span [ngClass]="{'active' : traveled==true}" (click)="traveled=true;actual=false;getCkeckInData()">
+        Travel Plan
+      </span>
+    </div>
+
+
+    <div [ngSwitch]="travelPlan">
+      <ng-container *ngIf="actual==true &&checkinlist.length">
+        <div class="travel">
+          <ul>
+            <li>
+              <span class="vistit-count">
+                <i class="material-icons">location_on</i>
+              </span>
+              <p class="f11"><strong>Day Start ({{attendancelist.start_time_withDate | date:'hh:mm a'}})</strong></p>
+              <p class="f10"><strong>GPS Address</strong> : {{attendancelist.start_address}}</p>
+            </li>
+            <li *ngFor="let row of checkinlist;let i = index;">
+              <span class="vistit-count">{{i+1}}</span>
+              <span class="km">{{row.km}} KM</span>
+              <div class="counter">
+                <div>
+
+                  <h2 class="f12" *ngIf="row.company_name!=null">{{row.company_name | titlecase}} <span
+                      *ngIf="row.company_name!=''">({{row.dr_type_name}})</span></h2>
+                  <h2 *ngIf="row.company_name==null&&row.name==null">{{row.activity_mode | titlecase}}</h2>
+                  <div class="visit-time">
+                    <div class="visit-hours">
+                      <span>Check-in</span>
+                      <p>{{row.visit_start| date:'hh:mm a'}}</p>
+                    </div>
+                    <div class="visit-hours">
+                      <span>Check-out</span>
+                      <p>{{row.visit_end| date:'hh:mm a'}}</p>
+                    </div>
+                    <div class="visit-hours">
+                      <span>Time spend</span>
+                      <p>{{row.TOTAL_TIME_TAKE}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="type-visit">
+                  <div class="types">
+                    <span *ngIf="row.order_flag=='1'" class="active">&nbsp;</span>
+                    <span *ngIf="row.order_flag=='0'" class="deactive">&nbsp;</span>
+
+                    Order
+                  </div>
+                  <div class="types">
+                    <span *ngIf="row.followup_flag=='1'" class="active">&nbsp;</span>
+                    <span *ngIf="row.followup_flag=='0'" class="deactive">&nbsp;</span>
+
+                    Followup
+                  </div>
+                  <div class="types">
+                    <span *ngIf="row.doc_flag!=0" class="active">&nbsp;</span>
+                    <span *ngIf="row.doc_flag==0" class="deactive">&nbsp;</span>
+                    Photo
+                  </div>
+
+                </div>
+                <div class="m4">
+                  <p class="f10"><strong>GPS Address</strong> : <span>{{row.start_address}}</span></p>
+                </div>
+              </div>
+
+            </li>
+            <li>
+              <span class="vistit-count">
+                <i class="material-icons">location_on</i>
+              </span>
+              <p class="f11" *ngIf="attendancelist.stop_time !='00:00:00'"><strong>Day Stop
+                  ({{attendancelist.stop_time_withDate | date:'hh:mm a'}} -
+                  {{attendancelist.distance_from_last_checkin}} km)</strong></p>
+              <p class="f10" *ngIf="attendancelist.stop_time !='00:00:00' &&attendancelist.stop_time != ''"><strong>GPS
+                  Address : </strong>{{attendancelist.stop_address}}</p>
+
+            </li>
+          </ul>
+        </div>
+
+      </ng-container>
+      <div *ngIf="checkinlist.length == 0">
+
+        <div *ngIf="actual==true" class="actual-travel">
+          <div class="nothing-here">
+            <div class="outer">
+              <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>No Checkins</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <ng-container *ngIf="traveled==true&&checkinData.travel_plan!=null">
+        <div class="planned-travel">
+          <div class="content-box-traveled" *ngFor="let row of checkinData.travel_plan.area_dealer_list">
+            <p *ngIf="row.travel_type!='Other'">{{row.company_name | titlecase}}</p>
+            <p *ngIf="row.travel_type=='Other'">{{row.description}}</p>
+
+            <div class="address" *ngIf="row.state!=''&&row.travel_type!='Other'">
+              <p>Address: <span>{{row.address}},{{row.district}},{{row.state}},{{row.pincode}}</span></p>
+            </div>
+            <div class="address" *ngIf="row.travel_type=='Other'">
+              <p>City: <span>{{row.city}}</span></p>
+            </div>
+            <div class="address" *ngIf="row.travel_type!='Other'">
+              <p>Visit Status : <span>{{row.checkin_id== null?'Pending':'Complete'}}</span></p>
+            </div>
+            <div class="Checkin_button"
+              *ngIf="row.travel_type!='Other'&&row.checkin_id==null&&selected_date == today_date ">
+
+              <p><button ion-button block
+                  (click)="(attendancelist.start_time != '00:00:00' || attendancelist.start_time != '') ? startVisit(row) : show_Error() "><span
+                    style="color:white">Checkin</span></button></p>
+
+            </div>
+
+          </div>
+        </div>
+      </ng-container>
+
+
+    </div>
+
+  </ng-container>
+  <div *ngIf="checkinData.travel_plan==null &&traveled==true" class="planned-travel">
+    <div class="nothing-here">
+      <div class="outer">
+        <div class="innear">
+          <img src="assets/imgs/no_found.svg" alt="">
+          <p>No Travel Plan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+
+
+<ion-footer class="af-none">
+  <div *ngIf="attendenceButton == false && checkinButton == true && checkinType=='My' && selected_date == today_date">
+    <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="show_Error() "><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </div>
+
+  <div *ngIf="attendenceButton == true && checkinButton == true && checkinType=='My' && selected_date == today_date">
+    <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="addCheckin()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </div>
+
+</ion-footer>

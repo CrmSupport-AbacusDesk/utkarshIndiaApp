@@ -1,0 +1,45 @@
+<!--
+  Generated template for the MyInfluencerDetailPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Influencer Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="attendance-list flat-list">
+    <div class="my-wallet">
+      <div class="pts-icon">
+        <i class="material-icons">account_balance_wallet </i>
+        My Wallet Points
+      </div>
+      <div class="pts">
+        {{influencer_detail.distributor_point}} PT
+      </div>
+    </div>
+
+    <div class="center-block">
+      <div class="circle">{{influencer_detail.name | slice:0:1}}</div>
+      <h1 class="f12">{{influencer_detail.name?.toUpperCase()}}</h1>
+      <p>{{influencer_detail.influencer_type | titlecase}} ({{influencer_detail.mobile_no}})</p>
+      <a class="cell-phone" href="tel:{{influencer_detail.mobile_no}}"><i class="material-icons">phone</i></a>
+    </div>
+    <div class="other-block pb0" *ngIf=" influencer_detail.address  || influencer_detail.city  || influencer_detail.district  || influencer_detail.state || influencer_detail.pincode">
+      <p ><strong>Address :</strong> {{influencer_detail.address}} {{influencer_detail.city}} {{influencer_detail.district | titlecase}} {{influencer_detail.state | titlecase}} {{influencer_detail.pincode}}</p>
+    </div>
+  </div>
+
+
+  <div class="coupon-container" style="height: inherit;">
+    <p class="animate__jackInTheBox">Enter points to transfer  {{influencer_detail.name?.toUpperCase()}}</p>
+    <input type="tel" placeholder="Enter Point" [(ngModel)]="data.point" #point="ngModel" name="point">
+    <button ion-button round  block color="secondary" (click)="checkValidation(data.point)" [disabled]="saveFlag == true">
+      {{saveFlag == true ? 'Please Wait' : 'Transfer'}}
+    </button>
+  </div>
+
+</ion-content>

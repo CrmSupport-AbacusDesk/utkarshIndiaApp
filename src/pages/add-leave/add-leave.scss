@@ -1,0 +1,26 @@
+page-add-leave {
+
+
+    
+    input
+    {
+        height: 28px;
+    }
+
+
+    textarea
+    {
+        height: 100px;
+    }
+
+    .input-wrapper{
+        justify-content: space-between;
+    }
+
+    ion-label{
+        max-width: 50%;
+    }
+    ion-select{
+        max-width: 50%;
+    }
+}

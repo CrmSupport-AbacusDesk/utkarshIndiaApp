@@ -1,0 +1,17 @@
+page-cancelation-policy {
+    ion-header
+	{
+		display: none;
+	}
+
+	ion-content
+	{
+		&.popup-modal
+		{
+			background: rgba(0, 0, 0, 0.5) !important;
+			display: flex;
+		    align-items: center;
+		    justify-content: center;
+		}
+	}
+}

@@ -1,0 +1,208 @@
+
+
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <h1>Add Order </h1>
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    
+    <div class="edit mt16">
+        <ion-list>
+            <ng-container *ngIf="userType!='OFFICE' && disableSelect==false">
+                
+                <ion-item  class="cs-normal-select mt16"  >
+                    <ion-label>Select type</ion-label>
+                    <ion-select  placeholder="Select Type" name="networkType"  [(ngModel)]="data.networkType" (ngModelChange)="get_network_list(data.networkType)" [disabled]="(disableSelectFromCheckin == true)">
+                        <ion-option  *ngIf="drtype=='Primary'" value="1">Channel Partner</ion-option>
+                        <!-- <ion-option *ngIf="drtype=='Primary'" value="7">Direct Dealer</ion-option> -->
+                        <ion-option *ngIf="drtype=='Secondary'" value="3">Dealer</ion-option>
+                    </ion-select>
+                </ion-item>
+                
+            </ng-container>
+            
+        </ion-list>
+        
+        <ion-list >
+            
+            <ion-item class="cs-select mt16" >
+                <ion-label *ngIf="data.networkType == '1'">Distributor</ion-label>
+                <ion-label *ngIf="data.networkType == '3'">Retailer</ion-label>
+                <!-- <ion-label *ngIf="data.networkType == '7'">Direct Dealer</ion-label> -->
+                
+                <ionic-selectable
+                item-content 
+                [(ngModel)]="data.type_name"
+                [items]="distributor_network_list"
+                itemValueField="id"
+                name="name"
+                value="company_name"
+                itemTextField="company_name"
+                [canSearch]="true"
+                #selectComponent (ngModelChange)="get_distributor_list(data.type_name)" [disabled]="(disableSelect == true || disableSelectFromCheckin == true)">
+            </ionic-selectable>
+        </ion-item>		
+        
+        
+        <ion-item class="cs-selectable mt16" *ngIf="data.networkType == 3">
+            <ion-label><span>Select Channel Partner</span></ion-label>
+            <ionic-selectable 
+            item-content 
+            [(ngModel)]="data.delivery_from"
+            [items]="distributorlist" 
+            itemValueField="assign_distributor_id"
+            itemTextField="assign_distributor" 
+            name="name"                                          
+            value="id" 
+            [canSearch]="true"
+            #distributorSelectable (ngModelChange)="test(data.delivery_from)">
+            
+        </ionic-selectable>
+    </ion-item>	
+    <ion-item class="cs-normal-select mt16">
+        <ion-label>Select Segment</ion-label>
+        <ion-select  required [(ngModel)]="data.segment" (ionChange)="  get_item_list(); addToListButton=true " >
+            <ion-option value="{{list.id}}" *ngFor="let list of segment_list ,let i=index">{{list.category}}</ion-option >
+            </ion-select>
+        </ion-item>
+    
+    <ion-item class="cs-normal-select mt16">
+        <ion-label>Select Item</ion-label>
+        <ion-select  required [(ngModel)]="data.productid" (ionChange)="  get_product_Size($event,data.type_name.id); addToListButton=true " >
+            <ion-option value="{{list.id}}" *ngFor="let list of item_list ,let i=index">{{list.product_name}}</ion-option >
+            </ion-select>
+        </ion-item>
+        
+        
+        
+        <div class="product-item-table" *ngIf="product_list.length">
+            <table class="scroll-150">
+                <tr>
+                    
+                    <th>Feature</th>
+                    <th class="w70 text-center">Qty</th>
+                    <th class="w60 text-right">Price</th>
+                    <th class="w60 text-right">Amount</th>
+                    
+                </tr>
+                <tr *ngFor="let pop of product_list;let i = index;">
+                    <td>{{pop.product_size}}</td>
+                    <td  class="w70 text-center"><input type="number"  name="qty"  [(ngModel)]="pop.qty" #size="ngModel" placeholder="QTY." (ngModelChange)="(pop.qty == '' || pop.qty == 0 || pop.qty == null)?(addToListButton = true):(addToListButton = false)"></td>
+                    <td *ngIf="data.networkType != '3' " class="w60 text-right">&#x20B9; {{pop.rate}}</td>
+                    <td *ngIf="data.networkType == '3'" class="w60 text-center"><input type="number"  name="rate"  [(ngModel)]="pop.rate" #size="ngModel" placeholder="RATE."></td>
+                    
+                    <td class="w60 text-right">&#x20B9; {{pop.qty * pop.rate ? pop.qty * pop.rate : '0'}} </td>        
+                </tr>
+            </table>
+        </div>
+        
+        
+    </ion-list>
+    
+    
+    <div class="mt16" *ngIf="product_list.length" >
+        <button ion-button class="cs-btn" [disabled]="addToListButton" (click)="addToList()" >Add To List</button>
+    </div>
+    
+    
+    
+    
+    <div class="cs-heading1 pl0"*ngIf="add_list.length" >
+        <p>PRODUCT INFORMATION</p>
+    </div>
+    
+    <div class="list-box mt10" *ngFor="let row of add_list;let i=index">
+        <div class="mid mt0">
+            <div class="content-info">
+                <div class="right-info">
+                    <p>Product Name - {{row.product_name}}</p>
+                    <p>Feature- {{row.product_size}}</p>
+                </div>
+            </div>
+            <div class="tag-info">
+                <button ><i class="material-icons red-clr" (click)="listdelete(i)">delete_sweep</i></button>
+            </div>
+        </div>
+        
+        <div class="three_boxes">
+            <div class="lower">
+                <p>Qty</p>
+                <p>{{row.qty}}</p>
+            </div>
+            <div class="lower">
+                <p>Price</p>
+                <p>{{row.rate}}</p>
+            </div>
+            <div class="lower">
+                <p>Amount</p>
+                <p>{{row.amount}}</p>
+            </div>
+        </div>
+        <div class="three_boxes">
+            <div class="lower">
+                <p>GST Amount</p>
+                <p>₹ {{row.gst_amount}} ({{row.gst_percent?row.gst_percent+' %':'0 %'}})</p>
+            </div>
+            <div class="lower">
+                <p>Total Amount</p>
+                <p>₹ {{row.total_amount}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div  *ngIf="add_list.length > 0">
+        
+        <div class="time_show amount-listing">
+            <p>Total Qty</p>
+            <p>{{total_qty}}</p>
+        </div>
+        
+        <div class="time_show amount-listing">
+            <p>Sub Total</p>
+            <p>₹ {{netamount}} /-</p>
+        </div>
+        
+        <div class="time_show amount-listing">
+            <p>Total GST Amount</p>
+            <p>₹ {{total_gst_amount}} /-</p>
+        </div>
+        <div class="time_show amount-listing">
+            <p>Grand Total</p>
+            <p>₹ {{new_grand_total}} /-</p>
+        </div>
+        
+    </div>
+    <div class="mt16"  *ngIf="add_list.length > 0 && data.type_name">
+        <button ion-button [disabled]="btndisable" class="cs-btn"  (click)="user_data.order_status='Pending';save_orderalert('submit');">Save</button>
+        <!-- <button ion-button class="cs-btn">Save</button> -->
+        
+    </div>
+    
+</div>
+
+
+
+<div class="pd-left-right16">
+    
+    
+</div>
+<div class="border-sepration" *ngIf="add_list.length"></div>
+
+
+<div class="pd-left-right16" >
+    
+    
+    <div class="align-btn">
+        
+    </div>
+    
+    
+</div>
+
+
+</ion-content>
+

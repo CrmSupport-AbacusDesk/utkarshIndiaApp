@@ -1,0 +1,64 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Point History</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+  <!-- <div class="bal-column pb30">
+    <p>{{'Balance Points'}}</p>
+    <h2>{{influencer_point.wallet_point}} <span>Pts</span></h2>
+    <span>{{'Last updated'}} {{ (influencer_point.last_wallet_update!='0000-00-00 00:00:00') ? (influencer_point.last_wallet_update | date:'d MMMM y, h:mm a') : ('') }}</span>
+  </div> -->
+
+  
+  
+  
+  
+  
+  
+  <div class="transation-tabel" style="margin: 0px -10px;">
+    <table>
+      <tr  *ngFor="let row of ledger_list; let i = index;">
+        <td>
+          <div class="point-date">
+            <div class="led-date">{{row.date_created | date:'d MMM yy, h:mm a'}}</div>
+            <div class="led-amount" [ngClass]="{'credit' : row.credit > 0, 'debit' : row.debit > 0 } ">
+              <span *ngIf="row.credit > 0">{{row.credit}} PT</span> 
+              <span *ngIf="row.debit > 0">{{row.debit}} PT</span> 
+              
+              <!-- <i class="material-icons">call_received</i> -->
+              <i class="material-icons" *ngIf="row.credit > 0">call_received</i>
+              <i class="material-icons" *ngIf="row.debit > 0">call_made</i>
+              
+            </div>
+          </div>
+          
+          <div class="point-remark mb0">
+            <p>
+              {{row.transaction_type}} <br>
+              {{row.transaction_remark}}
+            </p>
+            
+            <div class="avl-bal">
+              Balance: {{row.balance}} PT
+            </div>
+          </div>
+        </td>
+      </tr>
+      
+    </table>
+  </div>
+  
+  <div class="no-history" *ngIf="ledger_list.length == 0">
+    <i class="material-icons">history_edu</i>
+    <p>{{'No History'}}</p>
+  </div>
+  
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event, history)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  
+</ion-content>

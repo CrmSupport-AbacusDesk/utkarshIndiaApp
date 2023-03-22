@@ -1,0 +1,104 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>loyalty-redeem-request</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="popup-modal" >
+  <div class="modal-center">
+    <div class="modal-content in-modal">
+      <form #f="ngForm">
+        <div class="title">
+          <h1>{{'Confirm your redeem request...!'}}</h1>
+        </div>
+        <div class="summary-gift">
+          <h5>{{'Summary'}}</h5>
+          <table>
+            <tr>
+              <td>{{'Your Current Points'}}</td>
+              <td>{{karigar_detail.wallet_point}}</td>
+            </tr>
+            <tr>
+              <td>{{'Gift Point Value'}}</td>
+              <td *ngIf="gift_type=='Gift'">-{{gift_detail.gift_point}}</td>
+              <td *ngIf="gift_type=='Cash'">-{{data.cash_point}}</td>
+
+            </tr>
+            <tr>
+              <td>{{'Your balance Points'}}</td>
+              <td><strong>= {{currentPointBalcance_round}}</strong></td>
+            </tr>
+          </table>
+        </div>
+        <div class="get-otp">
+          {{'To Confirm your redeem request,'}} <br> {{'kindly enter the OTP sent on your registered mobile number-'}} +91 {{karigar_detail.mobile_no}}
+          <div class="input-section">
+            <div class="input-adjust m0 mt10">
+              <input class="pl16" type="tel" name="otp" placeholder="{{'Enter the OTP here...'}}" #otp="ngModel" [(ngModel)]="data.otp" (ngModelChange)="otpvalidation()" required>
+              <div class="resend-otp">Didn't receive? <button ion-button [disabled]='time == true'  clear (click)="getOtpDetail('resend')">{{'Resend'}}</button> {{maxTime ? '00:'+maxTime+'' : ''}}</div>
+              <div class="otp-error" *ngIf="!otp_value && otp?.touched">
+                <p>{{'Wrong OTP value'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <ng-container *ngIf="gift_detail.gift_type == 'Gift'">
+          <div class="check-bx mt0">
+            <ion-item>
+              <ion-checkbox color="secondary" checked="true" name="check1" #check1="ngModel" [(ngModel)]="data.check1" (click)="address()">
+              </ion-checkbox>
+            </ion-item>
+            <p>{{'Same as address'}}</p>
+          </div>
+          <div class="input-section">
+            <div class="input-adjust m0 mt0">
+              <textarea class="pl16 mt0"  name="shipping_address" placeholder="Address" #shipping_address="ngModel" [(ngModel)]="data.shipping_address"   required></textarea>
+            </div>
+          </div>
+        </ng-container>
+        
+        <ng-container *ngIf="gift_detail.gift_type == 'Cash'">
+          <div class="profile-card mt16">
+            <div class="text-center">
+              <h2>{{ 'Bank Information' }}</h2>
+            </div>
+            <div class="text-box">
+              <p>{{'Account Holder Name'}}</p>
+              <h6>{{karigar_detail.account_holder_name ? karigar_detail.account_holder_name:'----'}}</h6>
+            </div>
+            <div class="text-box">
+              <p>{{'Bank Name'}}</p>
+              <h6>{{karigar_detail.bank_name ? karigar_detail.bank_name:'----'}}</h6>
+            </div>
+            <div class="text-box">
+              <p>{{'Bank Account Number'}}</p>
+              <h6>{{karigar_detail.account_no ? karigar_detail.account_no:'----'}}</h6>
+            </div>
+            <div class="text-box">
+              <p>{{'Bank IFSC Code'}}</p>
+              <h6>{{karigar_detail.ifsc_code ? karigar_detail.ifsc_code:'----'}}</h6>
+            </div>
+          </div>
+        </ng-container>
+        
+        
+        
+        
+        <div class="check-bx mt0">
+          <ion-item>
+            <ion-checkbox color="secondary" checked="true" name="check" #check="ngModel" [(ngModel)]="data.check" required></ion-checkbox>
+          </ion-item>
+          <p>{{'I accept the'}} <a (click)="goTOPage()">{{'Cancellation Policy'}}</a></p>
+        </div>
+        <div class="footer-btns">
+          <a ion-button outline color="danger" (click)="dismiss()">{{'Cancel'}}</a>
+          <!-- !data.check ||!data.otp || !data.shipping_address ||  -->
+          <button ion-button color="success" [disabled]="saveFlag == true" (click)="submit()">
+            {{saveFlag == true ? 'Please Wait' : 'Confirm'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

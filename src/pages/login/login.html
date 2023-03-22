@@ -1,0 +1,47 @@
+X
+
+
+
+<ion-header class="header-border header-back-black">
+    <ion-navbar color="white">
+        <div class="logo center-logo">
+            <img src="assets/imgs/logo.png" alt="">
+        </div>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <form class="form-login" [formGroup]="validations_form" (ngSubmit)="form.phone?.length == 10 ? login_submit() : ''"
+    autocomplete="off">
+    <div class="login-form">
+        <div class="form">
+            <h1>Login</h1>
+            <p >Enter your mobile number to verify
+                We will send you one time password (OTP)
+            </p>
+            
+            <div class="input-block">
+                <div class="rel">
+                    <i class="material-icons login__icon">phone_android</i>
+                    <input class="login__input" type="tel" minlength="10" maxlength="10" [(ngModel)]="form.phone" placeholder="Mobile Number" formControlName="phone">
+                </div>
+                <p class="error-msg" *ngIf="validations_form.get('phone').hasError('required') && validations_form.get('phone').touched">
+                    Please enter your mobile number
+                </p>
+                <p class="error-msg" *ngIf="(validations_form.get('phone').hasError('minlength') || validations_form.get('phone').hasError('maxlength')) && validations_form.get('phone').touched">
+                    Invalid mobile number
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="wp100 text-right">
+        <button  ion-button round icon-end color="primary" [disabled]="loading == 1 || validations_form.get('phone').hasError('required') || validations_form.get('phone').hasError('minlength')">
+            Continue <ion-icon *ngIf="spinner == false" name="arrow-forward"></ion-icon><ion-spinner class="Spinner" color="white" *ngIf="spinner == true" ></ion-spinner>
+        </button>
+    </div>
+    
+</form>
+
+
+</ion-content>

@@ -1,0 +1,140 @@
+<ion-header>    
+  <ion-navbar>
+      <ion-title>
+          <h1>Add Requirement</h1>
+      </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form>
+<div class="edit">
+<ion-list>
+  <ion-item class="cs-normal-select mt15 mb0" >
+    <ion-label><span>Lead Type</span></ion-label>
+    <ion-select name="lead_type" #lead_type="ngModel" [(ngModel)]="form.lead_type" (ngModelChange)="get_assign_dr(form.lead_type)">
+        <ion-option value="1">Channel Partner</ion-option>
+        <ion-option value="7">Direct Dealer</ion-option>
+        <!-- <ion-option value="3">Retailer</ion-option> -->
+        <ion-option value="5">End User</ion-option>
+        <ion-option value="9">Project</ion-option>
+        <ion-option value="6">Others</ion-option>
+        
+    </ion-select>
+</ion-item>
+
+<ion-item class="cs-select mt15 mb0"  *ngIf="form.lead_type == '3' || form.lead_type == '1' || form.lead_type == '5' || form.lead_type == '9' || form.lead_type == '10' || form.lead_type == '11' || form.lead_type == '6' || form.lead_type == '7'">
+  <ion-label *ngIf="form.lead_type == '1'"><span>Select Channel Partner</span></ion-label>
+  <ion-label *ngIf="form.lead_type == '7'"><span>Direct Dealer</span></ion-label>
+  <!-- <ion-label *ngIf="form.lead_type == '3'"><span>Select Retailer</span></ion-label> -->
+  <ion-label *ngIf="form.lead_type == '5'"><span>Select End User</span></ion-label>
+  <ion-label *ngIf="form.lead_type == '9'"><span>Select Project</span></ion-label>
+  <ion-label *ngIf="form.lead_type == '6'"><span>Select Others</span></ion-label>
+  
+  <ionic-selectable
+  item-content 
+  [(ngModel)]="form.dr_id"
+  [items]="type_list"
+  itemValueField="id"
+  name="company_name"
+  value="company_name"
+  itemTextField="company_name"
+  [canSearch]="true"
+  (onChange)="getTrimurtiBillingAddress()"
+  #selectComponent>
+</ionic-selectable>
+</ion-item>
+
+<ion-item class="cs-select mt15 mb0" >
+  <ion-label><span>Select Category</span></ion-label>
+  <ionic-selectable
+  item-content 
+  [(ngModel)]="form.category"
+  [items]="category_list"
+  itemValueField="category"
+  name="category"
+  value="category"
+  itemTextField="category"
+  [canSearch]="true"
+  (onChange)="get_item_list()"
+  #selectComponent>
+</ionic-selectable>
+</ion-item>
+
+<ion-item class="cs-select mt15 mb0" >
+  <ion-label><span>Select Product</span></ion-label>
+  <ionic-selectable
+  item-content 
+  [(ngModel)]="form.item"
+  [items]="item_list"
+  itemValueField="id"
+  name="product_name"
+  value="id"
+  itemTextField="product_name"
+  [canSearch]="true"
+  (onChange)="get_product_Size($event.value.id)"
+  #selectComponent>
+</ionic-selectable>
+</ion-item>
+
+<ion-item  >
+  <ion-label floating><span>Enter Qty<strong>*</strong></span></ion-label>
+  <ion-input type="number" name="qty" #qty="ngModel" [(ngModel)]="form.qty"  required ></ion-input>
+</ion-item>
+
+
+<!-- <a ion-button class="font12 wp100 h35 green-color mt16 mb16" (click)="addtolist2()">Add To List</a> -->
+
+<div class="mt16" >
+  <button ion-button class="cs-btn" [disabled]="!form.category || !form.item || !form.qty" (click)="addtolist2()" >Add To List</button>
+</div>
+
+<!-- <div class="product-item-table" *ngIf="form.item">
+<table class="scroll-150">
+  <tr>
+      <th>Product Name</th> 
+      <th class="text-center">Size</th>
+      <th class="w60 text-center">Qty</th>
+      <th class="w70 text-center">Price</th>
+      <th class="w70 text-center">Amount</th>
+  </tr>
+  
+  <tr *ngFor="let row of product_list; let i = index;">
+       <td>{{row.product_name}} / {{row.product_code}}</td> 
+      <td class="text-center">{{row.product_size}}</td>
+      <td class="w60 text-center"><input type="number" [(ngModel)]="row.qty" name="qty" #qty="ngModel" (keypress)="MobileNumber($event)" (ngModelChange)="row.amount=conInt(row.qty)*conInt(row.price); row.gst = (conInt(row.amount) * productGst / 100) ; row.total_amount=(row.amount)+(row.gst); row.gstPercentage=productGst ; triggerMethod('checkGST')"  placeholder="Qty"></td>
+      <td class="w70 text-center"><input type="number" [(ngModel)]="row.price" name="price{{i}}" #price="ngModel" (keypress)="MobileNumber($event)"  (ngModelChange)="row.amount=conInt(row.qty)*conInt(row.price); row.gst = (conInt(row.amount) * productGst / 100) ; row.total_amount=(row.amount)+(row.gst); row.gstPercentage=productGst; triggerMethod('checkGST')"  placeholder="Price"></td>
+      <td class="w70 text-center">₹ {{row.amount ? row.amount : '0'}}</td>
+  </tr>
+</table>
+</div> -->
+<div class="list-box mt10" *ngFor="let row of requirement_list;let i=index">
+  <div class="mid mt0">
+      <div class="content-info">
+          <div class="right-info">
+              <p>Product Name - {{row.product_name}}</p>
+          </div>
+      </div>
+      <div class="tag-info">
+          <button ><i class="material-icons red-clr" (click)="listdelete(i)">delete_sweep</i></button>
+      </div>
+  </div>
+  
+  <div class="three_boxes">
+      <div class="lower">
+          <p>Qty</p>
+          <p>{{row.qty}}</p>
+      </div>
+      
+     
+  </div>
+  
+</div>
+
+
+<a ion-button class="font12 wp100 h35 green-color mt16 mb16" *ngIf ="requirement_list.length > 0" (click)="add_requirement()">Save Requirement</a>
+
+   </ion-list>
+   </div>
+  </form>
+</ion-content>

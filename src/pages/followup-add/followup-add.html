@@ -1,0 +1,129 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Add Followup  </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div class="edit flat">
+        <ion-list>
+            <div>
+
+                <ion-item>
+                    <ion-label floating>Follow up Date <span class="red-text">*</span></ion-label>
+                    <ion-datetime display-format="MMM DD, YYYY" min={{today_date}} max={{max_date}} type="text"
+                        placeholder="Select Date" name="followup_date" #followup_date="ngModel"
+                        [(ngModel)]="followup_data.followup_date"
+                        (ngModelChange)="getFollowup(followup_data.followup_date)" class="calander" required>
+                    </ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Select Time <span class="red-text">*</span></ion-label>
+                    <ion-select placeholder="select time" name="followup_time" #followup_time="ngModel" [(ngModel)]="followup_data.followup_time"
+                        required>
+                        <ion-option value="8:00">08:00 AM</ion-option>
+                        <ion-option value="8:15">08:15 AM</ion-option>
+                        <ion-option value="8:30">08:30 AM</ion-option>
+                        <ion-option value="8:45">08:45 AM</ion-option>
+                        <ion-option value="9:00">09:00 AM</ion-option>
+                        <ion-option value="9:15">09:15 AM</ion-option>
+                        <ion-option value="9:30">09:30 AM</ion-option>
+                        <ion-option value="9:45">09:45 AM</ion-option>
+                        <ion-option value="10:00">10:00 AM</ion-option>
+                        <ion-option value="10:15">10:15 AM</ion-option>
+                        <ion-option value="10:30">10:30 AM</ion-option>
+                        <ion-option value="10:45">10:45 AM</ion-option>
+                        <ion-option value="11:00">11:00 AM</ion-option>
+                        <ion-option value="11:15">11:15 AM</ion-option>
+                        <ion-option value="11:30">11:30 AM</ion-option>
+                        <ion-option value="11:45">11:45 AM</ion-option>
+                        <ion-option value="12:00">12:00 PM</ion-option>
+                        <ion-option value="12:15">12:15 PM</ion-option>
+                        <ion-option value="12:30">12:30 PM</ion-option>
+                        <ion-option value="12:45">12:45 PM</ion-option>
+                        <ion-option value="13:00">1:00 PM</ion-option>
+                        <ion-option value="13:15">1:15 PM</ion-option>
+                        <ion-option value="13:30">1:30 PM</ion-option>
+                        <ion-option value="13:45">1:45 PM</ion-option>
+                        <ion-option value="14:00">2:00 PM</ion-option>
+                        <ion-option value="14:15">2:15 PM</ion-option>
+                        <ion-option value="14:30">2:30 PM</ion-option>
+                        <ion-option value="14:45">2:45 PM</ion-option>
+                        <ion-option value="15:00">3:00 PM</ion-option>
+                        <ion-option value="15:15">3:15 PM</ion-option>
+                        <ion-option value="15:30">3:30 PM</ion-option>
+                        <ion-option value="15:45">3:45 PM</ion-option>
+                        <ion-option value="16:00">4:00 PM</ion-option>
+                        <ion-option value="16:15">4:15 PM</ion-option>
+                        <ion-option value="16:30">4:30 PM</ion-option>
+                        <ion-option value="16:45">4:45 PM</ion-option>
+                        <ion-option value="17:00">5:00 PM</ion-option>
+                        <ion-option value="17:15">5:15 PM</ion-option>
+                        <ion-option value="17:30">5:30 PM</ion-option>
+                        <ion-option value="17:45">5:45 PM</ion-option>
+                        <ion-option value="18:00">6:00 PM</ion-option>
+                        <ion-option value="18:15">6:15 PM</ion-option>
+                        <ion-option value="18:30">6:30 PM</ion-option>
+                        <ion-option value="18:45">6:45 PM</ion-option>
+                        <ion-option value="19:00">7:00 PM</ion-option>
+                        <ion-option value="19:15">7:15 PM</ion-option>
+                        <ion-option value="19:30">7:30 PM</ion-option>
+                        <ion-option value="19:45">7:45 PM</ion-option>
+                        <ion-option value="20:00">8:00 PM</ion-option>
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-item *ngIf="showSelection == true">
+                    <ion-label floating>Select Type <span class="red-text">*</span></ion-label>
+                    <ion-select  name="dr_type" #dr_type="ngModel" [(ngModel)]="followup_data.dr_type"   (ngModelChange)="getUserType(followup_data.dr_type)" required>
+                        <ion-option *ngFor="let row of networkType" value="{{row.type}}">{{row.module_name}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="cs-select mt16 retailerSelectionBox"
+                    *ngIf="showSelection == true && followup_data.dr_type">
+                    <ion-label>{{followup_data.dr_type_name}} <span class="red-text">*</span></ion-label>
+
+                    <ionic-selectable item-content name="dr_id" #dr_id="ngModel" [(ngModel)]="followup_data.dr_id" [items]="drList"
+                        itemValueField="id" itemTextField="display_name" [canSearch]="true" [hasInfiniteScroll]="true"
+                        (onInfiniteScroll)="getMorePorts($event)" #selectComponent>
+                    </ionic-selectable>
+                </ion-item>
+
+
+                <div [ngClass]="{'active': followup_data.followup_date}"
+                    *ngIf="followup_data.followup_date && followupList.length > 0" class="scheduledFollowupListBox">
+                    <h6 style="margin-bottom: 10px !important; font-size: 12px; color: #999; text-align: center;">
+                        Follow Up List</h6>
+                    <ul class="followup_slotDetail">
+                        <li class="followupDetail_card" *ngFor=" let data of followupList">
+                            <div class="followupDetail_cardContent">
+                                <div class="followup_Time">
+                                    <p class="font10" style="font-weight: bold;">Time:
+                                        {{data.next_follwup_time.split(':')[0]}} :
+                                        {{data.next_follwup_time.split(':')[1]}}
+                                        {{data.next_follwup_time.split(':')[0]>11?'PM':'AM'}}</p>
+                                </div>
+                                <div class="followup_Name">
+                                    <div style="font-weight: bold; font-size: 10px;">{{data.company_name}}</div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+               
+
+
+                <ion-item class="cs-textarea1" *ngIf="followup_data.dr_id">
+                    <ion-label floating>Remark<span class="red-text">*</span></ion-label>
+                    <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="followup_data.remarks"></ion-textarea>
+                </ion-item>
+            </div>
+        </ion-list>
+
+        <button ion-button block color="primary" class="h35 mt20" style="letter-spacing: 1px;"
+            [disabled]="spinner == true || !followup_data.followup_date || !followup_data.remarks"
+            (click)="addFollowup()"><ion-spinner *ngIf="spinner == true"></ion-spinner>&nbsp;Save</button>
+    </div>
+</ion-content>

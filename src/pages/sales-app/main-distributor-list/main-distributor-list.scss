@@ -1,0 +1,86 @@
+page-main-distributor-list {
+    table
+    {
+        table-layout: fixed;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    .stable
+    {
+        .head-table
+        {
+            // background: #f8f8f8;
+            // padding-left: 16px;
+            margin-top: 4px;
+            border-bottom: solid 1px #ccc;
+            
+            table
+            {
+                tr
+                {
+                    th
+                    {
+                        padding: 4px;
+                        // text-align: left;
+                        font-weight: 500;
+                        font-size: 12px;
+                        border: solid 1px #ccc;
+                        border-bottom: 0px;
+                        
+                        // &:nth-child(1){border-left: 0px;}
+                        // &:nth-child(3){border-right: 0px;}
+                    }
+                    td
+                    {
+                        // padding: 10px;
+                        border: solid 1px #ccc;
+                    }
+                }
+            }
+        }
+        
+        .body-table
+        {
+            padding: 16px;
+            
+            table
+            {
+                box-shadow: 0px 3px 6px 0px #ccc;
+                
+                tr
+                {
+                    td
+                    {
+                        padding: 10px;
+                        border: solid 1px #ccc;
+                    }
+                }
+            }
+        }
+    }
+
+    // new changes
+    .distributorSearchbar{
+        .searchbar-input{
+            padding: 10px ;
+        }
+    }
+
+
+    .distributerDetailsIcons{
+        background: white;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 3px;
+    }
+
+    .slab{
+        justify-content: space-between;
+    }
+
+}

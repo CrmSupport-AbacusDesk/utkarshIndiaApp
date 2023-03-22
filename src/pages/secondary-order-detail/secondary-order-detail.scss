@@ -1,0 +1,121 @@
+page-secondary-order-detail {
+    .lower{
+        p:nth-child(2){
+            font-size: 9px !important;
+            font-weight: normal !important;
+        }
+    }
+    .DetailTable{
+        max-height: 150px;
+        // display: flex;
+        // flex-wrap: wrap;
+        flex-wrap: wrap;
+        overflow-x: hidden;
+        overflow-y: auto;
+        table{
+            tr{
+                // align-items: center;
+                border-bottom: 1px solid #a7a6a6;
+                // justify-content: center;
+                td{
+                    border-right: 1px solid #a7a6a6;
+                    font-size: 11px;
+                    padding: 4px;
+                }
+            }
+        }
+    }
+    .DetailTable2{
+        // max-height: 150px;
+        border: 1px solid #a7a6a6;
+        table{
+            tr{
+                // align-items: center;
+                border-bottom: 1px solid #a7a6a6;
+                justify-content: space-between;
+                td{
+                    // border-right: 1px solid #a7a6a6;
+                    font-size: 11px;
+                    padding: 6px;
+                }
+            }
+        }
+    }
+    .ItemInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        .Info {
+            display: flex;
+            flex-direction: row;
+            p{
+                font-size: 9px !important;
+               font-weight: 400;
+               color: rgb(69, 69, 69);
+               padding-right: 4px;
+               line-height: normal !important;
+                span{
+                    font-size: 12px;
+                    font-weight: bold;
+                    padding-right: 4px;
+                }
+            }
+        }
+    }
+     .Distributor_info{
+        border-top: 1px dashed #B2B2B2;
+        padding: 0px;
+        margin-left: -6px;
+        margin-right: -6px;
+        margin-top: 16px;
+
+        .Dist_name{
+            margin-top: 4px;
+            border-radius: 2px;
+            background:linear-gradient(180deg, #66838d, #0273e4);
+            width: 70%;
+            padding: 4px;
+            position: relative;
+            right:-48px;
+            top:-16px;
+               p{
+                color: #fffdfb;
+                text-align: center;
+                font-size: 12px;
+                font-weight: 500;
+               }
+        }
+        .header{
+            // background-color:#e2e2e2;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            // margin-top: -4px;
+            border-top-right-radius: 6px;
+            border-top-left-radius: 6px;
+            // padding: 6px;
+             .sub-head{
+                border: solid 1.5px #006eff;
+                padding: 4px 0;
+                width:100%;
+                margin:2px;
+                border-radius: 4px;
+                p{
+                    font-size: 10px;
+                }
+             }
+             .sub-head:last-child{
+                border: solid 1.5px #006eff;
+                padding: 4px;
+                width:100%;
+                margin:2px;
+                border-radius: 4px;
+                p{
+                    font-size: 10px;
+                }
+             }
+         }
+     }
+}

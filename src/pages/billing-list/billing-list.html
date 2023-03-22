@@ -1,0 +1,117 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{from | titlecase}} Billing List</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <div class="search add-search">
+      <div class="filter">
+        <ion-searchbar type='text' name="master" [(ngModel)]="filter.master"
+          (ngModelChange)="get_selected_billing_data_list()"></ion-searchbar>
+        <a class="date-pick">
+          <label class="chedate">
+            <input type="date" name="date" [(ngModel)]="filter.date"
+              (ngModelChange)="get_selected_billing_data_list()" />
+            <i class="material-icons">date_range</i>
+          </label>
+        </a>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<div class="text-line" *ngIf="filter.date">
+  <!-- <div class="text-line"> -->
+    <div class="lf-text">
+      <p>Date</p>
+      <p>{{filter.date | date:'d MMM y'}}</p>
+    </div>
+    <div class="rf-text">
+      <i class="material-icons" (click)="filter.date='';get_selected_billing_data_list()">cancel</i>
+    </div>
+  </div>
+
+
+  <ion-content>
+
+    <ion-refresher (ionRefresh)="get_selected_billing_data_list($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
+
+    <div class="pd-left-right16">
+      <div class="list-box mt16" *ngFor="let billing_data of billing_data_list">
+        <!-- <div class="list-box mt16"> -->
+
+        <div class="upper" (click)="go_to_bill_detail(billing_data.id)">
+          <!-- <div class="upper"> -->
+          <div class="left-date">
+            <div class="date-section">
+              <p>{{billing_data.bill_number}}</p>
+              <p>Bill Number</p>
+            </div>
+            <div class="date-section">
+              <p>{{billing_data.billing_date | date:'d MMM y '}}</p>
+              <p>Bill Date</p>
+            </div>
+          </div>
+        </div>
+<!-- 
+        <div class="mid" (click)="go_to_bill_detail(billing_data.id)">
+          <div class="content-info w250">
+            <div class="left-info">
+              <div class="circle">{{billing_data.customer_name.substring(0,1).toUpperCase()}}</div>
+            </div>
+
+            <div class="right-info">
+              <p>{{billing_data.customer_name | titlecase}}</p>
+            </div>
+          </div>
+
+        </div> -->
+
+        <div class="three_boxes" (click)="go_to_bill_detail(billing_data.id)">
+          <!-- <div class="three_boxes"> -->
+          <div class="lower">
+            <p>Total Item</p>
+            <p>{{billing_data.total_billing_item}}</p>
+          </div>
+          <div class="lower">
+            <p>Total Item Qty.</p>
+            <p>{{billing_data.total_billing_item_qty}}</p>
+          </div>
+          <div class="lower">
+            <p>Total Amount</p>
+            <p>&#8377; {{billing_data.total_billing_amount}}</p>
+          </div>
+        </div>
+
+        <div class="three_boxes" (click)="go_to_bill_detail(billing_data.id)">
+          <!-- <div class="three_boxes"> -->
+          <div class="lower">
+            <p>Receive Amount</p>
+            <p>&#8377; {{billing_data.billing_receive_amount}}</p>
+          </div>
+          <div class="lower">
+            <p>Pending Amount</p>
+            <p>&#8377; {{billing_data.pending_balance}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+<!-- </div> -->
+
+
+<div class="nothing-here" style="height: 50%;" *ngIf="!billing_data_list.length">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+
+</ion-content>

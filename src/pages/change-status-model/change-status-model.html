@@ -1,0 +1,42 @@
+<ion-content class="transprant-bg">
+  
+  <div class="work-modal">
+    <div class="work-modal-bg">
+      
+      <div class="head">
+        <h2>Change Status</h2>
+        <a class="close" (click)="close()"><i class="material-icons">close</i></a>
+      </div>
+      
+      
+      
+      <div class="scroll_in_modal">
+        <div class="edit ml0 mr0">
+          <ion-list>
+            <ion-item class="cs-normal-select mt16">
+              <ion-label>Travel Status</ion-label>
+              <ion-select placeholder="status" name="status" [(ngModel)]="data.status">
+                <ion-option value="Pending" >Pending</ion-option>
+                <ion-option value="Approve">Approve</ion-option>
+                <ion-option value="Reject">Reject</ion-option>
+              </ion-select>
+            </ion-item>
+            
+            <ion-item class="cs-textarea1" *ngIf="data.status == 'Reject'">
+              <ion-label floating><span>Reject reason</span></ion-label>
+              <ion-textarea name="reason" placeholder="Enter reason" [(ngModel)]="data.reason"></ion-textarea>
+            </ion-item>
+          </ion-list>
+
+
+        </div>
+
+        <div class="enquiry-btn add-btns mt20">
+          <button (click)="updateStatus()" ion-button block class="h40 green-color" style="letter-spacing: 1px;">
+            <p> Submit</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

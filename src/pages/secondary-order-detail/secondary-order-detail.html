@@ -1,0 +1,164 @@
+<ion-header class="catalogue-header">
+    <ion-navbar>
+        <ion-title>Secondary Order Detail</ion-title>
+        <!-- <ion-title *ngIf="userDetail.order_status!='Draft'">{{userDetail.order_no}}</ion-title> -->
+        <!-- <ion-buttons end class="login-btn">
+            <button ion-button>
+                <img class="w30" src="assets/icons/profil-ic-2.svg" alt="">
+            </button>
+        </ion-buttons>
+        <ion-buttons end class="login-btn" (click)="presentPopover($event)">
+            <button ion-button>
+                <img class="w4 h16" src="assets/icons/more-option-ic.svg" alt="">
+            </button>
+        </ion-buttons> -->
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <div class="fix-container">
+        <div class="attendance-list flat-list">
+            <div class="center-block">
+                <div class="circle">{{userDetail.company_name?.substring(0,1).toUpperCase()}}</div>
+                <h1>{{userDetail.company_name}}</h1>
+                <p>{{userDetail.name}} - {{userDetail.mobile}}</p>
+                <a class="cell-phone" href="tel:{{userDetail?.mobile}}"><i class="material-icons">phone</i></a>
+            </div>
+            
+            <div class="center-block pl0 pr0">
+                <p>Channel Partner Detail</p>
+                <h1>{{userDetail.dist_company_name}}</h1>
+            </div>
+        </div>
+        <div class="ion-tab-btn">
+            <ion-segment [(ngModel)]="summary" >
+                <ion-segment-button  value="active">
+                    Order Summary
+                </ion-segment-button>
+                <ion-segment-button  value="inactive">
+                    Item Summary
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+    </div>
+    
+    <div [ngSwitch]="summary" class="pl16 pr16 mb50">
+        <ng-container *ngSwitchCase="'active'">
+            <div class="border-container mt16">
+                <div class="summary-heading">Order Details</div>
+                <div class="payment-box">
+                    <div class="credit-table">
+                        <table>
+                            <tr>
+                                <td>Status</td>
+                                <td class="w130">
+                                    <span class="badge-padding text-center  {{userDetail.order_status}}">{{userDetail.order_status}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total Item</td>
+                                <th>{{userDetail?.order_item}}</th>
+                                
+                            </tr>
+                            <tr>
+                                <td>Total Item Qty.</td>
+                                <th>{{userDetail.total_order_qty}}</th>
+                            </tr>
+                            <tr>
+                                <td>Amount</td>
+                                <th>₹ {{userDetail.order_total | number:'1.2-2'}}</th>
+                            </tr>
+                            <tr>
+                                <td>Discount Amount</td>
+                                <th>₹ {{userDetail.order_discount | number:'1.2-2' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Sub Total Amount</td>
+                                <th>₹ {{userDetail.sub_total | number:'1.2-2' }}</th>
+                            </tr>
+                            
+                            <tr>
+                                <td>Gst Amount ({{userDetail.gst_type}})</td>
+                                <th>₹ {{userDetail.order_gst | number:'1.2-2' }}</th>
+                            </tr>
+                            <tr>
+                                <td>Net Amount</td>
+                                <th>₹ {{userDetail.order_grand_total | number:'1.2-2'}}</th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <ng-container *ngIf="userDetail.reason_reject && userDetail.reason_reject != '' || userDetail.order_create_remark && userDetail.order_create_remark != '' || userDetail.pre_close_remark && userDetail.pre_close_remark != ''">
+                <div class="notes">
+                    <p *ngIf="userDetail.reason_reject && userDetail.reason_reject != ''"><span>Reason of Referred Back</span> {{userDetail.reason_reject}}</p>
+                    <p *ngIf="userDetail.order_create_remark && userDetail.order_create_remark != ''"><span>Order Remark</span> {{userDetail.order_create_remark}}</p>
+                    <p *ngIf="userDetail.pre_close_remark && userDetail.pre_close_remark != ''"><span>Pre Close Remark</span> {{userDetail.pre_close_remark}}</p>
+                </div>
+            </ng-container>
+            
+            
+            <div class="flex-btn mt16">
+                <!-- <ng-container *ngIf="constant.UserLoggedInData.all_data?.type==1">
+                    <button  color="success" round  block ion-button icon-start  (click)="changeStatus()" *ngIf="userDetail.order_status == 'Draft' || userDetail.order_status == 'Pending'">
+                        <ion-icon name="create"></ion-icon>
+                        Change Status
+                    </button>
+                </ng-container> -->
+                <button class="" color="success" round outline  block ion-button icon-start  (click)="ADD_Item(order_id)" *ngIf="userDetail.order_status == 'Draft' || userDetail.order_status == 'Pending'">
+                    <ion-icon name="create"></ion-icon>
+                    Edit Order Details
+                </button>
+            </div>
+        </ng-container>
+        
+        <ng-container *ngSwitchCase="'inactive'">
+            <div class="summary-heading">Item Details</div>
+            
+            
+            <div class="attendance-list"  *ngFor="let order of orderitem;let i = index;">
+                <div class="center-block flat-block"  [ngClass]="{'pr0': userDetail.order_status!='Pending' && userDetail.order_status!='Draft'}">
+                    <h1>{{order.segment_name}} {{order.product_name}} ({{order.product_code}} - {{order.brand}} - {{order.color}})</h1>
+                    <!-- <ng-container *ngIf="(userDetail.order_status == 'Pending' || userDetail.order_status == 'Draft')&&orderitem.length > 1" >
+                        <a class="cell-phone" (click)="delete_item(i,order.id,order.order_id)"><i class="material-icons">delete</i></a>
+                    </ng-container> -->
+                </div>
+                <div class="slab slab-three boder-top1 pt10 mt10">
+                    <div class="slab-day">
+                        <p>{{order.qty}}</p>
+                        <span>Qty</span>
+                    </div>
+                    
+                    <div class="slab-day">
+                        <p>₹ {{order.price}}</p>
+                        <span>Price</span>
+                    </div>
+                    <div class="slab-day">
+                        <p>₹ {{order.discount_amount}}</p>
+                        <span>Discount</span>
+                    </div>
+                </div>
+                <div class="slab slab-three boder-top1 pt10 mt10">
+                    <div class="slab-day">
+                        <p>₹ {{order.amount}}</p>
+                        <span>Sub Total</span>
+                    </div>
+                    
+                    <div class="slab-day">
+                        <p>₹ {{order.gst_amount}}</p>
+                        <span>Gst Amount</span>
+                    </div>
+                    <div class="slab-day">
+                        <p>₹ {{order.total_amount}}</p>
+                        <span>Net Amount</span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    
+    
+</ion-content>

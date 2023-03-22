@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Videos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="{{'Pull to refresh'}}" refreshingSpinner="circles" refreshingText="{{'Refreshing...'}}">
+    </ion-refresher-content>
+  </ion-refresher>
+  
+  <div  class="video" *ngFor="let list of video_list;let i=index">
+    <iframe [src]="list.video" width="100%" height="180" rameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="vid-text">
+      <P>{{list.desc}}</P>
+    </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)"  *ngIf="flag!=1">
+    <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="{{'Loading more data...'}}">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
+<div class="nothing-here" style="height: 50%;" *ngIf="!video_list.length">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+</ion-content>

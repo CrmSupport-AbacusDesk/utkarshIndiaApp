@@ -1,0 +1,78 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Profile</ion-title>
+		
+		<ion-buttons end (click)="logout()">
+			<button ion-button icon-only>
+				<i class="material-icons">power_settings_new</i>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<div class="profile-container">
+		<div class="user-profile" *ngIf="karigar_detail.user_type != 'sales_user'">
+			<h2>{{karigar_detail.company_name | titlecase}}</h2>
+			<h6>{{karigar_detail.mobile}}</h6>
+			<p>
+				{{karigar_detail.status == '1' ? 'Active' : 'Inactive'}}
+				<i class="material-icons Verified" *ngIf="karigar_detail.status == '1'">verified_user</i>
+				<i class="material-icons Reject " *ngIf="karigar_detail.status !='1'">cancel</i>
+			</p>
+		</div>
+		<div class="padding16">
+			<div class="profile-card">
+				<div class="text-box">
+					<p>Name</p>
+					<h6>{{karigar_detail.name | titlecase}}</h6>
+				</div>
+				<div class="text-box">
+					<p>Mobile Number</p>
+					<h6>{{karigar_detail.mobile}}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>Alternative Number</p>
+					<h6>{{karigar_detail.altNumber ? karigar_detail.altNumber:'---' }}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>Account Code</p>
+					<h6>{{karigar_detail.dr_code ? karigar_detail.dr_code:'---'}}</h6>
+				</div>
+				<div class="text-box">
+					<p>Email Id</p>
+					<h6>{{karigar_detail.email ? karigar_detail.email :'---'}}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>Date Of Birth</p>
+					<h6>{{karigar_detail.dob == '0000-00-00' || karigar_detail.dob == null ? '---' : karigar_detail.dob}}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>Date Of Anniversary</p>
+					<h6>{{karigar_detail.doa == '0000-00-00' || karigar_detail.doa == null ? '---' : karigar_detail.doa}}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>GST Number</p>
+					<h6>{{karigar_detail.gst ? karigar_detail.gst : ''}}</h6>
+				</div>
+				<div class="text-box" *ngIf="karigar_detail.user_type != 'sales_user'">
+					<p>Address</p>
+					<h6>{{karigar_detail.address}}, {{karigar_detail.city}}, {{karigar_detail.district}}, {{karigar_detail.state}}, {{karigar_detail.pincode}}</h6>
+				</div>
+			</div>
+			<div class="profile-card">
+				<div class="text-center">
+					<h2>{{karigar_detail.user_type != 'sales_user' ? 'Sales User' : 'Reporting Manager'}}</h2>
+				</div>
+				<div class="text-box">
+					<p>Name</p>
+					<h6>{{karigar_detail.assigned_sales_user ? karigar_detail.assigned_sales_user:'----'}}</h6>
+				</div>
+			</div>
+			
+			<div class="app-version" *ngIf="karigar_detail.app_version">
+				APP VERSION {{karigar_detail.app_version}}
+			</div>
+		</div>
+	</div>
+</ion-content>

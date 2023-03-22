@@ -1,0 +1,189 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Add Follow-Up</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div class="edit flat">
+        <ion-list>
+            <div>
+
+                <ion-item>
+                    <ion-label floating><span>Follow up Date <strong>*</strong></span></ion-label>
+                    <ion-datetime display-format="MMM DD, YYYY" min={{today_date}}
+                        max={{max_date}} type="text" name="followup_date" #followup_date="ngModel"
+                        [(ngModel)]="followup_data.followup_date"
+                        (ngModelChange)="getFollowup(followup_data.followup_date)" class="calander" required>
+                    </ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating><span>Time <strong>*</strong></span></ion-label>
+                    <ion-datetime displayFormat="hh:mm A" minuteValues="0,30" placeholder="Select Time"
+                        name="followup_time" #followup_time="ngModel" [(ngModel)]="followup_data.followup_time"
+                        required></ion-datetime>
+                </ion-item>
+
+                <ion-item class="cs-normal-select mt16" *ngIf="followup_data.dr_type!=4">
+                    <ion-label>Select Type <strong>*</strong></ion-label>
+                 
+                    <ion-select name="select_type" name="dr_type" #dr_type="ngModel" [(ngModel)]="followup_data.dr_type"
+                        (ngModelChange)="getDrList(followup_data.dr_type)" [disabled]="(disableSelect == true )">
+                        <ion-option *ngFor="let row of networkType" value="{{row.type}}">{{row.module_name}}
+                        </ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="cs-select mt16" *ngIf="drList.length > 0 || followup_data.dr_type!=4">
+                    <ion-label *ngIf="followup_data.dr_type == '1'">Channel Partner</ion-label>
+                    <ion-label *ngIf="followup_data.dr_type == '7'">Direct Dealer</ion-label>
+                    <ion-label *ngIf="followup_data.dr_type == '3'">Dealer</ion-label>
+                    <ion-label *ngIf="followup_data.dr_type == '4'">Enquiry</ion-label>
+                    
+                    <ionic-selectable
+                    item-content 
+                    [(ngModel)]="followup_data.dr_id"
+                    [items]="drList"
+                    itemValueField="id"
+                    itemTextField="company_name" 
+                    [canSearch]="true"
+                    [disabled]="followup_data.dr_type==4"
+                    #selectComponent >
+                </ionic-selectable>
+            </ion-item>	
+                <div [ngClass]="{'active': followup_data.followup_date}" *ngIf="followup_data.followup_date && followupList.length > 0" class="scheduledFollowupListBox">
+                    <h6 style="margin-bottom: 10px !important; font-size: 12px; color: #999; text-align: center;">Scheduled Follow Up List</h6>
+                    <ul class="followup_slotDetail">
+                        <li class="followupDetail_card" *ngFor=" let data of followupList">
+                            <div class="followupDetail_cardContent">
+                                <div class="followup_Time">
+                                    <p class="font10" style="font-weight: bold;">Time: {{data.next_follwup_time.split(':')[0]}} : {{data.next_follwup_time.split(':')[1]}} {{data.next_follwup_time.split(':')[0]>11?'PM':'AM'}}</p> 
+                                </div>
+                                <div class="followup_Name">
+                                    <div style="font-weight: bold; font-size: 10px;">{{data.company_name}}</div>
+                                    <!-- <div style="color: 999; font-size: 8px;">(Distributor)</div> -->
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                 <div class="followupListBox" *ngIf="followup_data.followup_date">
+                    <h6 class="followupListBox_header">Follow Up List</h6>
+                    <div class="followup_slotList">
+                        <ul class="innerBox">
+                            <li class="slotBox">
+                                <div class="timeStamp">09:00</div>
+                                <span>
+                                    <span>{{getValue.nineam||'0'}}</span>
+                                </span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">09:30AM</div>
+                                <span>{{getValue.ninethirtyam||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">10:00AM</div>
+                                <span>{{getValue.tenam||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">10:30AM</div>
+                                <span>{{getValue.tenthirtyam||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">11:00AM</div>
+                                <span>{{getValue.elevenam||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">11:30AM</div>
+                                <span>{{getValue.eleventhirtyam||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">12:00PM</div>
+                                <span>{{getValue.twelvepm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">12:30PM</div>
+                                <span>{{getValue.twelvethirtypm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">01:00PM</div>
+                                <span>{{getValue.onepm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">01:30PM</div>
+                                <span>{{getValue.onethirtypm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">02:00PM</div>
+                                <span>{{getValue.twopm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">02:30AM</div>
+                                <span>{{getValue.twothirtypm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">03:00AM</div>
+                                <span>{{getValue.threepm||'0'}}</span>
+
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">03:30AM</div>
+                                <span>{{getValue.threethirtypm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">04:00AM</div>
+                                <span>{{getValue.fourpm||'0'}}</span>
+                            </li>
+                            <li class="slotBox">
+                                <div class="timeStamp">04:30AM</div>
+                                <span>{{getValue.fourthirtypm||'0'}}</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div> 
+
+
+
+
+                <ion-item class="cs-textarea1 " *ngIf="followup_data.dr_id">
+                    <ion-label floating><span>Remark</span></ion-label>
+                    <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="followup_data.remarks"
+                        placeholder="Enter Description"></ion-textarea>
+                </ion-item>
+            </div>
+        </ion-list>
+
+        <button ion-button block class="h35 green-color mt20" style="letter-spacing: 1px;"
+            [disabled]=" !followup_data.followup_date || !followup_data.dr_id || !followup_data.dr_type || !followup_data.remarks"
+            (click)="addFollowup()">Save</button>
+    </div>
+
+    <!-- <div class="pd-left-right16" *ngIf="followupList.length">
+        <div class="list-box mt16" *ngFor="let data of followupList">
+
+            <div class="mid mt0">
+                <div class="content-info">
+                    <div class="left-info">
+                        <div class="circle">{{data.company_name.substring(0,1).toUpperCase()}}</div>
+                    </div>
+
+                    <div class="right-info">
+                        <p>{{data.company_name.toUpperCase()}}</p>
+                        <p>{{data.dr_name | titlecase}} ({{data.mobile}})</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <button (click)="deleteFollowUp(data.id)"><i
+                            class="material-icons red-clr">delete_sweep</i></button>
+                </div>
+            </div>
+
+            <div class="lower" *ngIf=" data.description">
+                <p>Description</p>
+                <p>{{data.description}} </p>
+            </div>
+        </div>
+    </div> -->
+
+</ion-content>

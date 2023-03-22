@@ -1,0 +1,33 @@
+<ion-header no-border>
+	<ion-navbar>
+		<ion-title>Announcement</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	
+	<ion-refresher (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content pullingIcon="arrow-dropdown" pullingText="{{'Pull to refresh'}}" refreshingSpinner="circles" refreshingText="{{'Refreshing...'}}">
+		</ion-refresher-content>
+	</ion-refresher>
+	<ng-container  *ngFor="let data of announcementList">
+		<div class="notification-list" [ngClass]="{'new': data.read_status == 0}"  (click)="deatilPage(data.notice_id,data.id)">
+			<p><span class="sm-heading">Message:</span> {{data.msg}}</p>
+			<span class="cs-date">{{data.date_created | date:'d MMM, y'}}</span>
+		</div>
+	</ng-container>
+	<div class="nothing-here" *ngIf="!announcementList.length && sendRequest == true ">
+		
+		<div class="outer">
+			<div class="innear">
+				<img src="assets/imgs/no_found.svg" alt="">
+				<p>Data Not Available</p>
+			</div>
+		</div>
+	</div>
+	
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Bill Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <div class="pd-left-right16 af_bg">
+    <!-- <div class="list-box"  >
+      <div class="mid mt0">
+        <div class="content-info" >
+          <div class="left-info" >
+            <div class="circle">{{bill_detail.customer_name && bill_detail.customer_name != ''?(bill_detail.customer_name.substring(0,1).toUpperCase()):''}}</div>
+          </div>
+          <div class="right-info" >
+            <p > {{bill_detail.customer_name | titlecase }}</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="lower">
+        <p>Customer Code</p>
+        <p>{{bill_detail.customer_code}}</p>
+        
+      </div>
+    </div>   -->
+  
+    <div class="list-box mb30">
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Bill Date</p>
+          <p>{{bill_detail.billing_date | date : 'd MMM y'}}</p>   
+        </div>
+        <div class="lower">
+          <p>Bill Number</p>
+          <p>{{bill_detail.bill_number}}</p>
+        </div>
+      </div>
+      <div class="three_boxes">
+        <div class="lower">
+          <p>Total Bill Amount</p>
+          <p>&#8377; {{bill_detail.total_billing_amount}}</p>
+        </div>
+        <div class="lower">
+          <p>Receive Amount</p>
+          <p>&#8377; {{bill_detail.billing_receive_amount}}</p>
+        </div>
+        <div class="lower">
+          <p>Pending Amount</p>
+          <p>&#8377; {{bill_detail.pending_balance}}</p>
+        </div>
+      </div>      
+    </div>
+  
+  </div>
+  
+  <div class="pl16 pr16">
+  </div>
+  
+  
+  <div class="pd-left-right16 mt16">
+    <div class="clcsd_new ds-collapse"  *ngFor="let order_data of bill_item_detail;let i = index;">
+      <ul class="collapsible_new" >
+        <li (click)="(order_data.edit_true == false || globalCollapsible == true) ? '' : (openCollapse == order_data.id)?(openCollapse = 0):(openCollapse = order_data.id) " [ngClass]="{'active': openCollapse == order_data.id}">
+          <div class="collapsible-header_new">
+            <p>{{order_data.material_description}}</p>
+          </div>
+          
+          <div class="collapsible-body_new">
+            <div class="common_form">
+              <div class="box complete" >
+                <div class="data-table padding10">
+                  <table>
+                    
+                    <tr>
+                      <th>Invoice Number</th>
+                      <td>{{order_data.invoice_no}}</td>
+                    </tr>
+                    
+                    <tr>
+                      <th>Quantity</th>
+                      <td>{{order_data.sale_qty}} {{order_data.uom?order_data.uom:''}}</td>
+                    </tr>
+                    
+                    <tr>
+                      <th>Product Code	</th>
+                      <td>{{order_data.material_code}}</td>
+                    </tr>
+                    <tr>
+                      <th>Total Amount</th>
+                      <td>{{order_data.total_amt}}</td>
+                    </tr>
+                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  
+</ion-content>

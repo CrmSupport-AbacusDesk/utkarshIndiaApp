@@ -1,0 +1,220 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Detail</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div class="attendance-list flat-list">
+        <div class="slab slab-bg">
+            <div class="slab-day">
+                <p>{{distributor_detail.last_checkin != "N/A" ? (distributor_detail.last_checkin | date:'d MMM yyy') : 'N/A'  }}</p>
+                <span>Last visit {{distributor_detail.last_checkin_day != "N/A" ? (distributor_detail.last_checkin_day == 0 ? 'Today' : distributor_detail.last_checkin_day + ' '+' day') : '---'}}</span>
+            </div>
+            <div class="slab-day">
+                <p>{{distributor_detail.last_order != "N/A" ? (distributor_detail.last_order | date:'d MMM yyy'): "N/A"}}</p>
+                <span>Last order {{distributor_detail.last_order_day != "N/A" ? (distributor_detail.last_order_day == 0 ? 'Today' : distributor_detail.last_order_day + ' '+' day') : '---'}}</span>
+            </div>
+            <div class="slab-day">
+                <p>{{distributor_detail.last_payment_date != "N/A" ? (distributor_detail.last_payment_date | date:'d MMM yyy') : 'N/A'}}</p>
+                <span>Last payment {{distributor_detail.last_payment_day != "N/A" ? (distributor_detail.last_payment_day == 0 ? 'Today' :distributor_detail.last_payment_day +'day'):'---'}}</span>
+            </div>
+        </div>
+        <div class="center-block">
+            <div class="circle">{{distributor_detail.company_name | slice:0:1}}</div>
+            <h1 class="f12">{{distributor_detail.company_name?.toUpperCase()}}</h1>
+            <p>{{distributor_detail.name | titlecase}} ({{distributor_detail.mobile}})</p>
+            <a class="cell-phone" href="tel:{{distributor_detail.mobile}}"><i class="material-icons">phone</i></a>
+        </div>
+        <div class="other-block">
+            <p *ngIf=" distributor_detail.address  || distributor_detail.state  || distributor_detail.district  || distributor_detail.city  || distributor_detail.area  || distributor_detail.pincode"><strong>Address :</strong> {{distributor_detail.address}} {{distributor_detail.area_details | titlecase}} {{distributor_detail.district | titlecase}} {{distributor_detail.state | titlecase}}</p>
+        </div>
+        <div class="slab">
+            <div class="slab-day">
+                <p>{{distributor_detail.gst ? distributor_detail.gst : 'N/A'}}</p>
+                <span>GST No.</span>
+            </div>
+            <div class="slab-day">
+                <p>{{distributor_detail.altNumber ?'+91'+''+distributor_detail.altNumber : 'N/A'}}</p>
+                <span>Alternative No.</span>
+            </div>
+            <div class="slab-day">
+                <p class="bold">{{distributor_detail.dob != "0000-00-00" ? (distributor_detail.dob | date:'d MMM '):'N/A'}}</p>
+                <span>D.O.B</span>
+            </div>
+            <div class="slab-day">
+                <p class="bold">{{distributor_detail.doa != "0000-00-00" ? (distributor_detail.doa | date:'d MMM '):'N/A'}}</p>
+                <span>D.O.A</span>
+            </div>
+        </div>
+        
+        <div class="other-block pb0">
+            <p *ngIf="(distributor_detail.lat && distributor_detail.lng)"><strong>GPS Location :</strong> lat - {{distributor_detail.lat}}, lan - {{distributor_detail.lng}}</p>
+        </div>
+    </div>
+    
+    <div class="pl16 pr16 mb16">
+        <button ion-button block icon-start round color="success" *ngIf="(distributor_detail.lat && distributor_detail.lng)"
+        (click)="update_location(distributor_detail.lat,distributor_detail.lng,distributor_detail.id)">
+        <ion-icon name="locate"></ion-icon>
+        Update GPS Location
+    </button>
+    
+    <!-- <ng-container  *ngIf="!distributor_detail.lat" >
+        <button ion-button block icon-start round color="success" (click)="update_location(distributor_detail.lat,distributor_detail.lng,distributor_detail.id)">
+            <ion-icon name="locate"></ion-icon>
+            Point GPS Location
+        </button>
+    </ng-container> -->
+    
+    
+    <div class="border-container mt16" *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'">
+        <div class="summary-heading">Payment Details</div>
+        <div class="payment-box">
+            <div class="payment-table">
+                <table>
+                    <tr>
+                        <td>Credit Limit</td>
+                        <th>{{distributor_detail.credit_limit  ? '₹' + distributor_detail.credit_limit : 'N/A'}}</th>
+                    </tr>
+                    <tr>
+                        <td>Credit Days</td>
+                        <th>{{distributor_detail.credit_period  ?  distributor_detail.credit_period : 'N/A'}}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <ng-container *ngIf="distributor_detail.last_payment_day != 'N/A'" >Last Payment on 
+                                <span>{{distributor_detail.last_payment_day  == 0 ? 'Today' : 
+                                    ( distributor_detail.last_payment_day ? distributor_detail.last_payment_day + 'day': 0)}}
+                                </span> Ago 
+                                <span>{{distributor_detail.last_payment ? '₹'+ distributor_detail.last_payment:'0'}}</span>
+                            </ng-container>
+                            <ng-container *ngIf="distributor_detail.last_payment_day == 'N/A'" >Last Payment on ---</ng-container>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="OutOver">
+                <div class="primary-column outstanding">
+                    <p>{{distributor_detail.Outstanding_balance ? '₹' + ''+distributor_detail.Outstanding_balance : '0'}}</p>
+                    <span>Outstanding</span>
+                </div>
+                <div class="primary-column overdue">
+                    <p>{{distributor_detail.overdue ? '₹' + '' + distributor_detail.overdue : '0'}}</p>
+                    <span>Overdue</span>
+                </div>
+            </div>
+            
+            <div class="credit-table">
+                <table>
+                    <tr *ngFor="let item of inoviceInfo" >
+                        <td class="w80">{{item.days}} Days</td>
+                        <th class="w100 f12">{{item.value ? '₹' +''+item.value : '0'}}</th>
+                        <td class="w120 text-center"  >
+                            <span class="badge-padding" [ngClass]="item.payment_slab == 'OUTSTANDING' ?  'outstanding' : 'overDue'">{{item.payment_slab}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="border-container mt16"  *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'">
+        <div class="summary-heading">Target {{currentDate}}</div>
+        <div class="payment-box">
+            <div class="credit-table">
+                <table>
+                    <tr>
+                        <td class="text-left">Target</td>
+                        <td class="text-left">Achievement </td>
+                        <td class="text-left">Balance</td>
+                    </tr>
+                    <tr>
+                        <th>₹{{distributor_detail.target}}/-</th>
+                        <th>₹{{distributor_detail.archived | number:'1.0-0' }}/-</th>
+                        <th [ngClass]="distributor_detail.archived >= distributor_detail.target ?  'approved' : ''">
+                            <ng-container *ngIf="distributor_detail.target > distributor_detail.archived">
+                                ₹{{distributor_detail.target-distributor_detail.archived | number:'1.0-0'}}/-
+                            </ng-container>
+                            <ng-container *ngIf="distributor_detail.archived >= distributor_detail.target">
+                                ₹{{distributor_detail.archived-distributor_detail.target | number:'1.0-0'}}/-
+                            </ng-container>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- <div class="credit-box">
+        <div class="credit-column single-column mt16">
+            <div class="box">
+                <div class="Credit">
+                    <div class="credit-column" >
+                        <p>Credit Limit : {{distributor_detail.credit_limit  ? '₹' + distributor_detail.credit_limit : 'N/A'}}</p>
+                    </div>
+                    <div class="credit-column">
+                        <p>Credit Days : {{distributor_detail.credit_period  ?  distributor_detail.credit_period : 'N/A'}}</p>
+                    </div>
+                </div>
+                <div class="payment">
+                    <img src="assets/wallet.png" alt="">
+                    <p *ngIf="distributor_detail.last_payment_day != 'N/A'" >Last Payment on <span>
+                    </span> 
+                    <span>{{distributor_detail.last_payment ? '₹'+ distributor_detail.last_payment:'0'}}</span></p>
+                    <p *ngIf="distributor_detail.last_payment_day == 'N/A'" >Last Payment on ---</p>
+                </div>
+                
+                <div style="width: 100%;">
+                    <ul class="followup_slotDetail">
+                        <li class="followupDetail_card" *ngFor="let item of inoviceInfo" >
+                            <div class="followupDetail_cardContent">
+                                <div class="followup_Time">
+                                    <p>{{item.days}} Days</p>
+                                </div>
+                                <div class="followup_Name">
+                                    <p class="outstanding">{{item.value ? '₹' +''+item.value : '0'}}</p>
+                                </div>
+                                <div [ngClass]="item.payment_slab == 'OUTSTANDING' ?  'Outstandingbadge' : 'Overduebadge'">
+                                    
+                                    <ion-badge >{{item.payment_slab}}</ion-badge>
+                                </div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="credit-column single-column pt0">
+        <div class="box">
+            <table>
+                <tr style="background-color:#00648b;">
+                    <td class="text-center">Target {{currentDate}}</td>
+                </tr>
+                <tr>
+                    <td>Target</td>
+                    <td>Achievement </td>
+                    <td>Balance</td>
+                </tr>
+                <tr>
+                    <td>₹{{distributor_detail.target}}/-</td>
+                    <td>₹{{distributor_detail.archived}}/-</td>
+                    <td *ngIf="distributor_detail.target > distributor_detail.archived">₹{{distributor_detail.target-distributor_detail.archived}}/-</td>
+                    <td *ngIf="distributor_detail.archived >= distributor_detail.target" style="color:green;font-weight:bold"> ₹{{distributor_detail.archived-distributor_detail.target}}/-<i class="material-icons" color="green">add</i></td>
+                </tr>
+            </table>
+        </div>
+    </div> -->
+</div>
+
+
+</ion-content>

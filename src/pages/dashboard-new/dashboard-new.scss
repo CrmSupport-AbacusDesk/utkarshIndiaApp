@@ -1,0 +1,285 @@
+.scroll-content{
+    background-color: #f8f8f8;
+}
+
+ion-card{
+    border-radius: 6px !important;
+}
+
+.highlights-card{
+    margin: 0px 0 10px 0;
+    width: 100%;
+    border-radius: 0 !important;
+}
+
+
+// chart customizations start
+#daysWiseSalesReport{
+    width: calc(100% + 22px);
+    margin-top: -25px;
+    .zc-top{
+        top: 25px !important;
+        left: -22px !important;
+    }
+}
+
+#yearWiseSalesReport{
+    width: calc(100% + 60px);
+    margin-top: -35px;
+    .zc-top{
+        top: 35px !important;
+        left: -20px !important;
+    }
+}
+
+#duBalanceAgeChart{
+    width: calc(100% + 70px);
+    margin-top: -45px;
+    .zc-top{
+        top: 20px !important;
+        left: -22px !important;
+    }
+}
+
+#salesReportMeter{
+    height: 120px;
+    .zc-top{
+        top: -25px;
+    }
+}
+
+.salesReportMeterCard{
+    table{
+        width: 100%;
+        tr{
+            td{
+                font-size: 12px;
+                padding: 2px 5px;
+                border: 1px solid #ccc;
+                font-weight: 300;
+                span{
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+
+#overdueByRegionPieChart{
+    padding-top: 30px;
+}
+
+// chart customizations end
+
+.indicators{
+    position: absolute;
+    top: 100%;
+    z-index: 3;
+    width: 100%;
+    ul{
+        display: flex;
+        width: 90%;
+        grid-column-gap: 20px;
+        margin: auto;
+        justify-content: center;
+        flex-wrap: wrap;
+        li{
+            flex: wrap;
+            font-weight: bold;
+            color: #777;
+            font-size: 12px;
+            position: relative;
+            margin-bottom: 3px;
+            &::before{
+                content: '';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: -10px;
+                height: 8px;
+                width: 8px;
+            }
+        }
+    }
+    .targetIndicator{
+        &::before{
+            background-color: #1bb3e8;
+        }
+    }
+    
+    .acheiveIndicator{
+        &::before{
+            background-color: #172b4d;
+        }
+    }
+}
+
+
+.segmentWiseIndicators{
+    ul{
+        justify-content: flex-start;
+        .above75Indicator{
+            &::before{
+                background-color: #50a42c;
+            }
+        }
+        .below75Indicator{
+            &::before{
+                background-color: #ffc821;
+            }
+        }
+        .below25Indicator{
+            &::before{
+                background-color: #ff4441;
+            }
+        }
+        .targetIndicator{
+            &::before{
+                background-color: #000;
+            }
+        }
+    }
+}
+
+.enquiryIndicators{
+    ul{
+        .winIndicator{
+            &::before{
+                background-color: #67a21e;
+            }
+        }
+        .lostIndicator{
+            &::before{
+                background-color: #ff4441;
+            }
+        }
+        .inProgressIndicator{
+            &::before{
+                background-color: #ffb300;
+            }
+        }
+    }
+}
+
+.regionIndicators{
+    ul{
+        .region:nth-child(1){
+            &::before{
+                background-color: #67a21e;
+            }
+        }
+        .region:nth-child(2){
+            &::before{
+                background-color: #ffb300;
+            }
+        }
+        .region:nth-child(3){
+            &::before{
+                background-color: #ff6f00;
+            }
+        }
+        .region:nth-child(4){
+            &::before{
+                background-color: #0071bd;
+            }
+        }
+    }
+}
+
+.card-head{
+    padding: 4px;
+    z-index: 2;
+    position: relative;
+    overflow: visible;
+    .card-title{
+        // background-color: #ccc;
+        border-bottom: 1px solid #ccc;
+        padding: 4px;
+        h2{
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+}
+
+
+
+
+
+#targetPieChart, #targetYearlyPieChart, #currentRatePerDayPieChart, #requiredRatePerDayPieChart,
+#winEnquiryPieChart, #lostEnquiryPieChart, #inprogressEnquiryPieChart{
+    height: 120px;
+    width: 120px;
+    .zc-top{
+        left: -20px;
+        top: -20px;
+    }
+}
+
+.enquiryDetailsBox, .overdueByRegionDetailsBox{
+    display: flex;
+    justify-content: space-between;
+    grid-column-gap: 2px;
+    padding: 3px;
+    .detailBox{
+        border-radius: 4px;
+        flex: 1;
+        text-align: center;
+        background-color: #fafafa;
+        padding-top: 3px;
+        .valueBox{
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 20px;
+        }
+        .titleBox{
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 200;
+            font-weight: bold;
+            color: #777;
+        }
+    }
+    
+}
+
+.enquiryDetailsBox{
+    .detailBox:nth-child(2){
+        .valueBox{
+            color: #67a21e;
+        }
+    }
+    .detailBox:nth-child(3){
+        .valueBox{
+            color: #ff4441;
+        }
+    }
+    .detailBox:nth-child(4){
+        .valueBox{
+            color: #ffb300;
+        }
+    }
+}
+.overdueByRegionDetailsBox{
+    .detailBox:nth-child(1){
+        .valueBox{
+            color: #0073bd;
+        }
+    }
+    .detailBox:nth-child(2){
+        .valueBox{
+            color: #50a42c;
+        }
+    }
+    .detailBox:nth-child(3){
+        .valueBox{
+            color: #ffaf00;
+        }
+    }
+    .detailBox:nth-child(4){
+        .valueBox{
+            color: #ff6400;
+        }
+    }
+}

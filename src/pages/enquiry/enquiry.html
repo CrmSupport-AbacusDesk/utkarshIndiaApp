@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Enquiry</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="f.form.valid">
+
+  <div class="edit">
+    <ion-list>
+
+
+      <!-- <ion-item class="cs-normal-select mt15" [ngClass]="{'cs-error':f.submitted && state?.invalid}">
+        <ion-label><span>State </span></ion-label>
+        <ion-select   name="state" name="state" #state="ngModel" [(ngModel)]="form.state" (ionChange)="get_district()"  >
+            <ion-option *ngFor="let row of state_list;let i=index;" value="{{row.state_name}}">{{row.state_name | titlecase}}</ion-option>
+        </ion-select>
+    </ion-item> -->
+
+
+    <ion-item class="cs-normal-select mt15"  [ngClass]="{'cs-error':f.submitted && enquiry_type?.invalid}">
+      <ion-label><span>Select Retailer</span></ion-label>
+      <ion-select  name="create_card_user_id"  [(ngModel)]="data.create_card_user_id" (click)="get_dealers(id)">
+        <ion-option *ngFor="let row of dealer.dealer_list;" value={{row.id}}>{{row.company_name}}</ion-option>
+      
+      </ion-select>
+    </ion-item>
+    
+
+      <ion-item [ngClass]="{'cs-error': f.submitted && company_name?.invalid}"> 
+        <ion-label floating><span>Company Name</span></ion-label>
+        <ion-input type="text" name="company_name" #company_name="ngModel" [(ngModel)]="data.company_name" [ngClass]="{'is-invalid':f.submitted && company_name?.invalid}"  (keypress)="companycheck($event)" required></ion-input>
+      </ion-item>
+      
+      <p  *ngIf="f.submitted && company_name?.invalid && data.company_name" class="error-line"> Company Name  Is Invalid!</p>
+      <p  *ngIf="f.submitted && company_name?.invalid && !data.company_name" class="error-line">Company Name Is Required!</p>
+     
+
+
+      <ion-item  [ngClass]="{'cs-error': f.submitted && contact_person?.invalid}">
+        <ion-label floating><span>Contact Person</span></ion-label>
+        <ion-input type="text" name="contact_person" #contact_person="ngModel" [(ngModel)]="data.contact_person" [ngClass]="{'is-invalid':f.submitted && contact_person?.invalid}"    (keypress)="contactPersonCheck($event)" required></ion-input>
+      </ion-item>
+      
+      <p  *ngIf="f.submitted && contact_person?.invalid && data.contact_person" class="error-line"> Contact Person Is Invalid!</p>
+      <p  *ngIf="f.submitted && contact_person?.invalid && !data.contact_person" class="error-line">Contact Person Is Required!</p>
+  
+
+      <ion-item class="cs-input" [ngClass]="{'cs-error':f.submitted && mobile_no?.invalid}" >
+        <ion-label floating>Mobile No.</ion-label>
+        <ion-input type="tel" name="mobile_no" #mobile_no="ngModel" [(ngModel)]="data.mobile_no" [ngClass]="{'is-invalid':f.submitted && mobile_no?.invalid}"    required min="0" maxlength="10" minlength="10" (keypress)="MobileNumber($event)"  ></ion-input>
+      </ion-item>
+      
+      <p  *ngIf="f.submitted && mobile_no?.invalid && data.mobile_no" class="error-line"> Mobile No. Is Invalid!</p>
+      <p  *ngIf="f.submitted && mobile_no?.invalid && !data.mobile_no" class="error-line">Mobile No. Is Required!</p>
+      
+      <ion-item class="cs-input" [ngClass]="{'cs-error': f.submitted && street?.invalid}">
+        <ion-label floating><span>Street</span></ion-label>
+        <ion-input type="text" name="street" #street="ngModel" [(ngModel)]="data.street" [ngClass]="{'is-invalid':f.submitted && street?.invalid}"  required min="0" maxlength="5" minlength="1" (keypress)="streetcheck($event)" ></ion-input>
+      </ion-item>
+
+      <p  *ngIf="f.submitted && street?.invalid && data.street" class="error-line"> Street  Is Invalid!</p>
+      <p  *ngIf="f.submitted && street?.invalid && !data.street" class="error-line">Street Is Required!</p>
+      
+      <!-- <mat-select required name="designation" [(ngModel)]="data.designation" #state> 
+        <mat-option value="">Select Designation</mat-option>
+        <mat-option *ngFor="let data of designationList;" value="{{data.designation}}">{{data.designation | titlecase}}</mat-option>
+    </mat-select> -->
+
+
+      <ion-item class="cs-normal-select mt15" >
+        <ion-label><span>State</span></ion-label>
+        <ion-select  name="state" [(ngModel)]="data.state" (ngModelChange)="get_stateList(data.state)">
+          <ion-option *ngFor="let row of states" value={{row.state_name}}>{{row.state_name}}</ion-option>
+        
+        </ion-select>
+      </ion-item>
+
+
+
+      <ion-item class="cs-normal-select mt15 mb0">
+        <ion-label><span>District</span></ion-label>
+        <ion-select name="district_type" [(ngModel)]="data.district_type" (click)="get_district()">
+          <ion-option *ngFor="let row of district.district" value={{row.state_name}}>{{row.district_name}}</ion-option>
+        
+        
+        </ion-select>
+      </ion-item>
+      
+
+      <ion-item [ngClass]="{'cs-error': f.submitted && city?.invalid}">
+        <ion-label floating ><span>City</span></ion-label>
+        <ion-input type="text" name="city" #city="ngModel" [(ngModel)]="data.city"  [ngClass]="{'is-invalid':f.submitted && city?.invalid}"   required></ion-input>
+      </ion-item>
+          
+      <p  *ngIf="f.submitted && city?.invalid && data.city" class="error-line"> City Is Invalid!</p>
+      <p  *ngIf="f.submitted && city?.invalid && !data.city" class="error-line">City Is Required!</p>
+      
+      <ion-item class="cs-input" [ngClass]="{'cs-error': f.submitted && pincode?.invalid}">
+        <ion-label floating><span>Pincode</span></ion-label>
+        <ion-input type="text" name="pincode" #pincode="ngModel" [(ngModel)]="data.pincode" [ngClass]="{'is-invalid':f.submitted && pincode?.invalid}"  required min="0" maxlength="6" minlength="6" (keypress)="streetcheck($event)" ></ion-input>
+      </ion-item>
+
+      <p  *ngIf="f.submitted && pincode?.invalid && data.pincode" class="error-line"> Pincode  Is Invalid!</p>
+      <p  *ngIf="f.submitted && pincode?.invalid && !data.pincode" class="error-line">Pincode Is Required!</p>
+      
+      <ion-item  [ngClass]="{'cs-eroor':f.submitted && remark?.invalid}">
+        <ion-label floating><span>Remark</span></ion-label>
+        <ion-textarea type="text" name="remark" #remark="ngModel" [(ngModel)]="data.remark" [ngClass]="{'is-invalid':f.submitted && remark?.invalid}"  required></ion-textarea>
+      </ion-item>
+        
+    </ion-list>
+    <button ion-button block class="h40 green-color mt20 mb20" style="letter-spacing: 1px;"  (click)="enquiryformSubmit()">SUBMIT</button>
+
+  </div>
+  </form>
+</ion-content>
+

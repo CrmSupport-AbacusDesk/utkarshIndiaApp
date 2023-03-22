@@ -1,0 +1,82 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Quotation List</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    
+    <div class="pd-left-right16">
+        <div class="list-box mt16" *ngFor="let row of Quotation_list" >
+            <div class="upper">
+                <div class="left-date" (click)="quotationdetail(row.id,row.quotation_status)">
+                    <div class="date-section">
+                        <p>{{row.date_created | date:'d MMM y'}}</p>
+                        <p>Date Created</p>
+                    </div>
+                </div>
+                
+                <div class="right-date">
+                    <button class="{{row.quotation_status}}" (click)="quotationdetail(row.id,row.quotation_status)">
+                        <p>{{row.quotation_status}}</p>
+                    </button>
+                    <button class="font12 ml10" type="button" *ngIf="row.quotation_status=='Pending' " (click)="delete_quotation(row.id)">
+                        <i class="material-icons red-clr">delete_sweep</i>
+                    </button>
+                </div>
+            </div>
+            <div class="mid">
+                <div class="content-info" (click)="quotationdetail(row.id,row.quotation_status)">
+                    <div class="left-info">
+                        <div class="circle">{{row.dr_name.substring(0,1).toUpperCase()}}</div>
+                    </div>
+                    
+                    <div class="right-info">
+                        <p>{{row.dr_name}}</p>
+                    </div>
+                </div>
+                <div class="tag-info">
+                    <a href="tel:{{row.mobile}}"><i class="material-icons">phone</i></a>
+                </div>
+            </div>
+            
+            <!-- <div class="lower" *ngIf="row.quotation_remark">
+                <p>Quotation Remark</p>
+                <p>{{row.quotation_remark ? row.quotation_remark : 'N/A'}}</p>
+            </div> -->
+            <div class="lower" (click)="quotationdetail(row.id,row.quotation_status)">
+                <p>Term And Condition</p>
+                <!-- <p [innerHTML]="row.term_condition">{{row.term_condition}}</p> -->
+                <p class="two-line-ellipse" [innerHTML]="row.term_condition"></p>
+                
+            </div>
+        </div>  
+    </div>
+    
+    <div class="nothing-here" *ngIf="Quotation_list == 0">
+        
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="h50"></div>
+
+    <ion-fab right bottom>
+        <button ion-fab color="danger" (click)="addQuotation(type,id,company_name)" ><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+
+
+</ion-content>
+<!-- <div class="cus-fab">
+    <button (click)="addQuotation(type,id,company_name)">
+        <i class="material-icons">add</i>
+    </button>
+</div> -->

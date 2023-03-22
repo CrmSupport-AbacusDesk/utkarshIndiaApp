@@ -1,0 +1,37 @@
+page-followup-detail {
+
+    .sticky-box{
+        background: #fff;
+        position: static;
+        top: 0;
+        left: 0;
+        z-index: 3;
+    }
+    .list-box{
+        border: 1px solid #ddd;
+        box-shadow: 8px 8px 4px 0 #f1f1f1 !important;
+        padding: 6px;
+        .seeDetailsBox{
+            content: 'See Details';
+            position: absolute;
+            top: 4px;
+            right: 0px;
+            z-index: 1;
+            color: rgb(164, 164, 164);
+            font-size: 9px;
+            background: #f2f7ff;
+            padding: 2px;
+            border-bottom-left-radius: 6px;
+            border-top-left-radius: 6px;
+        }
+        .upper{
+            padding-top: 8px;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            background-color: #f2f5f9;
+            border-bottom: 1px dashed #ccc !important;
+            margin: 0;
+        }
+    }
+
+}

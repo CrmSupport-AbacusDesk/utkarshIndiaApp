@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Invoice Detail</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="pl16 pr16 mt16 mb50">
+    <div class="border-container mt16 mb16">
+      <div class="summary-heading">Invoice Summary</div>
+      <div class="payment-box">
+        <div class="credit-table">
+          <table>
+            <tr>
+              <td class="w120">Invoice Number</td>
+              <th>{{invoice_info.bill_number}}</th>
+            </tr>
+            <tr>
+              <td>Date Created</td>
+              <th>{{invoice_info.billing_date}}</th>
+            </tr>
+            <tr>
+              <td>Company Name</td>
+              <th>{{InvoiceDetail.company_name}}</th>
+            </tr>
+            <tr>
+              <td>Contact Person</td>
+              <th>{{InvoiceDetail.name}} - {{InvoiceDetail.mobile}}</th>
+            </tr>
+            <tr>
+              <td>Total Item</td>
+              <th>{{invoice_info.total_billing_item ? invoice_info.total_billing_item : '0'}}</th>
+            </tr>
+            <tr>
+              <td>Total Item Qty</td>
+              <th>{{invoice_info.total_billing_item_qty ? invoice_info.total_billing_item_qty : '0'}}</th>
+            </tr>
+            <tr>
+              <td>Total Amount</td>
+              <th>{{invoice_info.net_amount ? ('₹' +  invoice_info.net_amount)  : '0'}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-heading">Item Details</div>
+    <div class="attendance-list" *ngFor="let row of InvoiceList;let i = index;">
+      <div class="center-block flat-block pl0 pr0">
+        <h1>{{row.item_name | titlecase}} ({{row.item_code}})</h1>
+        
+      </div>
+      <div class="slab slab-three boder-top1 pt10 mt10">
+        <div class="slab-day">
+          <p>{{row.sale_qty}}</p>
+          <span>Qty</span>
+        </div>
+        <div class="slab-day">
+          <p>₹ {{row.rate}}</p>
+          <span>Rate</span>
+        </div>
+        <div class="slab-day">
+          <p>₹ {{row.discount_amount}}{{row.discount_percent ? '(' + row.discount_percent + '%)': ''}}</p>
+          <span>Discount Amount</span>
+        </div>
+        <div class="slab-day">
+          <p>₹ {{row.price}}</p>
+          <span>Price</span>
+        </div>
+        <div class="slab-day">
+          <p>₹ {{row.gst_amount}} {{row.gst_percent ? '(' + row.gst_percent + '%)': ''}}</p>
+          <span>Gst Amount</span>
+        </div>
+        
+        
+        <div class="slab-day">
+          <p class="approved">₹{{row.net_amount}}</p>
+          <span>Net Amount</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!InvoiceList.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

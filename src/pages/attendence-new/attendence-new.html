@@ -1,0 +1,102 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title *ngIf="attendencetype=='My'">My Attendence</ion-title>
+        <ion-title *ngIf="attendencetype!='My'">Team Attendence</ion-title>
+        <ion-buttons end>
+            <button *ngIf="teamCount!=null" ion-button icon-only (click)="presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ng-container >
+        <div class="fix-toolbar">
+            <div class="edit flat" *ngIf="attendencetype !='My'">
+                <ion-list>
+                    <ng-container>
+                        <ion-item class="cs-normal-select retailerSelectionBox mt0 mb0">
+                            <ion-label>Select Team Member</ion-label>
+                            <ionic-selectable item-content name="data" [(ngModel)]="data" [items]="user_list" itemValueField="id" itemTextField="name" [canSearch]="true" #selectComponent  (ngModelChange)="getAttendanceData()"></ionic-selectable>
+                        </ion-item>
+                    </ng-container>
+                </ion-list>
+            </div>
+            
+            <div class="capsule-tabsnew" *ngIf="attendencetype =='My' || (attendencetype =='Team' && data.id )">
+                <ul>
+                    <li *ngFor="let row of month_array" [ngClass]="{'active' : row.month==current_month}"
+                    (click)="current_month=row.month;current_year=row.year; getAttendanceData()">{{row.month_name}}
+                    {{row.year}}</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="tabs-count" *ngIf="attendencetype =='My' || (attendencetype =='Team' && data.id )">
+            <div class="tab-content working">
+                <p>{{attendance_summery.total_working_days}}</p>
+                <span>Working Days</span>
+            </div>
+            <div class="tab-content present">
+                <p>{{attendance_summery.present}}</p>
+                <span>Present</span>
+            </div>
+            <div class="tab-content absent">
+                <p>{{attendance_summery.absent}}</p>
+                <span>Absent</span>
+            </div>
+            <div class="tab-content leave">
+                <p> {{attendance_summery.leave}}</p>
+                <span>Leave</span>
+            </div>
+        </div>
+    </ng-container>
+    
+   
+
+<div class="pr16 pl16 mt16 mb50">
+    <ng-container *ngIf="attendencetype =='My' || (attendencetype =='Team' && data.id )">
+        <div class="attendance-list" *ngFor="let item of attendance_list;let idx = index;">
+            <div class="slab">
+                <div class="slab-day">
+                    <p>{{item.date | date:'d MMM y'}}</p>
+                    <span>Date</span>
+                </div>
+                <div class="slab-day">
+                    <p>{{item.day}}</p>
+                    <span>Day</span>
+                </div>
+                <div class="left-auto">
+                    <div class="attendance"
+                    [ngClass]="{'leave':item.attend=='Leave', 'absent':item.attend == 'Absent', 'present':item.attend == 'Present', 'holiday':item.attend == 'Holiday','weeklyOff':item.attend == 'Weekly Off' }">
+                    {{item.attend}}
+                </div>
+            </div>
+        </div>
+        <div class="slab mt16" *ngIf="item.attend == 'Present'">
+            <div class="slab-day">
+                <p *ngIf="item.start_time =='00:00:00'">--</p>
+                <p style="color: #2c8300;" *ngIf="item.start_time !='00:00:00'">{{item.start_time_withDate | date:'hh:mm a'}}</p>
+                <span>Working Start </span>
+            </div>
+            <div class="slab-day">
+                <p *ngIf="item.stop_time =='00:00:00'">--</p>
+                <p style="color: #ff0000;" *ngIf="item.stop_time !='00:00:00'"> 
+                    {{item.stop_date_time.split('')[1].split(':')[0]>12?item.stop_date_time.split('')[1].split(':')[0]-12:item.stop_date_time.split(' ')[1].split(':')[0]}} :
+                    {{item.stop_date_time.split(' ')[1].split(':')[1]}} {{item.stop_date_time.split('')[1].split(':')[0]>12?'PM':'AM'}}
+                </p>
+                <span>Working Stop</span>
+            </div>
+            <div class="slab-day">
+                <p *ngIf="item.working_hrs == 0 ">--</p>
+                <p style="color: #2c8300;" *ngIf="item.working_hrs !=0 ">{{item.working_hrs}}</p>
+                <span>Total Working Hour's</span>
+            </div>
+            
+        </div>
+    </div>
+</ng-container>
+</div>
+</ion-content>

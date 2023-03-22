@@ -1,0 +1,368 @@
+<!--
+  Generated template for the DashboardNewPage page.
+  
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="primaryDashboard">{{pageType == 'Dr' ? 'Dashboard' : 'Primary Dashboard'}}  </ion-title>
+    <ion-title *ngIf="secondaryDashboard && pageType != 'Dr'">Secondary Dashboard</ion-title>
+    <ion-buttons end *ngIf="assigned_orderType=='both'">
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container *ngIf="primaryDashboard || pageType == 'Dr'">
+    <ion-card class="highlights-card">
+      <ion-card-content class="p0 ">
+        <div class="slab-container" (click)="pageType == 'Dr' ? '' : goToTarget('primary')">
+          <div class="slab-box">
+            <div class="heading">Primary Target {{latestMonth | date :'MMM yyyy'}} <i class="material-icons " *ngIf="pageType != 'Dr'">chevron_right</i></div>
+            <div class="two-column">
+              <div class="slab-item">
+                <h5>{{targetData.target?('₹'+targetData.target+' L'):'N/A'}}</h5>
+                <p>Target</p>
+              </div>
+              <div class="slab-item">
+                <h5>{{'₹ '+targetData.achievment+' L'}}</h5>
+                <p>Achievement</p>
+              </div>
+            </div>
+
+            <div class="round-box">
+              <div class="circle">
+                {{targetData.achievment_percentage?(targetData.achievment_percentage+'%'):'0%'}}</div>
+              <div class="square">
+                <span>{{'₹ '+targetData.current_rate+' L'}}</span>
+                <p>Current Rate Per Day</p>
+              </div>
+              <div class="square">
+                <span>{{'₹ '+targetData.required_achivment_rate+' L'}}</span>
+                <p>Required Rate Per Day</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Brand Wise Target v/s Achievement</h2>
+        </ion-card-title>
+        <div class="indicators segmentWiseIndicators">
+          <ul>
+            <li class="above75Indicator">Achievement >= 75% of Target</li>
+            <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+            <li class="below25Indicator">Achievement < 25% of Target</li>
+            <li class="targetIndicator">Target</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="daysWiseSalesReport"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Target v/s Achievement (2022-23)</h2>
+        </ion-card-title>
+        <div class="indicators segmentWiseIndicators">
+          <ul>
+            <li class="above75Indicator">Achievement >= 75% of Target</li>
+            <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+            <li class="below25Indicator">Achievement < 25% of Target</li>
+            <li class="targetIndicator">Target</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="yearWiseSalesReport"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="showBrandWiseReport">
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Brand Wise Report</h2>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="segmentPieChart"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="salesReportMeterCard">
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Sales Target Meter</h2>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="salesReportMeter"></div>
+        <table>
+          <tr>
+            <td>Target: <span>{{targetData.target?('₹ '+targetData.target+' L'):'N/A'}}</span></td>
+            <td>Achievement: <span>{{'₹ '+targetData.achievment+' L'}}</span></td>
+          </tr>
+          <tr>
+            <td>Current Rate: <span>{{'₹ '+targetData.current_rate+' L'}}</span></td>
+            <td>Required Rate: <span>{{'₹ '+targetData.required_achivment_rate+' L'}}</span></td>
+          </tr>
+        </table>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="pageType != 'Dr'">
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Enquiry</h2>
+        </ion-card-title>
+        <div class="indicators enquiryIndicators">
+          <ul>
+            <li class="winIndicator">Win</li>
+            <li class="lostIndicator">Lost</li>
+            <li class="inProgressIndicator">In Progress</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="enquiryPieChart"></div>
+        <div class="enquiryDetailsBox">
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.totalEnquiry?enquiryReport.totalEnquiry:'0'}}</div>
+            <div class="titleBox">Total</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.win?enquiryReport.win:'0'}}</div>
+            <div class="titleBox">Win</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.pending?enquiryReport.pending:'0'}}</div>
+            <div class="titleBox">Lost</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.qualified?enquiryReport.qualified:'N/A'}}</div>
+            <div class="titleBox">In Progress</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+  <ng-container *ngIf="secondaryDashboard && pageType != 'Dr'">
+    <ion-card class="highlights-card">
+      <ion-card-content class="p0 ">
+        <div class="slab-container" (click)="goToTarget('secondary')">
+          <div class="slab-box">
+            <div class="heading">Secondary Target {{latestMonth | date : 'MMM yyyy'}}<i class="material-icons">chevron_right</i></div>
+            <div class="two-column">
+              <div class="slab-item">
+                <h5>{{targetData.target?('₹'+targetData.target+' L'):'N/A'}}</h5>
+                <p>Target</p>
+              </div>
+              <div class="slab-item">
+                <h5>{{'₹ '+targetData.achievment+' L'}}</h5>
+                <p>Achievement</p>
+              </div>
+            </div>
+
+            <div class="round-box">
+              <div class="circle">
+                {{targetData.achievment_percentage?(targetData.achievment_percentage+'%'):'0%'}}</div>
+              <div class="square">
+                <span>{{'₹ '+targetData.current_rate+' L'}}</span>
+                <p>Current Rate Per Day</p>
+              </div>
+              <div class="square">
+                <span>{{'₹ '+targetData.required_achivment_rate+' L'}}</span>
+                <p>Required Rate Per Day</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Brand Wise Target v/s Achievement</h2>
+        </ion-card-title>
+        <div class="indicators segmentWiseIndicators">
+          <ul>
+            <li class="above75Indicator">Achievement >= 75% of Target</li>
+            <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+            <li class="below25Indicator">Achievement < 25% of Target</li>
+            <li class="targetIndicator">Target</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="daysWiseSalesReport"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Target v/s Achievement (2022-23)</h2>
+        </ion-card-title>
+        <div class="indicators segmentWiseIndicators">
+          <ul>
+            <li class="above75Indicator">Achievement >= 75% of Target</li>
+            <li class="below75Indicator">Achievement > 25% and < 75% of Target</li>
+            <li class="below25Indicator">Achievement < 25% of Target</li>
+            <li class="targetIndicator">Target</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="yearWiseSalesReport"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="showBrandWiseReport">
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Brand Wise Report</h2>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="p0 ">
+        <div id="segmentPieChart"></div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="salesReportMeterCard">
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Sales Target Meter</h2>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="salesReportMeter"></div>
+        <table>
+          <tr>
+            <td>Target: <span>{{targetData.target?('₹ '+targetData.target+' L'):'N/A'}}</span></td>
+            <td>Achievement: <span>{{'₹ '+targetData.achievment+' L'}}</span></td>
+          </tr>
+          <tr>
+            <td>Current Rate: <span>{{'₹ '+targetData.current_rate+' L'}}</span></td>
+            <td>Required Rate: <span>{{'₹ '+targetData.required_achivment_rate+' L'}}</span></td>
+          </tr>
+        </table>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Enquiry</h2>
+        </ion-card-title>
+        <div class="indicators enquiryIndicators">
+          <ul>
+            <li class="winIndicator">Win</li>
+            <li class="lostIndicator">Lost</li>
+            <li class="inProgressIndicator">In Progress</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="enquiryPieChart"></div>
+        <div class="enquiryDetailsBox">
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.totalEnquiry?enquiryReport.totalEnquiry:'0'}}</div>
+            <div class="titleBox">Total</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.win?enquiryReport.win:'0'}}</div>
+            <div class="titleBox">Win</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.pending?enquiryReport.pending:'0'}}</div>
+            <div class="titleBox">Lost</div>
+          </div>
+
+          <div class="detailBox">
+            <div class="valueBox">{{enquiryReport.qualified?enquiryReport.qualified:'N/A'}}</div>
+            <div class="titleBox">In Progress</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+
+
+    <!-- ge Analysis of Due Balance
+      <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Age Analysis of Due Balance</h2>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="duBalanceAgeChart"></div>
+      </ion-card-content>
+    </ion-card> -->
+
+    <!-- Overdue Breakup By Region
+      <ion-card>
+      <ion-card-header class="card-head">
+        <ion-card-title class="card-title">
+          <h2>Overdue Breakup By Region</h2>
+        </ion-card-title>
+        <div class="indicators regionIndicators">
+          <ul>
+            <li class="region">East</li>
+            <li class="region">West</li>
+            <li class="region">North</li>
+            <li class="region">South</li>
+          </ul>
+        </div>
+      </ion-card-header>
+      <ion-card-content class="p0">
+        <div id="overdueByRegionPieChart"></div>
+        <div class="overdueByRegionDetailsBox">
+          <div class="detailBox">
+            <div class="valueBox">1,500</div>
+            <div class="titleBox">East</div>
+          </div>
+          
+          <div class="detailBox">
+            <div class="valueBox">1,200</div>
+            <div class="titleBox">West</div>
+          </div>
+          
+          <div class="detailBox">
+            <div class="valueBox">1,300</div>
+            <div class="titleBox">North</div>
+          </div>
+          
+          <div class="detailBox">
+            <div class="valueBox">2,000</div>
+            <div class="titleBox">South</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card> -->
+  </ng-container>
+</ion-content>

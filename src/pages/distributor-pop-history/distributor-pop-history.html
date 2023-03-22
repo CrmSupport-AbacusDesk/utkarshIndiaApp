@@ -1,0 +1,59 @@
+<!--
+  Generated template for the DistributorPopHistoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+      <ion-title>POP & Gift</ion-title>
+      <ion-buttons end *ngIf="Navtype != 'retailer'" >
+        <button ion-button icon-only (click)="presentPopover($event)">
+            <ion-icon name="more"></ion-icon>
+        </button>
+    </ion-buttons> 
+  </ion-navbar> 
+</ion-header>
+
+<ion-content>
+  <div class="nothing-here" *ngIf="!pop_list.length && load_data == '1'">
+      <div class="outer">
+          <div class="innear">
+              <img src="assets/imgs/no_found.svg" alt="">
+              <p>Data Not Available</p>
+          </div>
+      </div>
+  </div>
+  <div class="pd-left-right16">
+      <div class="list-box mt16" *ngFor="let list of pop_list; let i=index">
+          <div class="upper">
+              <div class="left-date">
+                  <div class="date-section">
+                      <p>{{list.date_created | date:'d MMM y'}}</p>
+                      <p>Date Created</p>
+                  </div>
+              </div>
+          </div>
+          <div class="mid">
+              <div class="content-info">
+                  <div class="left-info">
+                      <div class="circle">{{list.transfer_to_name.substring(0,1).toUpperCase()}}</div>
+                  </div>
+
+                  <div class="right-info">
+                      <p>{{list.transfer_to_name|titlecase}}({{list.transfer_to_type}})</p>
+                      <p>Qty - {{list.stock_qty}}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="lower" *ngIf="list.remarks !=''">
+              <p>Delivery Note</p>
+              <p>{{list.remarks}}</p>
+          </div>
+      </div>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

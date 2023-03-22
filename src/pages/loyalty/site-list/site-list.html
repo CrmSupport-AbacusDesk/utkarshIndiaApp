@@ -1,0 +1,101 @@
+<!--
+    Generated template for the SiteListPage page.
+    See http://ionicframework.com/docs/components/#navigation for more info on
+    Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{lastPageData.moduleName | titlecase}}</ion-title>
+    </ion-navbar>
+
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar (keyup.enter)="getInfluencer()" [(ngModel)]="filter.search" name="search">
+                </ion-searchbar>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <div class="pd-left-right16 mt16 mb100">
+        <div class="attendance-list" *ngFor="let row of site_list;">
+            <div class="slab slab-bg" style="display:flex;justify-content:space-between;" >
+                <div class="slab-day">
+                    <p>{{row.date_created | date:'dd MMM yyyy'}}</p>
+                    <span>Date Created</span>
+                </div>
+                <div class="slab-day">
+                    <p>{{row.last_scan_date != '0000-00-00 00:00:00' ? (row.last_scan_date | date:'dd MMM yyyy'):'---'}}
+                    </p>
+                    <span>Last Scan</span>
+                </div>
+                <div class="slab-day" *ngIf="row.influencer_type == 'Site'" >
+                    <p>{{row.site_status ? row.site_status :'---'}}</p>
+                    <span>Status</span>
+                </div>
+            </div>
+            <div class="OutOver two-column">
+                <div class="primary-column light-grey">
+                    <p>{{row.total_scans ? row.total_scans : '---'}}</p>
+                    <span>Total Scan</span>
+                </div>
+                <div class="primary-column light-medium">
+                    <p>{{row.total_points ? row.total_points : '---'}}</p> 
+                    <span>Point Earned</span>
+                </div>
+            </div>
+            <div class="p10">
+            <div class="center-block" style="margin-top: 0px">
+                <div class="circle">{{(row.name | slice:0:1)||'N/A'}}</div>
+                <h1>{{(row.name | titlecase)||'N/A'}}</h1>
+                <p>{{row.mobile_no ? row.mobile_no :'--'}}</p>
+            </div>
+            <div class="other-block pb0">
+                <p style="font-weight: bold;line-height: 20px">{{('Address'| titlecase)}} : <span>{{row.address +', '+row.district+','+row.state}}</span></p>
+
+            </div>
+            <ng-container *ngFor="let subRow of row.assign_array;">
+                <div class="other-block pb0" style="display:flex;flex-direction:row;align-items:center"
+                    *ngIf="subRow.assigned_influencer_typeId != userType">
+                    <p style="font-weight: bold;line-height: 10px">{{subRow.assigned_influencer_type }} : </p>
+                    <p style="line-height: 10px">{{subRow.assigned_influencer_name | titlecase}}
+                        <strong>{{subRow.assigned_influencer_mobile}}</strong></p>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="constant != 'Employee' && row.influencer_type == 'Site'">
+                <div class="other-block pb0">
+                    <p style="font-weight: bold;line-height: 10px">{{'Sales User'}} : <span>{{row.assign_user | titlecase}}</span></p>
+                    <!-- <p></p> -->
+                </div>
+            </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div class="nothing-here" *ngIf="site_list.length == 0">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+    <ion-fab right bottom *ngIf="constant == 'Employee'">
+        <button ion-fab color="primary" (click)="SiteAdd()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="{{'Loading more data...'}}">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,122 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title *ngIf="DrType==1 && target_Type=='My'">Channel Partner</ion-title>
+        <ion-title *ngIf="DrType==7 && target_Type!='My'">Team Dealers</ion-title>
+        <ion-title *ngIf="DrType==7 && target_Type=='My'">Direct Dealers</ion-title>
+        <ion-title *ngIf="DrType==1 &&target_Type!='My'">Team Channel Partner</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="teamCount > 0" (click)="search.name='';presentPopover($event)">
+                <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-toolbar>
+        <div class="search add-search">
+            <div class="filter">
+                <ion-searchbar class="distributorSearchbar p10" (keyup.enter)="get_distributor_list()"
+                    [(ngModel)]="search.name" name="search"></ion-searchbar>
+                <a class="date-pick" (click)="open()" *ngIf="target_Type!='My'">
+                    <label class="chedate">
+                        <i class="material-icons">filter_list</i>
+                    </label>
+                </a>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+    <div class="nothing-here" *ngIf="!distributor_list.length && load_data == '1'">
+        <div class="outer">
+            <div class="innear">
+                <img src="assets/imgs/no_found.svg" alt="">
+                <p>Data Not Available</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit m0" [hidden]="hideList" *ngIf="target_Type!='My'">
+        <ion-list>
+            <ion-item class="cs-normal-select ">
+                <ion-label floating>Distributor</ion-label>
+                <ionic-selectable item-content [(ngModel)]="search.distributor" [items]="teamDistributor_list"
+                    itemValueField="id" itemTextField="name" (onChange)="get_distributor_list(search.distributor.id)"
+                    [canSearch]="true" #selectComponent>
+                </ionic-selectable>
+            </ion-item>
+        </ion-list>
+    </div>
+    <div class="pd-left-right16 mt16 mb100">
+        <div class="attendance-list" *ngFor="let data of distributor_list" (click)="distributor_detail(data.id)">
+            <div class="slab slab-bg">
+                <div class="slab-day">
+                    <p>{{data.last_checkin != '0000-00-00 00:00:00' ? (data.last_checkin | date:'d MMM yyy') : 'N/A' }}
+                    </p>
+                    <span>Last visit {{data.last_checkin_day != "" ? (data.last_checkin_day == 0 ? 'Today' :
+                        data.last_checkin_day + ' '+' day') : ''}}</span>
+                </div>
+                <div class="slab-day">
+                    <p>{{data.last_order != '0000-00-00 00:00:00' ? (data.last_order | date:'d MMM yyy'): "N/A"}}</p>
+                    <span>Last order {{data.last_order_day != "" ? (data.last_order_day == 0 ? 'Today' :
+                        data.last_order_day + ' '+' day') : ''}}</span>
+                </div>
+                <div class="slab-day">
+                    <p>{{data.last_payment_date != '0000-00-00 00:00:00' ? (data.last_payment_date | date:'d MMM yyy') :
+                        'N/A'}}</p>
+                    <span>Last payment {{data.last_payment_day != "" ? (data.last_payment_day == 0 ? 'Today' :
+                        data.last_payment_day + ' '+' day') : ''}}</span>
+                </div>
+            </div>
+            <div class="center-block">
+                <div class="circle">{{data.company_name?.substring(0,1).toUpperCase()}}</div>
+                <h1 class="f12">{{data.company_name?.toUpperCase()}}</h1>
+                <p>{{data.name | titlecase}} ({{data.mobile}})</p>
+                <a class="cell-phone" href="tel:{{data.mobile}}"><i class="material-icons">phone</i></a>
+            </div>
+            <div class="other-block">
+                <p *ngIf=" data.address  || data.state  || data.district  || data.city  || data.area  || data.pincode">
+                    <strong>Address :</strong> {{data.address}} {{data.area_details | titlecase}} {{data.district |
+                    titlecase}} {{data.state | titlecase}}
+                </p>
+                <p *ngIf="target_Type != 'My'"><strong>Assigned to :</strong> {{data.assinged_User ?( data.assinged_User
+                    | titlecase) : 'N/A'}}</p>
+            </div>
+            <div class="slab"
+                *ngIf="serve.userData.order_type.toLowerCase()== 'primary' || serve.userData.order_type.toLowerCase()== 'both'">
+                <div class="slab-day">
+                    <p>&#x20B9; {{data.target ? (data.target | number:'1.2-2') : 0}}</p>
+                    <span>Target ({{currentDate}})</span>
+                </div>
+                <div class="slab-day">
+                    <p class="bold" [ngStyle]="{'color':data.archived >= data.target ? '#0f5200' : '#ff0000'}">&#x20B9;
+                        {{data.archived ? (data.archived | number: '1.2-2') : 0}}</p>
+                    <span>Achievement</span>
+                </div>
+                <div class="slab-day">
+                    <p class="bold" [ngStyle]="{'color':data.outstanding_balance > 0 ? '#ff0000' : '#000000'}">&#x20B9;
+                        {{data.outstanding_balance ? (data.outstanding_balance | number: '1.2-2') : 0}}</p>
+                    <span>Outstanding</span>
+                </div>
+            </div>
+
+            <div class="next-forword">
+                <i class="material-icons">chevron_right</i>
+            </div>
+        </div>
+    </div>
+
+    <!-- infinite scroll -->
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" *ngIf="flag!=1">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <!-- infinite scroll end -->
+</ion-content>

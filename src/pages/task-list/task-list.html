@@ -1,0 +1,94 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Task</ion-title>
+  </ion-navbar>
+  <ion-toolbar color="white" >
+    <div class="ion-tab-btn mb10">
+        <ion-segment [(ngModel)]="activeTab">
+            <ion-segment-button  value="my_task" (click)="get_Task_list('my_task')">
+                My Task ({{my_task_count}})
+            </ion-segment-button>
+            <ion-segment-button  value="assign_task" (click)="get_Task_list('assign_task')">
+                Assigned Task ({{assign_task_count}})
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+    
+    <div class="search add-search">
+        <div class="filter mt10 mb10">
+            <ion-searchbar (ngModelChange)="get_Task_list()" [(ngModel)]="filter.name" name="name" ></ion-searchbar>
+        </div>
+    </div>
+</ion-toolbar>
+</ion-header>
+
+<ion-content >
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+ 
+<div class="capsule-tabs">
+  <ul>
+    <!-- <li [ngClass]="{'active' : task_status=='promise_pending'}" (click)="filter.date='';filter.master='';start=0;task_status='promise_pending';get_Task_list()">
+      <p>Promise Pending<span>
+        {{tabCount.promise_pending}}
+      </span></p>
+    </li> -->
+    <li [ngClass]="{'active' : task_status=='promise_done'}" (click)="filter.date='';filter.master='';start=0;task_status='promise_done' ;get_Task_list()">
+      <p>Pending<span>
+        {{tabCount.promise_done}}
+      </span></p>
+    </li>
+    <li [ngClass]="{'active' : task_status=='close'}" (click)="filter.date='';filter.master='';start=0;task_status='close';get_Task_list()">
+      <p>Close<span>
+        {{tabCount.close}}
+      </span></p>
+    </li>
+  </ul>
+</div>
+<div class="nothing-here" *ngIf="!TaskData.length && sendRequest == true">
+  <div class="outer">
+    <div class="innear">
+      <img src="assets/imgs/no_found.svg" alt="">
+      <p>Data Not Available</p>
+    </div>
+  </div>
+</div>
+  <div class="pd-left-right16 mt16 mb100">
+    <ng-container *ngFor="let data of TaskData" >
+    
+    <div class="attendance-list green_bg" [ngClass]="{'red_header_color' : (data.promise_date < date)&& (task_status=='promise_done')}" (click)="support_detail(data.id, data.created_by)">
+      <div class="slab slab-bg" [ngClass]="{'red_back_color' : (data.promise_date < date)&& (task_status=='promise_done')}">
+        <div class="slab-day">
+          <p>{{data.date_created != '0000-00-00 00:00:00' ? (data.date_created | date:'d MMM yyy') : '---'  }}</p>
+          <span>Date Created</span>
+        </div>
+        <div class="slab-day">
+          <p>{{data.assign_to_name}}</p>
+          <span>Assign To</span>
+        </div>
+        <div class="slab-day">
+          <p>{{data.assign_to_type}}</p>
+          <span>Assignee Type</span>
+        </div>
+      </div>
+      <div class="other-block">
+        <p><strong>Message :</strong> 
+          {{data.escalation_description}}
+        </p>
+      </div>
+      <div class="next-forword">
+        <i class="material-icons">chevron_right</i>
+      </div>
+    </div>
+  </ng-container>
+  </div>
+  
+  <ion-fab right bottom *ngIf="team_exist==true" (click)="goToSupportAdd()">
+    <button ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

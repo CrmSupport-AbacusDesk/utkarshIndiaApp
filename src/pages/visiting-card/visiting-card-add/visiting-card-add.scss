@@ -1,0 +1,101 @@
+page-visiting-card-add {
+    .transprant-bg
+    {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .work-modal
+    {
+        padding: 16px;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .work-modal-bg
+    {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none;
+        
+        .head
+        {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: -16px -16px 16px -16px;
+            padding: 10px 16px;
+            border-bottom: 1px solid #cccccc;
+            
+            h2
+            {
+                font-size: 16px;
+            }
+            
+            a
+            {
+                &.close
+                {
+                    line-height: 0px;
+                    
+                    i
+                    {
+                        font-size: 20px;
+                        color: #ff0000;
+                    }
+                }
+            }
+        }
+        
+        ion-item
+        {
+            padding-left: 0px;
+        }
+        
+        .loading-section
+        {
+            .load-content
+            {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img
+                {
+                    height: 70px;
+                }
+                
+                p
+                {
+                    position: absolute;
+                    color: #fff;
+                    font-size: 14px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+            
+            .load-text
+            {
+                p
+                {
+                    color: #fff;
+                    font-size: 15px;
+                    margin-top: 5px !important;
+                    text-align: center;
+                    font-weight: 500;
+                }
+            }
+            
+        }
+    }
+    
+    ion-label 
+    {
+        font-size: 14px !important;
+    }
+}

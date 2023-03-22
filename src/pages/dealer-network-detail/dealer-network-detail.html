@@ -1,0 +1,145 @@
+<!--
+  Generated template for the DealerNetworkDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Detail - Dealer Network</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="sticky-main">
+    <div class="pl16 pr16 " *ngIf="total_order?.length && !search.date">
+      <div class="list-box mt16">
+        <div class="upper">
+          <div class="left-date">
+            <div class="date-section">
+              <!-- <p>{{row.orderdate| date:'d MMM y hh:mm a'}}</p> -->
+              <p>Date</p>
+            </div>
+            <div class="date-section">
+              <!-- <p>{{row.dr_name}}</p> -->
+              <p>Created by</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="mid mt6 mb6">
+          <div class="content-info">
+            <div class="left-info">
+              <div class="circle">{{distributor_detail.company_name | slice:0:1}}</div>
+
+            </div>
+            <div class="right-info">
+              <p>{{distributor_detail.company_name?.toUpperCase()}}</p>
+              <p> {{!distributor_detail.name ? 'N/A' : distributor_detail.name | titlecase}} -
+                +91 {{distributor_detail.mobile}}</p>
+            </div>
+          </div>
+          <div class="lower">
+            <p>Address</p>
+            <p>{{!distributor_detail.state ? 'N/A' : distributor_detail.state | titlecase}}
+              {{!distributor_detail.district ? '' : ', '+distributor_detail.district | titlecase}}
+              {{distributor_detail.pincode ? ' - '+distributor_detail.pincode : ''}}</p>
+          </div>
+        </div>
+        <!-- <div class="mid" [ngClass]="{'mt0' : row.order_status=='Draft' }"> -->
+        <div class="Newbox">
+          <table>
+            <tr class="text-center" style="background-color:#f2f5f9">
+              <td>Total Order</td>
+              <td>Order Value</td>
+              <td>Last Order</td>
+            </tr>
+            <tr class="text-center">
+              <td>10</td>
+              <td>₹ 16067</td>
+              <td class="font10 text-center">
+                5 days before
+              </td>
+            </tr>
+            <!-- <div class="text-center">
+                  </div> -->
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="sticky bg-white">
+      <div class="round-tab" style="border-bottom: 0px;">
+        <ul>
+          <li [ngClass]="{'active':type == 'orders'}" (click)="type = 'orders';">
+            Orders
+          </li>
+          <li [ngClass]="{'active':type == 'payment'}" (click)="type = 'payment'">
+            Payment
+          </li>
+          <li [ngClass]="{'active':type == 'stocks'}" (click)="type = 'stocks'">
+            Stocks
+          </li>
+        </ul>
+      </div>
+      <ng-container>
+
+        <div class="pl16 pr16 " *ngIf="total_order?.length && !search.date">
+          <div class="list-box mt16" *ngFor="let row of total_order" >
+            <div class="upper" *ngIf="row.order_status!='Draft'">
+              <div class="left-date">
+                <div class="date-section">
+                  <p>{{row.orderdate| date:'d MMM y hh:mm a'}}</p>
+                  <p>Date</p>
+                </div>
+                
+  
+              </div>
+              <div class="right-date font12">
+                <p class="red-clr">PAY {{row.order_no}}</p>
+                
+              </div>
+            </div>
+            <!-- <div class="mid" [ngClass]="{'mt0' : row.order_status=='Draft' }"> -->
+              <div class="Newbox">
+                <table>
+                    <tr class="text-center" style="background-color:#f2f5f9">
+                        <td>Payment Type</td>
+                        <td>Amount</td>
+                        <td>Transaction ID</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td>{{row.order_item ? row.order_item : '0'}}</td>
+                        <td>₹ {{row.order_grand_total ? row.order_grand_total : '0'}}/-</td>
+                        <td
+                        class="font10 text-center"
+                        [ngClass]="{'pending-bgcolor':row.order_status=='Pending','reject-bgcolor':row.order_status=='Reject','dispatch-bgcolor':row.order_status=='Dispatch','dispatch-bgcolor':row.order_status=='Partial Dispatch','approved-bgcolor':row.order_status=='Approved'}">
+                               {{row.order_status}}
+                       </td>
+                    </tr>
+                    <!-- <div class="text-center">
+                </div> -->
+                </table>
+            </div>
+          </div>
+        </div>
+        <div class="nothing-here" style="height: 60%;" *ngIf="!total_order.length">
+          <div class="outer">
+            <div class="innear">
+              <img src="assets/imgs/no_found.svg" alt="">
+              <p>No Data Available</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+  <div class="nothing-here" style="height: 60%;" *ngIf="!total_order.length">
+    <div class="outer">
+      <div class="innear">
+        <img src="assets/imgs/no_found.svg" alt="">
+        <p>No Data Available</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

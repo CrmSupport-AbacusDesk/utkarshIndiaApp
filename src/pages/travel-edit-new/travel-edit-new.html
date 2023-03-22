@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{pageName}} Travel Plan</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="edit mt10">
+    <ion-list>
+      <ng-container>
+        <div class="radio-tab">
+          <ion-list radio-group [(ngModel)]="data.travel_type">
+            <ion-item>
+              <ion-label>{{date_from | date:'EEEE, MMMM d, y'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+        <ion-item class="cs-normal-select retailerSelectionBox mt16">
+          <ion-label>Retailer</ion-label>
+          <ionic-selectable item-content [(ngModel)]="data.id" [items]="retailerList" itemValueField="id"
+            itemTextField="display_name" [canSearch]="true" #selectComponent>
+          </ionic-selectable>
+        </ion-item>
+        <ion-item class="cs-textarea1 ">
+          <ion-label floating><span>Purpose Of Visit</span></ion-label>
+          <ion-textarea name="status_remark" #status_remark="ngModel" [(ngModel)]="data.status_remark"></ion-textarea>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+    <div class="mt16 mb16" *ngIf="data.status_remark">
+      <button style="border-radius: 5px;" class="capitalize" ion-button block [disabled]="!data.status_remark"
+        (click)="addToList()">Add To List</button>
+    </div>
+    <div class="collapse-body padding0" *ngIf="planList?planList.length:0">
+      <table style="width: 100%;">
+        <tr>
+          <th class="w140 text-center" style="min-width:100px;">Retailer</th>
+          <th class="text-center" style="min-width: 100px;">Pupose of Visit</th>
+          <th class="w60 text-center" *ngIf="pageName!='Edit'" style="border-right: 0px">Delete</th>
+
+        </tr>
+        <tr *ngFor="let row of planList;let i = index">
+
+          <td class="text-center" style="border-left: 0px;">{{row.retailer ? row.retailer : row.company_name ?
+            row.company_name : 'N/A'}}</td>
+          <td>{{row.status_remark ? row.status_remark : 'N/A'}}</td>
+          <td class="w20 text-center" *ngIf="pageName!='Edit'" style="border-right: 0px">
+            <i (click)="removePlanList(i)" class="material-icons ">delete</i>
+          </td>
+        </tr>
+      </table>
+
+      <div class="padding10" *ngIf="!planList">
+        <span style="color:#ccc; font-weight: 500;">No Plan Exist</span>
+
+      </div>
+    </div>
+
+
+    <div class="mt16" *ngIf="planList.length>0">
+      <button ion-button block color="primary" [disabled]="spinner == true || !planList" type="submit"
+        (click)="savePlanList()"><ion-spinner *ngIf="spinner == true"></ion-spinner>Save</button>
+    </div>
+
+  </div>
+
+
+
+  <div class="pd-left-right16">
+
+
+  </div>
+
+  <div class="pd-left-right16">
+
+
+    <div class="align-btn">
+
+    </div>
+
+
+  </div>
+
+
+</ion-content>

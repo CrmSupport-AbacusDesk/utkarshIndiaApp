@@ -1,0 +1,145 @@
+page-add-checkin {
+    .displayUserBox{
+        ion-label{
+            display: none !important;
+        }
+        .ionic-selectable{
+            max-width: 90%;
+            margin: auto;
+        }
+    }
+    .text-input-md
+    {
+        height: 45px;
+    }
+    .grid-radio
+    {
+        flex-wrap: wrap;
+        display: flex;
+        margin-bottom: 0px;
+        
+        ion-item
+        {
+            width: 50%;
+            
+            .item-inner
+            {
+                flex-direction: row-reverse;
+                border-bottom: 0px !important;
+                
+                ion-label
+                {
+                    color: #000000 ;
+                }
+            }
+        }
+    }
+    
+    ion-list
+    {
+        &.cs-list-change
+        {
+            // border-radius: 10px;
+            // border: 1px solid #dedede;
+            overflow: hidden;
+            margin: 0px !important;
+            
+            ion-item
+            {
+                padding: 0px !important;
+                min-height: 55px !important;
+                
+                .item-inner
+                {
+                    padding-left: 16px;
+                    
+                    ion-label
+                    {
+                        margin: 0px;
+                    }
+                }
+                
+                &.item-radio-checked
+                {
+                    
+                    .item-inner
+                    {
+                        ion-label
+                        {
+                            color: #32db64;
+                        }
+                        
+                        ion-radio
+                        {
+                            .radio-checked
+                            {
+                                border-color: #32db64;
+                                
+                                .radio-inner
+                                {
+                                    background-color: #32db64;
+                                }
+                            }
+                        }
+                        
+                        .radio-ios .radio-checked .radio-inner
+                        {
+                            background: transparent;
+                            top: 1px;
+                            width: 8px;
+                            height: 19px;
+                            border-color: #32db64;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    ion-list ion-list-header.border-heading{
+        margin-top: 0px!important;
+    }
+    
+    .info{
+       border-radius: 10px;
+       margin-bottom: 16px;
+       background: #fff;
+       z-index: 1;
+       .content{
+        flex-direction: row;
+        border-bottom: 1px dashed rgb(193, 192, 192);
+        span{
+            font-size: 10px;
+            color: #b3b3b3;
+        }
+        .NameCont{
+        display: flex;
+           flex-direction: row;
+           margin: 4px 0px;
+        }
+       }
+       .Address{
+        margin-top: 6px;
+              span{
+                font-size: 10px;
+                color: #b3b3b3;
+              }
+       }
+    }
+    .edit {
+        margin: 0px;
+        border: 0px !important;
+        border-radius: 6px;
+        padding: 0px !important; 
+    }
+    .item-label-stacked .ionic-selectable, .item-label-floating .ionic-selectable {
+        -webkit-align-self: stretch;
+        -ms-flex-item-align: stretch;
+        align-self: stretch;
+        max-width: 100%;
+        padding-left: 16px !important;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}

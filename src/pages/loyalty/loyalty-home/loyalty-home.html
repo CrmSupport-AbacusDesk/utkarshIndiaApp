@@ -1,0 +1,240 @@
+<ion-header>
+    <ion-toolbar color="white">
+        <ion-title>
+            <div class="company-logo">
+                <img src="assets/imgs/logo.png" alt="">
+            </div>
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only class="share-text" (click)="announcementModal()">
+                <ion-icon name="notifications" color="secondary"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
+<div *ngIf="skLoading == false">
+    <div class="slide-image" *ngIf="appbanner.length > 0">
+        <ion-slides *ngIf="appbanner.length " [initialSlide]="0" pager autoplay="1000" speed="1000">
+            <ion-slide *ngFor="let row of appbanner">
+                <img src="{{bannerURL+row.banner}}">
+            </ion-slide>
+        </ion-slides>
+    </div>
+
+    <div class="pl16 pr16">
+        <div class="center-card">
+            <div class="cs-profile">
+                <img src="{{uploadurl+pointRight.profile}}" (click)="imageModal(uploadurl+pointRight.profile)"  *ngIf="pointRight.profile != ''">
+                <ion-icon name="person" *ngIf="pointRight.profile == ''"></ion-icon>
+            </div>
+
+            <div class="profile-progress">
+                <h1>{{'Welcome'}}</h1>
+                <h2>{{influencer_detail.name | titlecase}}</h2>
+            </div>
+
+
+
+            <div class="my-wallet flat"
+                *ngIf="pointRight.scanning_rights == 'Yes' || pointRight.point_transfer_rights == 'Yes' ">
+                <div class="pts-icon">
+                    <i class="material-icons">account_balance_wallet </i>
+                    Total Points
+                </div>
+                <div class="pts">
+                    {{pointRight.wallet_point ? pointRight.wallet_point :'0'}}
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="home-btn-group">
+            <!-- <ng-container *ngIf="influencer_detail.user_type == 1 && influencer_detail.status =='Verified' ">
+                <div class="outline-btn" (click)="scanCoupon()">
+                    <div class="icons"><ion-icon name="qr-scanner"></ion-icon></div>
+                    {{'Click here for scan'}}
+                </div>
+            </ng-container> -->
+
+
+            <div class="outline-btn" (click)="Scaning()" *ngIf="pointRight.scanning_rights == 'Yes'">
+                <div class="icons"><i class="material-icons">qr_code_scanner</i></div>
+                {{'Scan'}}
+            </div>
+               
+            <div class="outline-btn" (click)="goToCoupon()" *ngIf="pointRight.scanning_rights == 'Yes'">
+                <div class="icons"><i class="material-icons">qr_code</i></div>
+                {{'Enter Code'}}
+            </div>
+
+            <div class="outline-btn" (click)="goOnPointeListPage()"
+                *ngIf="pointRight.scanning_rights == 'Yes' || pointRight.point_transfer_rights == 'Yes' ">
+                <div class="icons"><i class="material-icons">receipt_long</i></div>
+                {{'Point History'}}
+            </div>
+         
+
+
+            <div class="outline-btn" (click)="goOnDigitalcatPage();">
+                <i class="material-icons">picture_as_pdf</i>
+                {{'Catalogues'}}
+            </div>
+            <div class="outline-btn" (click)="goOnProductPage()">
+                <i class="material-icons ">category</i>
+               {{'Products'}}
+            </div>
+
+            <div class="outline-btn" (click)="goToGift();"
+                *ngIf="pointRight.scanning_rights == 'Yes' || pointRight.point_transfer_rights == 'Yes' ">
+                <i class="material-icons">card_giftcard</i>
+                {{'Redeem Points'}}
+            </div>
+
+            <div class="outline-btn" (click)="goToTracker();"
+                *ngIf="pointRight.scanning_rights == 'Yes' || pointRight.point_transfer_rights == 'Yes' ">
+                <i class="material-icons">fmd_good</i>
+                {{'Track Request'}}
+            </div>
+            <div class="outline-btn" (click)="goToSurvey()">
+                <i class="material-icons ">poll</i>
+                {{'Survey'}}
+            </div>
+            <!-- <div class="outline-btn" (click)="goToBonusPoint();" *ngIf="pointRight.scanning_rights == 'Yes' || pointRight.point_transfer_rights == 'Yes' ">
+            <i class="material-icons">fmd_good</i>
+            {{'Bonus Point'}}
+        </div> -->
+
+            <div class="outline-btn" (click)="goToVideo();">
+                <i class="material-icons">play_circle</i>
+                {{'Videos'}}
+            </div>
+
+            <div class="outline-btn" (click)="goToAbout();">
+                <i class="material-icons">info</i>
+                {{'About Us'}}
+            </div>
+
+            <div class="outline-btn" (click)="goToContact();">
+                <i class="material-icons">contact_phone</i>
+                {{'Contact Us'}}
+            </div>
+
+            <div class="outline-btn" (click)="goToProfile();">
+                <i class="material-icons">person</i>
+                {{'Profile'}}
+            </div>
+
+
+            <div class="outline-btn" (click)="goToSupport();">
+                <i class="material-icons">help</i>
+                {{'Support'}}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+    <ng-container>
+        <div *ngIf="skLoading">
+            <div class="slide-image">
+                <ion-slides>
+                    <ion-slide>
+                    </ion-slide>
+                </ion-slides>
+            </div>
+            <div class="pl16 pr16">
+                <div class="center-card sk-loading">
+                    <div class="cs-profile sk-loading" ></div>
+                </div>
+                <div class="home-btn-group">
+                    <ng-container>
+                        <div class="outline-btn sk-loading">
+                            <div class="icons"></div>
+                        </div>
+                    </ng-container>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+
+
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                    <div class="outline-btn sk-loading">
+                        <div class="icons"></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+</ion-content>

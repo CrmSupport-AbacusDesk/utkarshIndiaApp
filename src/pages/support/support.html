@@ -1,0 +1,51 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Support</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+    <div class="form">
+      <ion-list no-lines class="padding10">
+        <ion-item [ngClass]="{'error':f.submitted && type?.invalid}">
+          <ion-label floating>Select Type <strong>*</strong></ion-label>
+          <ion-select name="type" #type="ngModel" [(ngModel)]="data.type" required>
+            <ion-option *ngFor="let row of typeSupport" value="{{row.id}}">{{row.category_name | titlecase}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <div class="eror" *ngIf="f.submitted && type?.invalid">
+          <p> {{ 'This field is required'}}</p>
+        </div>
+        
+        
+        <ion-item [ngClass]="{'error':f.submitted && type?.invalid}">
+          <ion-label floating>Remark <strong>*</strong></ion-label>
+          <ion-textarea name="remarks" #remarks="ngModel" [(ngModel)]="data.remarks"></ion-textarea>
+        </ion-item>
+        <div class="eror" *ngIf="f.submitted && remarks?.invalid">
+          <p> {{ 'This field is required'}}</p>
+        </div>
+      </ion-list>
+      
+      <div class="upload-doc upload-doc mt0  pt0 padding10">
+        <div class="">
+          Attach Image
+        </div>
+        <ul class="no-padding">
+          <li class="add-image" (click)="onUploadChange()">
+            <i class="material-icons">add_a_photo</i>
+          </li>
+          <li class="image-upload" *ngFor="let image of selectImage;index as i">
+            <img src="{{image}}">
+            <button class="del" (click)="delete_img(i)"><i class="material-icons">delete_sweep</i></button>
+          </li>
+        </ul>
+      </div>
+      <button ion-button color="primary" block [disabled]="savingFlag == true">
+        <ion-spinner *ngIf="spinnerLoader" ></ion-spinner>&nbsp;{{savingFlag == true ? 'Please Wait': 'Save' }}
+      </button>
+    </div>
+  </form>
+</ion-content>
