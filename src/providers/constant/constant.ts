@@ -41,19 +41,19 @@ export class ConstantProvider {
 
 
     //Test URL //
-    public rootUrl2: string ='https://devcrm.abacusdesk.com/pearl/api/index.php/'
-    public rootUrl: string =  'https://devcrm.abacusdesk.com/pearl/api/index.php/app/'
-    public rootUrl1: string =  'https://devcrm.abacusdesk.com/pearl/'
-    public rootUrl3: string =  'https://devcrm.abacusdesk.com/pearl/api/index.php/'
-    public rootUrlSfa: string =  'https://devcrm.abacusdesk.com/pearl/api/index.php/app/'
+    public rootUrl2: string ='https://devcrm.abacusdesk.com/utkarshindia/api/index.php/'
+    public rootUrl: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/index.php/app/'
+    public rootUrl1: string =  'https://devcrm.abacusdesk.com/utkarshindia/'
+    public rootUrl3: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/index.php/'
+    public rootUrlSfa: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/index.php/app/'
     public server_url: string = this.rootUrl1 + 'index.php/app/';
     public upload_url: string = this.rootUrl1 + 'uploads/';
-    public upload_url1: string = 'https://devcrm.abacusdesk.com/pearl/api/uploads/';
-    public upload_url2: string = 'https://devcrm.abacusdesk.com/pearl/uploads/order-invoice/';
-    public img_url: string =  'https://devcrm.abacusdesk.com/pearl/api/';
-    public loyaltyUrl: string =  'https://devcrm.abacusdesk.com/pearl/api/';
-    public influencer_doc: string =  'https://devcrm.abacusdesk.com/pearl/api/uploads/influencer_doc/';
-    public support_url : string ='https://devcrm.abacusdesk.com/pearl/api/uploads/support/';
+    public upload_url1: string = 'https://devcrm.abacusdesk.com/utkarshindia/api/uploads/';
+    public upload_url2: string = 'https://devcrm.abacusdesk.com/utkarshindia/uploads/order-invoice/';
+    public img_url: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/';
+    public loyaltyUrl: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/';
+    public influencer_doc: string =  'https://devcrm.abacusdesk.com/utkarshindia/api/uploads/influencer_doc/';
+    public support_url : string ='https://devcrm.abacusdesk.com/utkarshindia/api/uploads/support/';
 
 
 
